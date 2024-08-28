@@ -21,7 +21,7 @@ fun TracksTab(
     mainViewModel: MainViewModel,
     musicPlayerViewModel: MusicPlayerViewModel
 ) {
-    val state = mainViewModel.d.tracksState
+    val state = mainViewModel.data.tracksState
     if (state.value.isLoading) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -37,7 +37,7 @@ fun TracksTab(
                 .padding(10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            items(state.value.list.items) { track ->
+            items(state.value.tracksMap.values.toList()) { track ->
                 TrackItemRow(mainViewModel, musicPlayerViewModel, track)
             }
         }

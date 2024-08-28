@@ -49,13 +49,13 @@ fun BottomBar(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = state.mediaMetadata.title.toString(),
+                    text = state?.name.toString(),
                     fontSize = 20.sp,
                     maxLines = 1,
                     modifier = Modifier.basicMarquee(Int.MAX_VALUE)
                 )
                 Text(
-                    text = state.mediaMetadata.artist.toString(),
+                    text = state?.artist.toString(),
                     fontSize = 15.sp,
                     maxLines = 1,
                     modifier = Modifier.basicMarquee(Int.MAX_VALUE)

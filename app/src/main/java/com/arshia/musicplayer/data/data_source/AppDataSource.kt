@@ -11,7 +11,6 @@ import javax.inject.Singleton
 @Singleton
 class AppDataSource {
 
-
     val tracksState = mutableStateOf(TracksState())
     val albumsState = mutableStateOf(AlbumsState())
 

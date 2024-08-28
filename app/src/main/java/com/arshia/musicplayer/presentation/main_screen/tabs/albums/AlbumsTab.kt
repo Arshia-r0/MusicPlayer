@@ -22,7 +22,7 @@ fun AlbumsTab(
     viewModel: MainViewModel,
     navController: NavController
 ) {
-    val state = viewModel.d.albumsState.value
+    val state = viewModel.data.albumsState.value
     if (state.isLoading) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -39,7 +39,7 @@ fun AlbumsTab(
                 .padding(5.dp),
             verticalArrangement = Arrangement.spacedBy(5.dp),
         ) {
-           items(state.albumsList) { album ->
+           items(state.albumsMap.values.toList()) { album ->
                AlbumItemGrid(navController = navController, viewModel = viewModel, album = album)
            }
         }

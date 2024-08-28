@@ -25,7 +25,6 @@ import com.arshia.musicplayer.R
 import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.data.model.music.PlayListItem
 import com.arshia.musicplayer.data.model.music.TrackItem
-import com.arshia.musicplayer.data.model.music.TracksList
 import com.arshia.musicplayer.presentation.main_screen.MainViewModel
 import com.arshia.musicplayer.presentation.player_screen.MusicPlayerViewModel
 
@@ -37,7 +36,12 @@ fun TrackItemRow(
     musicPlayerViewModel: MusicPlayerViewModel,
     track: TrackItem,
 ) {
-    Content(track, mainViewModel.d.tracksState.value.list, mainViewModel, musicPlayerViewModel)
+    Content(
+        track = track,
+        list = mainViewModel.data.tracksState.value.tracksMap.values.toList(),
+        mainViewModel = mainViewModel,
+        musicPlayerViewModel = musicPlayerViewModel
+    )
 }
 
 // albums tab
@@ -48,7 +52,11 @@ fun TrackItemRow(
     track: TrackItem,
     album: AlbumItem
 ) {
-    Content(track, mainViewModel.d.albumsMap[album.id] ?: TracksList(), mainViewModel, musicPlayerViewModel)
+    Content(
+        track = track,
+        list = mainViewModel.data.albumsMap[album.id]?.items ?: emptyList(),
+        mainViewModel = mainViewModel, musicPlayerViewModel = musicPlayerViewModel
+    )
 }
 
 // playlists tab
@@ -66,7 +74,7 @@ fun TrackItemRow(
 @Composable
 fun Content(
     track: TrackItem,
-    list: TracksList,
+    list: List<TrackItem>,
     mainViewModel: MainViewModel,
     musicPlayerViewModel: MusicPlayerViewModel
 ) {
@@ -76,7 +84,7 @@ fun Content(
             .height(65.dp)
             .clip(RoundedCornerShape(8.dp))
             .clickable {
-                musicPlayerViewModel.startMusic(track, list.items)
+                musicPlayerViewModel.startMusic(track, list)
             },
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -86,7 +94,7 @@ fun Content(
                 .fillMaxSize()
                 .clip(RoundedCornerShape(5.dp)),
             contentDescription = "thumbnail",
-            painter = mainViewModel.d.thumbnailsMap[track.albumId]?.let {
+            painter = mainViewModel.data.thumbnailsMap[track.albumId]?.let {
                 BitmapPainter(it.asImageBitmap())
             } ?: painterResource(R.drawable.music_icon)
         )

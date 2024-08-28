@@ -18,17 +18,16 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.arshia.musicplayer.presentation.player_screen.BottomBar
-import com.arshia.musicplayer.presentation.main_screen.tabs.components.TopBar
 import com.arshia.musicplayer.presentation.main_screen.tabs.albums.AlbumsTab
+import com.arshia.musicplayer.presentation.main_screen.tabs.components.TopBar
 import com.arshia.musicplayer.presentation.main_screen.tabs.playlists.PlayListsTab
 import com.arshia.musicplayer.presentation.main_screen.tabs.tracks.TracksTab
 import com.arshia.musicplayer.presentation.navigation.Routes
+import com.arshia.musicplayer.presentation.player_screen.BottomBar
 import com.arshia.musicplayer.presentation.player_screen.MusicPlayerViewModel
 
 
@@ -41,7 +40,7 @@ fun MainScreen(
     ) {
     val tabs = listOf("Albums", "Playlists", "Tracks")
     val pagerState = rememberPagerState { tabs.size }
-    val selectedTabIndex by mainViewModel.selectedTabIndex.collectAsState()
+    val selectedTabIndex by mainViewModel.selectedTabIndex
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),

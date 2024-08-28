@@ -12,9 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.arshia.musicplayer.presentation.main_screen.MainViewModel
-import com.arshia.musicplayer.presentation.player_screen.BottomBar
 import com.arshia.musicplayer.presentation.main_screen.tabs.components.TopBar
 import com.arshia.musicplayer.presentation.main_screen.tabs.components.TrackItemRow
+import com.arshia.musicplayer.presentation.player_screen.BottomBar
 import com.arshia.musicplayer.presentation.player_screen.MusicPlayerViewModel
 
 
@@ -27,7 +27,7 @@ fun AlbumScreen(
     listId: String
 ) {
     val id = listId.toInt()
-    val album = mainViewModel.d.albumsState.value.albumsList[id]
+    val album = mainViewModel.data.albumsState.value.albumsMap[id] ?: return
     val list = mainViewModel.getAlbumTracks(album)
     Scaffold(
         topBar = { TopBar(

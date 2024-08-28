@@ -52,19 +52,19 @@ fun PlayerScreen(
                     .height(200.dp)
                     .clip(RoundedCornerShape(10.dp)),
                 contentDescription = "thumbnail",
-                painter = musicPlayerViewModel.d
-                    .thumbnailsMap[musicPlayerViewModel.getAlbumId(state)]?.let {
+                painter = musicPlayerViewModel.data
+                    .thumbnailsMap[state?.albumId]?.let {
                     BitmapPainter(it.asImageBitmap())
                 } ?: painterResource(R.drawable.music_icon)
             )
             Text(
-                text = state.mediaMetadata.title.toString(),
+                text = state?.name.toString(),
                 fontSize = 30.sp,
                 maxLines = 1,
                 modifier = Modifier.basicMarquee(Int.MAX_VALUE)
             )
             Text(
-                text = state.mediaMetadata.artist.toString(),
+                text = state?.artist.toString(),
                 fontSize = 20.sp,
                 maxLines = 1,
                 modifier = Modifier.basicMarquee(Int.MAX_VALUE)

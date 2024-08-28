@@ -5,6 +5,6 @@ import com.arshia.musicplayer.data.model.music.AlbumItem
 
 data class AlbumsState(
     val isLoading: Boolean = false,
-    var albumsList: List<AlbumItem> = emptyList<AlbumItem>(),
+    var albumsMap: Map<Int, AlbumItem> = emptyMap(),
     val error: String? = null
 )
