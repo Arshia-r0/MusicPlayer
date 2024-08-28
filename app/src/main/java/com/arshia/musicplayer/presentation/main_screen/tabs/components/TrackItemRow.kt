@@ -22,10 +22,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arshia.musicplayer.R
-import com.arshia.musicplayer.data.model.AlbumItem
-import com.arshia.musicplayer.data.model.PlayListItem
-import com.arshia.musicplayer.data.model.TrackItem
-import com.arshia.musicplayer.data.model.TracksList
+import com.arshia.musicplayer.data.model.music.AlbumItem
+import com.arshia.musicplayer.data.model.music.PlayListItem
+import com.arshia.musicplayer.data.model.music.TrackItem
+import com.arshia.musicplayer.data.model.music.TracksList
 import com.arshia.musicplayer.presentation.main_screen.MainViewModel
 import com.arshia.musicplayer.presentation.player_screen.MusicPlayerViewModel
 

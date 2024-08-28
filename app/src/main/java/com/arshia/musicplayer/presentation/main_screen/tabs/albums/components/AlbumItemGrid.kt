@@ -21,7 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.arshia.musicplayer.R
-import com.arshia.musicplayer.data.model.AlbumItem
+import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.presentation.navigation.Routes
 import com.arshia.musicplayer.presentation.main_screen.MainViewModel
 

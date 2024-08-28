@@ -8,7 +8,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import com.arshia.musicplayer.common.arrangeAround
-import com.arshia.musicplayer.data.model.TrackItem
+import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.music_player_service.MusicPlayerService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

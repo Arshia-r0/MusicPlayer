@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import com.arshia.musicplayer.common.Resource
-import com.arshia.musicplayer.data.model.TrackItem
+import com.arshia.musicplayer.data.model.music.TrackItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.data.model
+package com.arshia.musicplayer.data.model.music
 
 
 data class PlayListItem(

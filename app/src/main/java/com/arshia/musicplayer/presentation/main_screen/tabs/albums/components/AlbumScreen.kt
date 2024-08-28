@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,6 +18,7 @@ import com.arshia.musicplayer.presentation.main_screen.tabs.components.TrackItem
 import com.arshia.musicplayer.presentation.player_screen.MusicPlayerViewModel
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlbumScreen(
     navController: NavController,
@@ -24,8 +26,15 @@ fun AlbumScreen(
     musicPlayerViewModel: MusicPlayerViewModel,
     listId: String
 ) {
+    val id = listId.toInt()
+    val album = mainViewModel.albumsState.value.albumsList[id]
+    val list = mainViewModel.getAlbumTracks(album)
     Scaffold(
-        topBar = { TopBar() },
+        topBar = { TopBar(
+            title = album.name,
+            canNavigateBack = true,
+            navController = navController
+        ) },
         bottomBar = { BottomBar(navController, musicPlayerViewModel) },
         modifier = Modifier.fillMaxSize()
     ) { ip ->
@@ -36,9 +45,6 @@ fun AlbumScreen(
                 .padding(10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            val id = listId.toInt()
-            val album = mainViewModel.albumsState.value.albumsList[id]
-            val list = mainViewModel.getAlbumTracks(album)
             items(list) { track ->
                 TrackItemRow(mainViewModel, musicPlayerViewModel, track, album)
             }

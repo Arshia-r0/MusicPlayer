@@ -8,6 +8,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
+import com.arshia.musicplayer.data.model.settings.Themes
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -251,12 +252,16 @@ val unspecified_scheme = ColorFamily(
 
 @Composable
 fun AppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    theme: Themes,
     content: @Composable() () -> Unit
 ) {
-  val colorScheme = when(darkTheme) {
-      true -> darkScheme
-      false -> lightScheme
+  val colorScheme = when(theme) {
+      Themes.System -> when(isSystemInDarkTheme()) {
+          true -> darkScheme
+          false -> lightScheme
+      }
+      Themes.Light -> lightScheme
+      Themes.Dark -> darkScheme
   }
 
   MaterialTheme(

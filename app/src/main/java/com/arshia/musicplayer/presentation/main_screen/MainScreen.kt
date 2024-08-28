@@ -6,6 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
@@ -23,10 +28,11 @@ import com.arshia.musicplayer.presentation.main_screen.tabs.components.TopBar
 import com.arshia.musicplayer.presentation.main_screen.tabs.albums.AlbumsTab
 import com.arshia.musicplayer.presentation.main_screen.tabs.playlists.PlayListsTab
 import com.arshia.musicplayer.presentation.main_screen.tabs.tracks.TracksTab
+import com.arshia.musicplayer.presentation.navigation.Routes
 import com.arshia.musicplayer.presentation.player_screen.MusicPlayerViewModel
 
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     navController: NavController,
@@ -40,7 +46,14 @@ fun MainScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = { BottomBar(navController, musicPlayerViewModel) },
-        topBar = { TopBar() }
+        topBar = { TopBar(
+            title = "Rumbar",
+            actions = {
+                IconButton(onClick = { navController.navigate(Routes.SettingRoute.route) }) {
+                    Icon(imageVector = Icons.Filled.Settings, contentDescription = "settings")
+                }
+            }
+        ) }
     ) { ip ->
         LaunchedEffect(selectedTabIndex) {
             pagerState.animateScrollToPage(selectedTabIndex)

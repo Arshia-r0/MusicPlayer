@@ -23,14 +23,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.arshia.musicplayer.R
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlayerScreen(
-    navController: NavController,
     musicPlayerViewModel: MusicPlayerViewModel
 ) {
     val state by musicPlayerViewModel.currentTrack

@@ -9,12 +9,15 @@ import android.os.Build
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.arshia.musicplayer.presentation.navigation.MainNavigation
@@ -71,31 +74,35 @@ private fun RequestDialog(
     text: String,
     buttonText: String
 ) {
-    AlertDialog(
-        onDismissRequest = { onDismiss() },
-        confirmButton = {
-            Button(onClick = { onConfirm() }) {
-                Text(buttonText)
+    Scaffold { ip ->
+        AlertDialog(
+            modifier = Modifier
+                .padding(ip),
+            onDismissRequest = { onDismiss() },
+            confirmButton = {
+                Button(onClick = { onConfirm() }) {
+                    Text(buttonText)
+                }
+            },
+            title = {
+                Text(
+                    text = "Request permission",
+                    fontSize = 20.sp
+                )
+            },
+            text = {
+                Text(
+                    text = text,
+                    fontSize = 15.sp
+                )
+            },
+            dismissButton = {
+                Button(onClick = { onDismiss() }) {
+                    Text("Dismiss")
+                }
             }
-        },
-        title = {
-            Text(
-                text = "Request permission",
-                fontSize = 20.sp
-            )
-        },
-        text = {
-            Text(
-                text = text,
-                fontSize = 15.sp
-            )
-        },
-        dismissButton = {
-            Button(onClick = { onDismiss() }) {
-                Text("Dismiss")
-            }
-        }
-    )
+        )
+    }
 }
 
 fun Activity.openAppSettings() {

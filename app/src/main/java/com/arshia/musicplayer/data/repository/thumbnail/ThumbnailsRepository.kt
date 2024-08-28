@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.data.repository
+package com.arshia.musicplayer.data.repository.thumbnail
 
 import android.annotation.SuppressLint
 import android.content.Context

@@ -9,7 +9,7 @@ import android.os.Build
 import android.provider.MediaStore
 import androidx.core.content.ContextCompat
 import com.arshia.musicplayer.common.Resource
-import com.arshia.musicplayer.data.model.AlbumItem
+import com.arshia.musicplayer.data.model.music.AlbumItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

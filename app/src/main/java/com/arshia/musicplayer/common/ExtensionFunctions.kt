@@ -1,6 +1,6 @@
 package com.arshia.musicplayer.common
 
-import com.arshia.musicplayer.data.model.TrackItem
+import com.arshia.musicplayer.data.model.music.TrackItem
 
 
 fun List<TrackItem>.arrangeAround(track: TrackItem): List<TrackItem> {

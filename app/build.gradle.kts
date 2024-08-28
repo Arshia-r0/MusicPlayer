@@ -97,4 +97,6 @@ dependencies {
     implementation(libs.androidx.media3.session)
     // material3
     implementation(libs.androidx.compose.material3.material3)
+    // data store
+    implementation(libs.androidx.datastore)
 }

@@ -1,6 +1,6 @@
 package com.arshia.musicplayer.presentation.main_screen.states
 
-import com.arshia.musicplayer.data.model.TracksList
+import com.arshia.musicplayer.data.model.music.TracksList
 
 
 data class TracksState(

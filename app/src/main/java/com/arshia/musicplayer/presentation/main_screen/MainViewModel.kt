@@ -7,10 +7,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arshia.musicplayer.common.Resource
-import com.arshia.musicplayer.data.model.AlbumItem
-import com.arshia.musicplayer.data.model.TrackItem
-import com.arshia.musicplayer.data.model.TracksList
-import com.arshia.musicplayer.data.repository.ThumbnailsRepository
+import com.arshia.musicplayer.data.model.music.AlbumItem
+import com.arshia.musicplayer.data.model.music.TrackItem
+import com.arshia.musicplayer.data.model.music.TracksList
+import com.arshia.musicplayer.data.repository.thumbnail.ThumbnailsRepository
 import com.arshia.musicplayer.data.repository.music.AlbumsRepository
 import com.arshia.musicplayer.data.repository.music.TracksRepository
 import com.arshia.musicplayer.presentation.main_screen.states.AlbumsState
