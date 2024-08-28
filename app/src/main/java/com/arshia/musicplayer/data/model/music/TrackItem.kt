@@ -1,7 +1,6 @@
 package com.arshia.musicplayer.data.model.music
 
 import android.net.Uri
-import androidx.media3.common.MediaItem
 
 
 data class TrackItem(
@@ -13,5 +12,4 @@ data class TrackItem(
     val duration: Int,
     val album: String,
     val albumId: Int,
-    val mediaItem: MediaItem
 )

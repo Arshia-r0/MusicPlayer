@@ -1,12 +1,11 @@
 package com.arshia.musicplayer.presentation.player_screen
 
-import androidx.annotation.OptIn
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
-import androidx.media3.common.util.UnstableApi
 import com.arshia.musicplayer.common.arrangeAround
 import com.arshia.musicplayer.data.data_source.AppDataSource
 import com.arshia.musicplayer.data.model.music.TrackItem
@@ -62,15 +61,21 @@ class MusicPlayerViewModel @Inject constructor(
         )
     }
 
-    @OptIn(UnstableApi::class)
     fun startMusic(track: TrackItem, playlist: List<TrackItem>) {
-//        val notification = MediaNotification(
-//            1,
-//            Notification.Builder(playerService, "MusicPlayer").build()
-//        )
-//        playerService.startForeground(1, notification.notification)
         player.clearMediaItems()
-        playlist.arrangeAround(track).forEach { player.addMediaItem(it.mediaItem) }
+        playlist.arrangeAround(track).forEach {
+            player.addMediaItem(
+                MediaItem.Builder().setUri(it.uri)
+                    .setMediaId(it.id.toString())
+                    .setMediaMetadata(
+                        MediaMetadata.Builder()
+                            .setTitle(it.name)
+                            .setArtist(it.artist)
+                            .setAlbumTitle(it.album)
+                            .build()
+                    ).build()
+            )
+        }
         player.prepare()
         player.play()
     }

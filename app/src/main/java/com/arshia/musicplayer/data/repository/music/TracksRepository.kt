@@ -8,8 +8,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.MediaStore
 import androidx.core.content.ContextCompat
-import androidx.media3.common.MediaItem
-import androidx.media3.common.MediaMetadata
 import com.arshia.musicplayer.common.Resource
 import com.arshia.musicplayer.data.model.music.TrackItem
 import kotlinx.coroutines.flow.Flow
@@ -71,16 +69,6 @@ class TracksRepository @Inject constructor(
                             duration = cursor.getInt(duration),
                             album = cursor.getString(album),
                             albumId = cursor.getInt(albumId),
-                            mediaItem = MediaItem.Builder()
-                                .setUri(contentUri)
-                                .setMediaId(cursor.getString(id))
-                                .setMediaMetadata(
-                                    MediaMetadata.Builder()
-                                        .setArtist(cursor.getString(artist))
-                                        .setTitle(cursor.getString(name))
-                                        .setAlbumTitle(cursor.getString(album))
-                                        .build()
-                                ).build()
                         )
                     )
                 }
