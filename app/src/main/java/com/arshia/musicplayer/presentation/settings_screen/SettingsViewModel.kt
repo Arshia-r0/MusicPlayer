@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 
 private val Context.dataStore by dataStore(
-    "app-Settings.json",
+    "settings.json",
     SettingsSerializer
 )
 
