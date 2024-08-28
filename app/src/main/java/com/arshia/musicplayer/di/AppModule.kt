@@ -3,6 +3,7 @@ package com.arshia.musicplayer.di
 import android.app.Application
 import android.content.Context
 import androidx.media3.exoplayer.ExoPlayer
+import com.arshia.musicplayer.data.data_source.AppDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,5 +23,9 @@ object AppModule {
     fun providePlayer(context: Application): ExoPlayer {
         return ExoPlayer.Builder(context).build()
     }
+
+    @Provides
+    @Singleton
+    fun provideAlbumDetails(): AppDataSource = AppDataSource()
 
 }

@@ -37,7 +37,7 @@ fun TrackItemRow(
     musicPlayerViewModel: MusicPlayerViewModel,
     track: TrackItem,
 ) {
-    Content(track, mainViewModel.tracksState.value.list, mainViewModel, musicPlayerViewModel)
+    Content(track, mainViewModel.d.tracksState.value.list, mainViewModel, musicPlayerViewModel)
 }
 
 // albums tab
@@ -48,7 +48,7 @@ fun TrackItemRow(
     track: TrackItem,
     album: AlbumItem
 ) {
-    Content(track, mainViewModel.albumsMap[album.id] ?: TracksList(), mainViewModel, musicPlayerViewModel)
+    Content(track, mainViewModel.d.albumsMap[album.id] ?: TracksList(), mainViewModel, musicPlayerViewModel)
 }
 
 // playlists tab
@@ -86,7 +86,7 @@ fun Content(
                 .fillMaxSize()
                 .clip(RoundedCornerShape(5.dp)),
             contentDescription = "thumbnail",
-            painter = mainViewModel.thumbnailsMap[track.albumId]?.let {
+            painter = mainViewModel.d.thumbnailsMap[track.albumId]?.let {
                 BitmapPainter(it.asImageBitmap())
             } ?: painterResource(R.drawable.music_icon)
         )

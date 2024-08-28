@@ -27,7 +27,7 @@ fun AlbumScreen(
     listId: String
 ) {
     val id = listId.toInt()
-    val album = mainViewModel.albumsState.value.albumsList[id]
+    val album = mainViewModel.d.albumsState.value.albumsList[id]
     val list = mainViewModel.getAlbumTracks(album)
     Scaffold(
         topBar = { TopBar(

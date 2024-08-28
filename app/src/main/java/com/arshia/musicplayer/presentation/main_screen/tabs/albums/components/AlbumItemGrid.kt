@@ -43,11 +43,11 @@ fun AlbumItemGrid(
                     .fillMaxSize()
                     .clickable {
                         navController.navigate(
-                            Routes.ListRoute.route + "/${viewModel.albumsState.value.albumsList.indexOf(album)}"
+                            Routes.ListRoute.route + "/${viewModel.d.albumsState.value.albumsList.indexOf(album)}"
                         )
                     }.padding(10.dp)
                     .clip(RoundedCornerShape(25.dp)),
-                painter = viewModel.thumbnailsMap[album.id]?.let {
+                painter = viewModel.d.thumbnailsMap[album.id]?.let {
                     BitmapPainter(
                         image = it.asImageBitmap()
                     )

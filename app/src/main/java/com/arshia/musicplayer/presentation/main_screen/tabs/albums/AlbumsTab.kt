@@ -22,7 +22,7 @@ fun AlbumsTab(
     viewModel: MainViewModel,
     navController: NavController
 ) {
-    val state = viewModel.albumsState.value
+    val state = viewModel.d.albumsState.value
     if (state.isLoading) {
         Column(
             modifier = Modifier.fillMaxSize(),

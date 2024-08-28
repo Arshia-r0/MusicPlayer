@@ -21,7 +21,7 @@ fun TracksTab(
     mainViewModel: MainViewModel,
     musicPlayerViewModel: MusicPlayerViewModel
 ) {
-    val state = mainViewModel.tracksState
+    val state = mainViewModel.d.tracksState
     if (state.value.isLoading) {
         Column(
             modifier = Modifier.fillMaxSize(),

@@ -20,6 +20,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,6 +37,7 @@ fun PlayerScreen(
     val shuffleMode by musicPlayerViewModel.shuffleMode
     val repeatMode by musicPlayerViewModel.musicRepeatMode
     val isPlaying by musicPlayerViewModel.musicIsPlaying
+
     Scaffold { ip ->
         Column(
             modifier = Modifier
@@ -49,7 +52,10 @@ fun PlayerScreen(
                     .height(200.dp)
                     .clip(RoundedCornerShape(10.dp)),
                 contentDescription = "thumbnail",
-                painter = painterResource(R.drawable.music_icon)
+                painter = musicPlayerViewModel.d
+                    .thumbnailsMap[musicPlayerViewModel.getAlbumId(state)]?.let {
+                    BitmapPainter(it.asImageBitmap())
+                } ?: painterResource(R.drawable.music_icon)
             )
             Text(
                 text = state.mediaMetadata.title.toString(),

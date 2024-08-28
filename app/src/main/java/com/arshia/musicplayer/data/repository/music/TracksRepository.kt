@@ -72,10 +72,13 @@ class TracksRepository @Inject constructor(
                             album = cursor.getString(album),
                             albumId = cursor.getInt(albumId),
                             mediaItem = MediaItem.Builder()
-                                .setUri(contentUri).setMediaMetadata(
+                                .setUri(contentUri)
+                                .setMediaId(cursor.getString(id))
+                                .setMediaMetadata(
                                     MediaMetadata.Builder()
                                         .setArtist(cursor.getString(artist))
                                         .setTitle(cursor.getString(name))
+                                        .setAlbumTitle(cursor.getString(album))
                                         .build()
                                 ).build()
                         )

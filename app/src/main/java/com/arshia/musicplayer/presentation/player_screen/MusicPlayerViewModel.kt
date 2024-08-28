@@ -10,12 +10,14 @@ import androidx.media3.common.util.UnstableApi
 import com.arshia.musicplayer.common.arrangeAround
 import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.music_player_service.MusicPlayerService
+import com.arshia.musicplayer.data.data_source.AppDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 
 @HiltViewModel
 class MusicPlayerViewModel @Inject constructor(
+    val d: AppDataSource,
     musicPlayerService: MusicPlayerService
 ): ViewModel() {
 
@@ -92,6 +94,10 @@ class MusicPlayerViewModel @Inject constructor(
         player.shuffleModeEnabled = !player.shuffleModeEnabled
     }
 
+    fun getAlbumId(mediaItem: MediaItem): Int? {
+        return d.tracksState.value.list.items.find {
+            it.id.toString() == mediaItem.mediaId
+        }?.albumId
+    }
+
 }
-
-

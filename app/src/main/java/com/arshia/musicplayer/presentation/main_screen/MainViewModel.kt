@@ -2,7 +2,6 @@ package com.arshia.musicplayer.presentation.main_screen
 
 import android.graphics.Bitmap
 import android.os.Build
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +12,7 @@ import com.arshia.musicplayer.data.model.music.TracksList
 import com.arshia.musicplayer.data.repository.thumbnail.ThumbnailsRepository
 import com.arshia.musicplayer.data.repository.music.AlbumsRepository
 import com.arshia.musicplayer.data.repository.music.TracksRepository
+import com.arshia.musicplayer.data.data_source.AppDataSource
 import com.arshia.musicplayer.presentation.main_screen.states.AlbumsState
 import com.arshia.musicplayer.presentation.main_screen.states.TracksState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,19 +30,12 @@ class MainViewModel @Inject constructor(
     private val tracksRepository: TracksRepository,
     private val thumbnailsRepository: ThumbnailsRepository,
     private val savedStateHandle: SavedStateHandle,
+    val d: AppDataSource
 ): ViewModel() {
 
     var selectedTabIndex = savedStateHandle.getStateFlow("tabIndex", 1)
 
-    private val _tracksState = mutableStateOf(TracksState())
-    val tracksState = _tracksState
-
-    private val _albumsState = mutableStateOf(AlbumsState())
-    val albumsState = _albumsState
-
     private var tracksNotYetInAlbums = mutableListOf<TrackItem>()
-    var thumbnailsMap = mutableMapOf<Int, Bitmap>()
-    val albumsMap = mutableMapOf<Int, TracksList>()
 
     init {
         viewModelScope.launch {
@@ -60,7 +53,7 @@ class MainViewModel @Inject constructor(
 
     private suspend fun getAudios() {
         tracksRepository.getAll().onEach { result ->
-            _tracksState.value = when (result) {
+            d.tracksState.value = when (result) {
                 is Resource.Success<List<TrackItem>> -> {
                     TracksState(
                         list = TracksList(
@@ -76,13 +69,13 @@ class MainViewModel @Inject constructor(
                 }
             }
         }.onCompletion {
-            tracksNotYetInAlbums = _tracksState.value.list.items.toMutableList()
+            tracksNotYetInAlbums = d.tracksState.value.list.items.toMutableList()
         }.collect {}
     }
 
     private suspend fun getAlbums() {
         albumsRepository.getAll().onEach { result ->
-            _albumsState.value = when (result) {
+            d.albumsState.value = when (result) {
                 is Resource.Success<List<AlbumItem>> -> {
                     AlbumsState(albumsList = result.data ?: emptyList())
                 }
@@ -101,16 +94,16 @@ class MainViewModel @Inject constructor(
     private fun getAlbumThumbnails() {
         if(Build.VERSION.SDK_INT < 29) return
         val map = mutableMapOf<Int, Bitmap>()
-        for (album in _albumsState.value.albumsList) {
+        for (album in d.albumsState.value.albumsList) {
             thumbnailsRepository.getThumbnail(album.uri)?.let {
                 map[album.id] = it
             }
         }
-        thumbnailsMap = map
+        d.thumbnailsMap = map
     }
 
     fun getAlbumTracks(album: AlbumItem): List<TrackItem> {
-        albumsMap[album.id]?.items?.let {
+        d.albumsMap[album.id]?.items?.let {
             return it
         }
         val result = mutableListOf<TrackItem>()
@@ -121,7 +114,7 @@ class MainViewModel @Inject constructor(
                 iterator.remove()
             }
         }
-        albumsMap[album.id] =
+        d.albumsMap[album.id] =
             TracksList(id = album.id, name = album.name, items = result)
         return result.toList()
     }
