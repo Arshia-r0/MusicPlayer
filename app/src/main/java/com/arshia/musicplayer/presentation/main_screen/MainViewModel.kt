@@ -2,6 +2,7 @@ package com.arshia.musicplayer.presentation.main_screen
 
 import android.graphics.Bitmap
 import android.os.Build
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -30,7 +31,7 @@ class MainViewModel @Inject constructor(
     val data: AppDataSource
 ): ViewModel() {
 
-    var selectedTabIndex = mutableStateOf(1)
+    var selectedTabIndex = mutableIntStateOf(1)
 
     private var tracksNotYetInAlbums = mutableListOf<TrackItem>()
 
@@ -43,7 +44,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun changeTab(index: Int) {
-        selectedTabIndex.value = index
+        selectedTabIndex.intValue = index
     }
 
     private suspend fun getAudios() {

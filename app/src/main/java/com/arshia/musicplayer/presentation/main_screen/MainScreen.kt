@@ -69,14 +69,12 @@ fun MainScreen(
         ) {
             TabRow(
                 selectedTabIndex = selectedTabIndex,
-                indicator = {}
             ) {
                 tabs.forEachIndexed { index, tab ->
                     Tab(
-                        selected = index == selectedTabIndex,
+                        selected = true,
                         onClick = { mainViewModel.changeTab(index)},
                         selectedContentColor = MaterialTheme.colorScheme.primary,
-                        unselectedContentColor = MaterialTheme.colorScheme.onSecondary,
                         text = { Text(
                             text = tab,
                             fontSize = 15.sp,
@@ -88,9 +86,9 @@ fun MainScreen(
                 state = pagerState,
                 modifier = Modifier
                     .fillMaxSize()
-                    .weight(1f)
+                    .weight(1f),
             ) { i ->
-                when(i) {
+                when (i) {
                     0 -> AlbumsTab(mainViewModel, navController)
                     1 -> PlayListsTab(mainViewModel, navController)
                     2 -> TracksTab(mainViewModel, musicPlayerViewModel)

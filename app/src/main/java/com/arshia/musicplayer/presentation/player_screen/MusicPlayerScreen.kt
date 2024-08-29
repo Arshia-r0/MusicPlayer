@@ -7,15 +7,19 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +30,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arshia.musicplayer.R
+import com.arshia.musicplayer.common.convertToText
+import kotlinx.coroutines.delay
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -33,48 +39,99 @@ import com.arshia.musicplayer.R
 fun PlayerScreen(
     musicPlayerViewModel: MusicPlayerViewModel
 ) {
+    val player = musicPlayerViewModel.player
     val state by musicPlayerViewModel.currentTrack
     val shuffleMode by musicPlayerViewModel.shuffleMode
     val repeatMode by musicPlayerViewModel.musicRepeatMode
     val isPlaying by musicPlayerViewModel.musicIsPlaying
-
+    val transition by musicPlayerViewModel.transition
+    val currentPosition = musicPlayerViewModel.currentPosition
+    val sliderPosition = musicPlayerViewModel.sliderPosition
+    val totalDuration = musicPlayerViewModel.totalDuration
+    LaunchedEffect(player.currentPosition, player.isPlaying, transition) {
+        currentPosition.longValue = player.currentPosition
+        delay(1000)
+    }
+    LaunchedEffect(currentPosition) {
+        sliderPosition.longValue = currentPosition.longValue
+    }
+    LaunchedEffect(player.duration) {
+        if(player.duration > 0)
+        totalDuration.longValue = player.duration
+    }
     Scaffold { ip ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(ip)
-                .padding(horizontal = 25.dp, vertical = 50.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(horizontal = 20.dp, vertical = 100.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Image(
                 modifier = Modifier
                     .aspectRatio(1f)
                     .height(200.dp)
-                    .clip(RoundedCornerShape(10.dp)),
+                    .clip(RoundedCornerShape(50.dp)),
                 contentDescription = "thumbnail",
                 painter = musicPlayerViewModel.data
                     .thumbnailsMap[state?.albumId]?.let {
                     BitmapPainter(it.asImageBitmap())
                 } ?: painterResource(R.drawable.music_icon)
             )
-            Text(
-                text = state?.name.toString(),
-                fontSize = 30.sp,
-                maxLines = 1,
-                modifier = Modifier.basicMarquee(Int.MAX_VALUE)
-            )
-            Text(
-                text = state?.artist.toString(),
-                fontSize = 20.sp,
-                maxLines = 1,
-                modifier = Modifier.basicMarquee(Int.MAX_VALUE)
-            )
-
+            Spacer(Modifier.height(10.dp))
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Text(
+                    text = state?.name.toString(),
+                    fontSize = 30.sp,
+                    maxLines = 1,
+                    modifier = Modifier.basicMarquee(Int.MAX_VALUE)
+                )
+                Text(
+                    text = state?.artist.toString(),
+                    fontSize = 20.sp,
+                    maxLines = 1,
+                    modifier = Modifier.basicMarquee(Int.MAX_VALUE)
+                )
+            }
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Slider(
+                    value = sliderPosition.longValue.toFloat(),
+                    onValueChange = {
+                        sliderPosition.longValue = it.toLong()
+                    },
+                    onValueChangeFinished = {
+                        currentPosition.longValue = sliderPosition.longValue
+                        player.seekTo(sliderPosition.longValue)
+                    },
+                    valueRange = 0f..totalDuration.longValue.toFloat()
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(currentPosition.longValue.convertToText())
+                    Text(state?.duration?.toLong()?.convertToText() ?: "")
+                }
+            }
             Row(
-                modifier = Modifier,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+                Icon(
+                    painter = painterResource(if (shuffleMode) R.drawable.shuffle_on else R.drawable.shuffle),
+                    contentDescription = "shuffle",
+                    modifier = Modifier.clickable { musicPlayerViewModel.toggleShuffle() }
+
+                )
                 Icon(
                     painter = painterResource(R.drawable.skip_previous),
                     contentDescription = "next",
@@ -89,18 +146,6 @@ fun PlayerScreen(
                     painter = painterResource(R.drawable.skip_next),
                     contentDescription = "previous",
                     modifier = Modifier.clickable { musicPlayerViewModel.nextMusic() }
-                )
-            }
-            Row(
-                modifier = Modifier,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
-                    painter = painterResource(if (shuffleMode) R.drawable.shuffle_on else R.drawable.shuffle),
-                    contentDescription = "shuffle",
-                    modifier = Modifier.clickable { musicPlayerViewModel.toggleShuffle() }
-
                 )
                 Icon(
                     painter = painterResource(

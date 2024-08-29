@@ -9,6 +9,7 @@ import javax.inject.Singleton
 
 typealias Id = Int
 
+
 @Singleton
 class AppDataSource {
 

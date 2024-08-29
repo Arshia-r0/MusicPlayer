@@ -1,7 +1,9 @@
 package com.arshia.musicplayer.presentation.player_screen
 
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
@@ -20,12 +22,16 @@ class MusicPlayerViewModel @Inject constructor(
     musicPlayerService: MusicPlayerService
 ): ViewModel() {
 
-    private val player = musicPlayerService.player
+    val player = musicPlayerService.player
 
     val currentTrack = mutableStateOf<TrackItem?>(null)
     val shuffleMode = mutableStateOf(false)
     val musicRepeatMode = mutableIntStateOf(0)
     val musicIsPlaying = mutableStateOf(false)
+    val transition = mutableIntStateOf(1)
+    val currentPosition = mutableLongStateOf(0)
+    val sliderPosition = mutableLongStateOf(0)
+    val totalDuration = mutableLongStateOf(0)
 
     init {
         listen()
@@ -37,9 +43,10 @@ class MusicPlayerViewModel @Inject constructor(
 
                 override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                     super.onMediaItemTransition(mediaItem, reason)
-                    mediaItem?.let {
-                        currentTrack.value = data.tracksState.value.tracksMap[mediaItem.mediaId.toInt()]
+                    mediaItem?.apply {
+                        currentTrack.value = data.tracksState.value.tracksMap[this.mediaId.toInt()]
                     }
+                    transition.intValue++
                 }
 
                 override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
