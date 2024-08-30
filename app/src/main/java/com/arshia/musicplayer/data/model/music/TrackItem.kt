@@ -9,7 +9,7 @@ data class TrackItem(
     val name: String,
     val size: Int,
     val artist: String,
-    val duration: Int,
+    val duration: Long,
     val album: String,
     val albumId: Int,
 )

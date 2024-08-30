@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,19 +46,19 @@ fun PlayerScreen(
     val repeatMode by musicPlayerViewModel.musicRepeatMode
     val isPlaying by musicPlayerViewModel.musicIsPlaying
     val transition by musicPlayerViewModel.transition
-    val currentPosition = musicPlayerViewModel.currentPosition
-    val sliderPosition = musicPlayerViewModel.sliderPosition
-    val totalDuration = musicPlayerViewModel.totalDuration
-    LaunchedEffect(player.currentPosition, player.isPlaying, transition) {
-        currentPosition.longValue = player.currentPosition
-        delay(1000)
+    var currentPosition by musicPlayerViewModel.currentPosition
+    var sliderPosition by musicPlayerViewModel.sliderPosition
+    LaunchedEffect(transition) {
+        currentPosition = 0
+    }
+    LaunchedEffect(isPlaying) {
+        while (isPlaying) {
+            currentPosition = player.currentPosition
+            delay(1000)
+        }
     }
     LaunchedEffect(currentPosition) {
-        sliderPosition.longValue = currentPosition.longValue
-    }
-    LaunchedEffect(player.duration) {
-        if(player.duration > 0)
-        totalDuration.longValue = player.duration
+        sliderPosition = player.currentPosition
     }
     Scaffold { ip ->
         Column(
@@ -103,22 +104,22 @@ fun PlayerScreen(
                 verticalArrangement = Arrangement.Center
             ) {
                 Slider(
-                    value = sliderPosition.longValue.toFloat(),
+                    value = sliderPosition.toFloat(),
                     onValueChange = {
-                        sliderPosition.longValue = it.toLong()
+                        sliderPosition = it.toLong()
                     },
                     onValueChangeFinished = {
-                        currentPosition.longValue = sliderPosition.longValue
-                        player.seekTo(sliderPosition.longValue)
+                        player.seekTo(sliderPosition)
+                        currentPosition = sliderPosition
                     },
-                    valueRange = 0f..totalDuration.longValue.toFloat()
+                    valueRange = 0f..(state?.duration?.toFloat() ?: 1f)
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(currentPosition.longValue.convertToText())
-                    Text(state?.duration?.toLong()?.convertToText() ?: "")
+                    Text(sliderPosition.convertToText())
+                    Text(state?.duration?.convertToText() ?: "")
                 }
             }
             Row(

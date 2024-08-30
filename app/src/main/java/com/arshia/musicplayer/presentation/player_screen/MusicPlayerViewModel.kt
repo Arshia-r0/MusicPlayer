@@ -1,13 +1,14 @@
 package com.arshia.musicplayer.presentation.player_screen
 
+import androidx.annotation.OptIn
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import com.arshia.musicplayer.common.arrangeAround
 import com.arshia.musicplayer.data.data_source.AppDataSource
 import com.arshia.musicplayer.data.model.music.TrackItem
@@ -28,10 +29,9 @@ class MusicPlayerViewModel @Inject constructor(
     val shuffleMode = mutableStateOf(false)
     val musicRepeatMode = mutableIntStateOf(0)
     val musicIsPlaying = mutableStateOf(false)
-    val transition = mutableIntStateOf(1)
     val currentPosition = mutableLongStateOf(0)
     val sliderPosition = mutableLongStateOf(0)
-    val totalDuration = mutableLongStateOf(0)
+    val transition = mutableIntStateOf(0)
 
     init {
         listen()
@@ -41,12 +41,13 @@ class MusicPlayerViewModel @Inject constructor(
         player.addListener(
             object : Player.Listener {
 
+                @OptIn(UnstableApi::class)
                 override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                     super.onMediaItemTransition(mediaItem, reason)
                     mediaItem?.apply {
                         currentTrack.value = data.tracksState.value.tracksMap[this.mediaId.toInt()]
+                        transition.intValue++
                     }
-                    transition.intValue++
                 }
 
                 override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {

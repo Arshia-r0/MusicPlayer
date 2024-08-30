@@ -66,7 +66,7 @@ class TracksRepository @Inject constructor(
                             name = cursor.getString(name),
                             size = cursor.getInt(size),
                             artist = cursor.getString(artist),
-                            duration = cursor.getInt(duration),
+                            duration = cursor.getLong(duration),
                             album = cursor.getString(album),
                             albumId = cursor.getInt(albumId),
                         )
