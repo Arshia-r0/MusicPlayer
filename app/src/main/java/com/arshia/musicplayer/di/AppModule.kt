@@ -26,6 +26,6 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAlbumDetails(): AppDataSource = AppDataSource()
+    fun provideDataSource(): AppDataSource = AppDataSource()
 
 }

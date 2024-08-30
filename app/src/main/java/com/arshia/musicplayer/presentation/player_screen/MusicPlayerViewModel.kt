@@ -1,5 +1,7 @@
 package com.arshia.musicplayer.presentation.player_screen
 
+import android.graphics.Bitmap
+import android.net.Uri
 import androidx.annotation.OptIn
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
@@ -12,6 +14,7 @@ import androidx.media3.common.util.UnstableApi
 import com.arshia.musicplayer.common.arrangeAround
 import com.arshia.musicplayer.data.data_source.AppDataSource
 import com.arshia.musicplayer.data.model.music.TrackItem
+import com.arshia.musicplayer.data.repository.thumbnail.ThumbnailsRepository
 import com.arshia.musicplayer.music_player_service.MusicPlayerService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -19,8 +22,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MusicPlayerViewModel @Inject constructor(
+    musicPlayerService: MusicPlayerService,
     val data: AppDataSource,
-    musicPlayerService: MusicPlayerService
+    private val thumbnailsRepository: ThumbnailsRepository
 ): ViewModel() {
 
     val player = musicPlayerService.player
@@ -31,7 +35,7 @@ class MusicPlayerViewModel @Inject constructor(
     val musicIsPlaying = mutableStateOf(false)
     val currentPosition = mutableLongStateOf(0)
     val sliderPosition = mutableLongStateOf(0)
-    val transition = mutableIntStateOf(0)
+    val transition = mutableStateOf(true)
 
     init {
         listen()
@@ -46,7 +50,7 @@ class MusicPlayerViewModel @Inject constructor(
                     super.onMediaItemTransition(mediaItem, reason)
                     mediaItem?.apply {
                         currentTrack.value = data.tracksState.value.tracksMap[this.mediaId.toInt()]
-                        transition.intValue++
+                        transition.value = !transition.value
                     }
                 }
 
@@ -107,6 +111,10 @@ class MusicPlayerViewModel @Inject constructor(
 
     fun toggleShuffle() {
         player.shuffleModeEnabled = !player.shuffleModeEnabled
+    }
+
+    fun getThumbnail(uri: Uri): Bitmap? {
+        return thumbnailsRepository.getThumbnail(uri)
     }
 
 }

@@ -19,7 +19,7 @@ inline fun <reified T: Enum<T>> T.next(): T {
     return values[nextOrdinal]
 }
 
-fun Long.convertToText(): String {
+fun Long.convertToTime(): String {
     val sec = this / 1000
     val minutes = sec / 60
     val seconds = sec % 60

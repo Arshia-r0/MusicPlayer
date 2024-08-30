@@ -31,7 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arshia.musicplayer.R
-import com.arshia.musicplayer.common.convertToText
+import com.arshia.musicplayer.common.convertToTime
 import kotlinx.coroutines.delay
 
 
@@ -75,8 +75,7 @@ fun PlayerScreen(
                     .height(200.dp)
                     .clip(RoundedCornerShape(50.dp)),
                 contentDescription = "thumbnail",
-                painter = musicPlayerViewModel.data
-                    .thumbnailsMap[state?.albumId]?.let {
+                painter = musicPlayerViewModel.getThumbnail(state!!.uri)?.let {
                     BitmapPainter(it.asImageBitmap())
                 } ?: painterResource(R.drawable.music_icon)
             )
@@ -118,8 +117,8 @@ fun PlayerScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(sliderPosition.convertToText())
-                    Text(state?.duration?.convertToText() ?: "")
+                    Text(sliderPosition.convertToTime())
+                    Text(state?.duration?.convertToTime() ?: "")
                 }
             }
             Row(
@@ -163,3 +162,6 @@ fun PlayerScreen(
         }
     }
 }
+//musicPlayerViewModel.data
+//.thumbnailsMap[state?.albumId]?.let {
+//    BitmapPainter(it.asImageBitmap())
