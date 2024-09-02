@@ -30,8 +30,7 @@ fun BottomBar(
     navController: NavController,
     viewModel: MusicPlayerViewModel
 ) {
-    val state by viewModel.currentTrack
-    val isPLaying by viewModel.musicIsPlaying
+    val state by viewModel.state
     BottomAppBar(
         modifier = Modifier
             .clickable { navController.navigate(Routes.PlayerRoute.route) }
@@ -49,13 +48,13 @@ fun BottomBar(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = state?.name.toString(),
+                    text = state.currentTrack?.name.toString(),
                     fontSize = 20.sp,
                     maxLines = 1,
                     modifier = Modifier.basicMarquee(Int.MAX_VALUE)
                 )
                 Text(
-                    text = state?.artist.toString(),
+                    text = state.currentTrack?.artist.toString(),
                     fontSize = 15.sp,
                     maxLines = 1,
                     modifier = Modifier.basicMarquee(Int.MAX_VALUE)
@@ -72,7 +71,7 @@ fun BottomBar(
                     modifier = Modifier.clickable { viewModel.previousMusic() }
                 )
                 Icon(
-                    painter = painterResource(if(isPLaying) R.drawable.pause else R.drawable.play_arrow),
+                    painter = painterResource(if(state.isPlaying) R.drawable.pause else R.drawable.play_arrow),
                     contentDescription = "play",
                     modifier = Modifier.clickable { viewModel.togglePauseMusic() }
                 )

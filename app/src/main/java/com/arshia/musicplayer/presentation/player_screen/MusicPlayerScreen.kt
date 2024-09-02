@@ -21,6 +21,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,27 +40,17 @@ import kotlinx.coroutines.delay
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlayerScreen(
-    musicPlayerViewModel: MusicPlayerViewModel
+    vm: MusicPlayerViewModel
 ) {
-    val player = musicPlayerViewModel.player
-    val state by musicPlayerViewModel.currentTrack
-    val shuffleMode by musicPlayerViewModel.shuffleMode
-    val repeatMode by musicPlayerViewModel.musicRepeatMode
-    val isPlaying by musicPlayerViewModel.musicIsPlaying
-    val transition by musicPlayerViewModel.transition
-    var currentPosition by musicPlayerViewModel.currentPosition
-    var sliderPosition by musicPlayerViewModel.sliderPosition
-    LaunchedEffect(transition) {
-        currentPosition = 0
-    }
-    LaunchedEffect(isPlaying) {
-        while (isPlaying) {
-            currentPosition = player.currentPosition
+    val player = vm.player
+    var state by vm.state
+    var sliderPosition by remember { mutableLongStateOf(state.currentPosition) }
+    LaunchedEffect(state.isPlaying) {
+        while (state.isPlaying) {
+            state = state.copy(currentPosition = player.currentPosition)
+            sliderPosition = state.currentPosition
             delay(1000)
         }
-    }
-    LaunchedEffect(currentPosition) {
-        sliderPosition = player.currentPosition
     }
     Scaffold { ip ->
         Column(
@@ -75,7 +67,7 @@ fun PlayerScreen(
                     .height(200.dp)
                     .clip(RoundedCornerShape(50.dp)),
                 contentDescription = "thumbnail",
-                painter = musicPlayerViewModel.getThumbnail(state!!.uri)?.let {
+                painter = vm.getThumbnail(state.currentTrack!!.uri)?.let {
                     BitmapPainter(it.asImageBitmap())
                 } ?: painterResource(R.drawable.music_icon)
             )
@@ -86,13 +78,13 @@ fun PlayerScreen(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Text(
-                    text = state?.name.toString(),
+                    text = state.currentTrack?.name.toString(),
                     fontSize = 30.sp,
                     maxLines = 1,
                     modifier = Modifier.basicMarquee(Int.MAX_VALUE)
                 )
                 Text(
-                    text = state?.artist.toString(),
+                    text = state.currentTrack?.artist.toString(),
                     fontSize = 20.sp,
                     maxLines = 1,
                     modifier = Modifier.basicMarquee(Int.MAX_VALUE)
@@ -109,16 +101,16 @@ fun PlayerScreen(
                     },
                     onValueChangeFinished = {
                         player.seekTo(sliderPosition)
-                        currentPosition = sliderPosition
+                        state = state.copy(currentPosition = sliderPosition)
                     },
-                    valueRange = 0f..(state?.duration?.toFloat() ?: 1f)
+                    valueRange = 0f..(state.currentTrack?.duration?.toFloat() ?: 1f)
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(sliderPosition.convertToTime())
-                    Text(state?.duration?.convertToTime() ?: "")
+                    Text(state.currentTrack?.duration?.convertToTime() ?: "")
                 }
             }
             Row(
@@ -127,41 +119,38 @@ fun PlayerScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
-                    painter = painterResource(if (shuffleMode) R.drawable.shuffle_on else R.drawable.shuffle),
+                    painter = painterResource(if (state.shuffleMode) R.drawable.shuffle_on else R.drawable.shuffle),
                     contentDescription = "shuffle",
-                    modifier = Modifier.clickable { musicPlayerViewModel.toggleShuffle() }
+                    modifier = Modifier.clickable { vm.toggleShuffle() }
 
                 )
                 Icon(
                     painter = painterResource(R.drawable.skip_previous),
                     contentDescription = "next",
-                    modifier = Modifier.clickable { musicPlayerViewModel.previousMusic() }
+                    modifier = Modifier.clickable { vm.previousMusic() }
                 )
                 Icon(
-                    painter = painterResource(if (isPlaying) R.drawable.pause else R.drawable.play_arrow),
+                    painter = painterResource(if (state.isPlaying) R.drawable.pause else R.drawable.play_arrow),
                     contentDescription = "play",
-                    modifier = Modifier.clickable { musicPlayerViewModel.togglePauseMusic() }
+                    modifier = Modifier.clickable { vm.togglePauseMusic() }
                 )
                 Icon(
                     painter = painterResource(R.drawable.skip_next),
                     contentDescription = "previous",
-                    modifier = Modifier.clickable { musicPlayerViewModel.nextMusic() }
+                    modifier = Modifier.clickable { vm.nextMusic() }
                 )
                 Icon(
                     painter = painterResource(
-                        when (repeatMode) {
+                        when (state.repeatMode) {
                             0 -> R.drawable.arrow_right
                             1 -> R.drawable.repeat_one
                             else -> R.drawable.repeat
                         }
                     ),
                     contentDescription = "repeat",
-                    modifier = Modifier.clickable { musicPlayerViewModel.toggleRepeatMode() }
+                    modifier = Modifier.clickable { vm.toggleRepeatMode() }
                 )
             }
         }
     }
 }
-//musicPlayerViewModel.data
-//.thumbnailsMap[state?.albumId]?.let {
-//    BitmapPainter(it.asImageBitmap())

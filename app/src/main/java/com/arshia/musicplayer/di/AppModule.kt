@@ -4,9 +4,11 @@ import android.app.Application
 import android.content.Context
 import androidx.media3.exoplayer.ExoPlayer
 import com.arshia.musicplayer.data.data_source.AppDataSource
+import com.arshia.musicplayer.music_player_service.MusicPlayerService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -20,12 +22,16 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providePlayer(context: Application): ExoPlayer {
-        return ExoPlayer.Builder(context).build()
-    }
+    fun provideDataSource(): AppDataSource = AppDataSource()
 
     @Provides
     @Singleton
-    fun provideDataSource(): AppDataSource = AppDataSource()
+    fun provideMusicPLayerService(): MusicPlayerService = MusicPlayerService()
+
+    @Provides
+    @Singleton
+    fun provideExoPlayer(@ApplicationContext context: Context): ExoPlayer {
+        return ExoPlayer.Builder(context).build()
+    }
 
 }

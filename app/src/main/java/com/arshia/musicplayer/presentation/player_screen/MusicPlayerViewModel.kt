@@ -3,39 +3,29 @@ package com.arshia.musicplayer.presentation.player_screen
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.annotation.OptIn
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.ExoPlayer
 import com.arshia.musicplayer.common.arrangeAround
 import com.arshia.musicplayer.data.data_source.AppDataSource
 import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.repository.thumbnail.ThumbnailsRepository
-import com.arshia.musicplayer.music_player_service.MusicPlayerService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 
 @HiltViewModel
 class MusicPlayerViewModel @Inject constructor(
-    musicPlayerService: MusicPlayerService,
-    val data: AppDataSource,
-    private val thumbnailsRepository: ThumbnailsRepository
+    private val thumbnailsRepository: ThumbnailsRepository,
+    private val data: AppDataSource,
+    val player: ExoPlayer
 ): ViewModel() {
 
-    val player = musicPlayerService.player
-
-    val currentTrack = mutableStateOf<TrackItem?>(null)
-    val shuffleMode = mutableStateOf(false)
-    val musicRepeatMode = mutableIntStateOf(0)
-    val musicIsPlaying = mutableStateOf(false)
-    val currentPosition = mutableLongStateOf(0)
-    val sliderPosition = mutableLongStateOf(0)
-    val transition = mutableStateOf(true)
+    val state = mutableStateOf(PlayerState())
 
     init {
         listen()
@@ -49,24 +39,26 @@ class MusicPlayerViewModel @Inject constructor(
                 override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                     super.onMediaItemTransition(mediaItem, reason)
                     mediaItem?.apply {
-                        currentTrack.value = data.tracksState.value.tracksMap[this.mediaId.toInt()]
-                        transition.value = !transition.value
+                        state.value = state.value.copy(
+                            currentTrack = data.tracksState.value.tracksMap[this.mediaId.toInt()]
+                        )
                     }
+                    state.value = state.value.copy(currentPosition = 0)
                 }
 
                 override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
                     super.onShuffleModeEnabledChanged(shuffleModeEnabled)
-                    shuffleMode.value = shuffleModeEnabled
+                    state.value = state.value.copy(shuffleMode = shuffleModeEnabled)
                 }
 
                 override fun onRepeatModeChanged(repeatMode: Int) {
                     super.onRepeatModeChanged(repeatMode)
-                    musicRepeatMode.intValue = repeatMode
+                    state.value = state.value.copy(repeatMode = repeatMode)
                 }
 
                 override fun onIsPlayingChanged(isPlaying: Boolean) {
                     super.onIsPlayingChanged(isPlaying)
-                    musicIsPlaying.value = isPlaying
+                    state.value = state.value.copy(isPlaying = isPlaying)
                 }
 
             }
