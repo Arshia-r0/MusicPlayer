@@ -42,12 +42,12 @@ import kotlinx.coroutines.delay
 fun PlayerScreen(
     vm: MusicPlayerViewModel
 ) {
-    val player = vm.player
-    var state by vm.state
+    val controller = vm.controller
+    var state = vm.playerState
     var sliderPosition by remember { mutableLongStateOf(state.currentPosition) }
     LaunchedEffect(state.isPlaying) {
         while (state.isPlaying) {
-            state = state.copy(currentPosition = player.currentPosition)
+            state = state.copy(currentPosition = controller.mediaController?.currentPosition ?: 0)
             sliderPosition = state.currentPosition
             delay(1000)
         }
@@ -100,7 +100,7 @@ fun PlayerScreen(
                         sliderPosition = it.toLong()
                     },
                     onValueChangeFinished = {
-                        player.seekTo(sliderPosition)
+                        controller.seekTo(sliderPosition)
                         state = state.copy(currentPosition = sliderPosition)
                     },
                     valueRange = 0f..(state.currentTrack?.duration?.toFloat() ?: 1f)
@@ -121,23 +121,23 @@ fun PlayerScreen(
                 Icon(
                     painter = painterResource(if (state.shuffleMode) R.drawable.shuffle_on else R.drawable.shuffle),
                     contentDescription = "shuffle",
-                    modifier = Modifier.clickable { vm.toggleShuffle() }
+                    modifier = Modifier.clickable { controller.toggleShuffle() }
 
                 )
                 Icon(
                     painter = painterResource(R.drawable.skip_previous),
                     contentDescription = "next",
-                    modifier = Modifier.clickable { vm.previousMusic() }
+                    modifier = Modifier.clickable { controller.previousMusic() }
                 )
                 Icon(
                     painter = painterResource(if (state.isPlaying) R.drawable.pause else R.drawable.play_arrow),
                     contentDescription = "play",
-                    modifier = Modifier.clickable { vm.togglePauseMusic() }
+                    modifier = Modifier.clickable { controller.togglePauseMusic() }
                 )
                 Icon(
                     painter = painterResource(R.drawable.skip_next),
                     contentDescription = "previous",
-                    modifier = Modifier.clickable { vm.nextMusic() }
+                    modifier = Modifier.clickable { controller.nextMusic() }
                 )
                 Icon(
                     painter = painterResource(
@@ -148,7 +148,7 @@ fun PlayerScreen(
                         }
                     ),
                     contentDescription = "repeat",
-                    modifier = Modifier.clickable { vm.toggleRepeatMode() }
+                    modifier = Modifier.clickable { controller.toggleRepeatMode() }
                 )
             }
         }
