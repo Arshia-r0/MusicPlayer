@@ -13,7 +13,6 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -30,7 +29,8 @@ fun BottomBar(
     navController: NavController,
     viewModel: MusicPlayerViewModel
 ) {
-    val state by viewModel.state
+    val state = viewModel.playerState
+    val controller = viewModel.controller
     BottomAppBar(
         modifier = Modifier
             .clickable { navController.navigate(Routes.PlayerRoute.route) }
@@ -68,17 +68,17 @@ fun BottomBar(
                 Icon(
                     painter = painterResource(R.drawable.skip_previous),
                     contentDescription = "next",
-                    modifier = Modifier.clickable { viewModel.previousMusic() }
+                    modifier = Modifier.clickable { controller.previousMusic() }
                 )
                 Icon(
                     painter = painterResource(if(state.isPlaying) R.drawable.pause else R.drawable.play_arrow),
                     contentDescription = "play",
-                    modifier = Modifier.clickable { viewModel.togglePauseMusic() }
+                    modifier = Modifier.clickable { controller.togglePauseMusic() }
                 )
                 Icon(
                     painter = painterResource(R.drawable.skip_next),
                     contentDescription = "previous",
-                    modifier = Modifier.clickable { viewModel.nextMusic() }
+                    modifier = Modifier.clickable { controller.nextMusic() }
                 )
             }
         }

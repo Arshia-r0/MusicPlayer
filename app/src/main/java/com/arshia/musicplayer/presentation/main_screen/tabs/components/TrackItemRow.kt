@@ -86,7 +86,7 @@ fun Content(
             .height(65.dp)
             .clip(RoundedCornerShape(8.dp))
             .clickable {
-                musicPlayerViewModel.startMusic(track, list)
+                musicPlayerViewModel.controller.startMusic(track, list)
             },
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {

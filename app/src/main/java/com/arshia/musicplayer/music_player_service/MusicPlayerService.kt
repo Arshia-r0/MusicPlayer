@@ -11,22 +11,22 @@ import androidx.media3.session.MediaSessionService
 
 class MusicPlayerService: MediaSessionService() {
 
-    private var mediaSession: MediaSession? = null
-
+    private lateinit var mediaSession: MediaSession
 
     @OptIn(UnstableApi::class)
     override fun onCreate() {
         super.onCreate()
         val player = ExoPlayer.Builder(this).build()
         mediaSession = MediaSession.Builder(this, player).build()
+        NotificationUtil.createChannel(this)
     }
 
-    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? {
+    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession {
         return mediaSession
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
-        val player = mediaSession?.player!!
+        val player = mediaSession.player
         if (!player.playWhenReady
             || player.mediaItemCount == 0
             || player.playbackState == Player.STATE_ENDED) {
@@ -35,10 +35,10 @@ class MusicPlayerService: MediaSessionService() {
     }
 
     override fun onDestroy() {
-        mediaSession?.run {
+        mediaSession.run {
             player.release()
             release()
-            mediaSession = null
+            mediaSession.release()
         }
         super.onDestroy()
     }

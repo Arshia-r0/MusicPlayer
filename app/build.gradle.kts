@@ -102,4 +102,7 @@ dependencies {
     implementation(libs.androidx.compose.material3.material3)
     // data store
     implementation(libs.androidx.datastore)
+    // fragment
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.fragment.compose)
 }
