@@ -11,13 +11,14 @@ import androidx.media3.session.MediaSessionService
 
 class MusicPlayerService: MediaSessionService() {
 
-    lateinit var mediaSession: MediaSession
+    private lateinit var mediaSession: MediaSession
 
     @OptIn(UnstableApi::class)
     override fun onCreate() {
         super.onCreate()
         val player = ExoPlayer.Builder(this).build()
         mediaSession = MediaSession.Builder(this, player).build()
+        NotificationUtil.createChannel(this)
     }
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession {

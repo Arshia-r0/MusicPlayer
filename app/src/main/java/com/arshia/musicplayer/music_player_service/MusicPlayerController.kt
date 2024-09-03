@@ -2,7 +2,6 @@ package com.arshia.musicplayer.music_player_service
 
 import android.content.ComponentName
 import android.content.Context
-import android.provider.MediaStore.Audio.Media
 import android.util.Log
 import androidx.annotation.OptIn
 import androidx.compose.runtime.mutableStateOf
