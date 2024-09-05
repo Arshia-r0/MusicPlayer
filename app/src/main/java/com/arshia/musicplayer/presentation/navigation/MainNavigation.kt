@@ -5,12 +5,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.arshia.musicplayer.presentation.main_screen.MainScreen
-import com.arshia.musicplayer.presentation.main_screen.MainViewModel
-import com.arshia.musicplayer.presentation.main_screen.tabs.albums.components.AlbumScreen
-import com.arshia.musicplayer.presentation.player_screen.MusicPlayerViewModel
-import com.arshia.musicplayer.presentation.player_screen.PlayerScreen
-import com.arshia.musicplayer.presentation.settings_screen.SettingsScreen
+import com.arshia.musicplayer.presentation.mainScreen.MainScreen
+import com.arshia.musicplayer.presentation.mainScreen.MainViewModel
+import com.arshia.musicplayer.presentation.mainScreen.tabs.albums.components.AlbumScreen
+import com.arshia.musicplayer.presentation.playerScreen.MusicPlayerViewModel
+import com.arshia.musicplayer.presentation.playerScreen.PlayerScreen
+import com.arshia.musicplayer.presentation.settingsScreen.SettingsScreen
 
 
 @Composable

@@ -10,13 +10,14 @@ import android.provider.MediaStore
 import androidx.core.content.ContextCompat
 import com.arshia.musicplayer.common.Resource
 import com.arshia.musicplayer.data.model.music.AlbumItem
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 
 class AlbumsRepository @Inject constructor(
-    private val appContext: Context
+    @ApplicationContext private val context: Context
 ): MusicRepository<AlbumItem> {
 
     override fun getAll(): Flow<Resource<List<AlbumItem>>> = flow {
@@ -24,7 +25,7 @@ class AlbumsRepository @Inject constructor(
             emit(Resource.Loading<List<AlbumItem>>())
             if(Build.VERSION.SDK_INT < 33) {
                 if(ContextCompat.checkSelfPermission(
-                    appContext,
+                    context,
                     android.Manifest.permission.READ_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED) {
                     emit(Resource.Success<List<AlbumItem>>(emptyList()))
@@ -41,7 +42,7 @@ class AlbumsRepository @Inject constructor(
                 MediaStore.Audio.Albums.ALBUM
             )
 
-            appContext.contentResolver.query(
+            context.contentResolver.query(
                 queryUri, projection, null, null, null
             )?.use { cursor ->
                 val id = cursor.getColumnIndexOrThrow(MediaStore.Audio.Albums._ID)
