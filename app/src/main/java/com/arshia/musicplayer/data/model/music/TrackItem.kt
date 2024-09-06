@@ -1,10 +1,11 @@
 package com.arshia.musicplayer.data.model.music
 
-import android.net.Uri
+import kotlinx.serialization.Serializable
 
 
+@Serializable
 data class TrackItem(
-    val uri: Uri,
+    val uri: String,
     val id: Int,
     val name: String,
     val size: Int,

@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.parcelize)
+    alias(libs.plugins.detekt)
 }
 
 android {
@@ -102,7 +103,10 @@ dependencies {
     implementation(libs.androidx.compose.material3.material3)
     // data store
     implementation(libs.androidx.datastore)
-    // fragment
-    implementation(libs.androidx.fragment.ktx)
-    implementation(libs.fragment.compose)
+    // room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    annotationProcessor(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
+
 }
