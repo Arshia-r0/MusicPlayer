@@ -36,7 +36,7 @@ fun TracksTab(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             items(state.value.tracksMap.values.toList()) { track ->
                 TrackItemRow(mainViewModel, musicPlayerViewModel, track)
