@@ -1,6 +1,5 @@
 package com.arshia.musicplayer.presentation.mainScreen.playerScreen
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,14 +24,13 @@ import com.arshia.musicplayer.presentation.mainScreen.MainViewModel
 import com.arshia.musicplayer.presentation.navigation.Routes
 
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BottomBar(
     navController: NavController,
     viewModel: MainViewModel
 ) {
     val state by viewModel.playerState
-    val controller = viewModel.controller
+    val controller = viewModel.controller.Commands()
     BottomAppBar(
         modifier = Modifier
             .clickable { navController.navigate(Routes.PlayerRoute.route) }

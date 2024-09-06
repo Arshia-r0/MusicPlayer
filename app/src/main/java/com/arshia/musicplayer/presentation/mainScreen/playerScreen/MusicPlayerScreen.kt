@@ -41,12 +41,12 @@ import kotlinx.coroutines.delay
 fun PlayerScreen(
     viewModel: MainViewModel
 ) {
-    val controller = viewModel.controller
+    val controller = viewModel.controller.Commands()
     var state by viewModel.playerState
     var sliderPosition by remember { mutableLongStateOf(state.currentPosition) }
     LaunchedEffect(state.isPlaying) {
         while (state.isPlaying) {
-            state = state.copy(currentPosition = controller.mediaController?.currentPosition ?: 0)
+            state = state.copy(currentPosition = viewModel.controller.mediaController?.currentPosition ?: 0)
             sliderPosition = state.currentPosition
             delay(1000)
         }

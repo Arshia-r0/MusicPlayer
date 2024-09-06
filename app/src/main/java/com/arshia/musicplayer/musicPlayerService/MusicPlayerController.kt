@@ -46,7 +46,6 @@ class MusicPlayerController @Inject constructor(
     private val sessionToken = SessionToken(context, ComponentName(context, MusicPlayerService::class.java))
     private var controllerFuture = MediaController.Builder(context, sessionToken).buildAsync()
     private var s = true
-
     init {
         runBlocking {
             playerState.value = dataStore.data.first()
@@ -58,6 +57,12 @@ class MusicPlayerController @Inject constructor(
             }
         }
         listener()
+    }
+
+    private fun saveState() {
+        runBlocking {
+            dataStore.updateData { playerState.value.copy(isPlaying = false) }
+        }
     }
 
     private fun listener() {
@@ -98,44 +103,6 @@ class MusicPlayerController @Inject constructor(
         }, MoreExecutors.directExecutor())
     }
 
-    fun startMusic(track: TrackItem, playlist: List<TrackItem>) {
-        mediaController?.clearMediaItems()
-        playerState.value = playerState.value.copy(queue = playlist)
-        playlist.arrangeAround(track).forEach {
-            mediaController?.addMediaItem(getMediaItem(it))
-        }
-        mediaController?.prepare()
-        mediaController?.play()
-    }
-
-    fun togglePauseMusic() {
-        if (s) {
-            setInitialPlayerState()
-            s = false
-        }
-        if (mediaController?.isPlaying == true) mediaController?.pause()
-        else mediaController?.play()
-    }
-
-    fun nextMusic() = mediaController?.seekToNext()
-
-    fun previousMusic() = mediaController?.seekToPrevious()
-
-    fun toggleRepeatMode() {
-        if (mediaController != null) {
-            mediaController!!.repeatMode = (mediaController!!.repeatMode + 1) % 3
-        }
-    }
-
-    fun toggleShuffle() {
-        if (mediaController != null) {
-            mediaController!!.shuffleModeEnabled = !mediaController!!.shuffleModeEnabled
-        }
-    }
-
-    fun seekTo(i: Long) = mediaController?.seekTo(i)
-
-
     private fun setInitialPlayerState() {
         mediaController?.clearMediaItems()
         playerState.value.queue.arrangeAround(playerState.value.currentTrack!!).forEach {
@@ -156,6 +123,45 @@ class MusicPlayerController @Inject constructor(
             ).build()
     }
 
-    private fun saveState() =  runBlocking { dataStore.updateData { playerState.value.copy(isPlaying = false) } }
+    inner class Commands {
+
+        fun togglePauseMusic() {
+            if (s) {
+                setInitialPlayerState()
+                s = false
+            }
+            if (mediaController?.isPlaying == true) mediaController?.pause()
+            else mediaController?.play()
+        }
+
+        fun toggleShuffle() {
+            if (mediaController != null) {
+                mediaController!!.shuffleModeEnabled = !mediaController!!.shuffleModeEnabled
+            }
+        }
+
+        fun toggleRepeatMode() {
+            if (mediaController != null) {
+                mediaController!!.repeatMode = (mediaController!!.repeatMode + 1) % 3
+            }
+        }
+
+        fun nextMusic() = mediaController?.seekToNext()
+
+        fun previousMusic() = mediaController?.seekToPrevious()
+
+        fun startMusic(track: TrackItem, playlist: List<TrackItem>) {
+            mediaController?.clearMediaItems()
+            playerState.value = playerState.value.copy(queue = playlist)
+            playlist.arrangeAround(track).forEach {
+                mediaController?.addMediaItem(getMediaItem(it))
+            }
+            mediaController?.prepare()
+            mediaController?.play()
+        }
+
+        fun seekTo(i: Long) = mediaController?.seekTo(i)
+
+    }
 
 }
