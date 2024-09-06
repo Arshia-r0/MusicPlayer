@@ -8,29 +8,27 @@ import androidx.navigation.compose.rememberNavController
 import com.arshia.musicplayer.presentation.mainScreen.MainScreen
 import com.arshia.musicplayer.presentation.mainScreen.MainViewModel
 import com.arshia.musicplayer.presentation.mainScreen.tabs.albums.components.AlbumScreen
-import com.arshia.musicplayer.presentation.playerScreen.MusicPlayerViewModel
-import com.arshia.musicplayer.presentation.playerScreen.PlayerScreen
+import com.arshia.musicplayer.presentation.mainScreen.playerScreen.PlayerScreen
 import com.arshia.musicplayer.presentation.settingsScreen.SettingsScreen
 
 
 @Composable
 fun MainNavigation() {
     val navController = rememberNavController()
-    val mainViewModel = hiltViewModel<MainViewModel>()
-    val musicPlayerViewModel = hiltViewModel<MusicPlayerViewModel>()
+    val viewModel = hiltViewModel<MainViewModel>()
     NavHost(
         navController = navController,
         startDestination = Routes.MainRoute.route
     ) {
         composable(Routes.MainRoute.route) {
-            MainScreen(navController, mainViewModel, musicPlayerViewModel)
+            MainScreen(navController, viewModel)
         }
         composable(Routes.PlayerRoute.route) {
-            PlayerScreen(musicPlayerViewModel)
+            PlayerScreen(viewModel)
         }
         composable(Routes.ListRoute.route + "/{listId}") {
             val listId = it.arguments?.getString("listId") ?: "0"
-            AlbumScreen(navController, mainViewModel, musicPlayerViewModel, listId)
+            AlbumScreen(navController, viewModel, listId)
         }
         composable(Routes.SettingRoute.route) {
             SettingsScreen(navController)

@@ -1,8 +1,5 @@
-package com.arshia.musicplayer.presentation.playerScreen
+package com.arshia.musicplayer.presentation.mainScreen.playerScreen
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
@@ -36,17 +33,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arshia.musicplayer.R
 import com.arshia.musicplayer.common.convertToTime
+import com.arshia.musicplayer.presentation.mainScreen.MainViewModel
 import kotlinx.coroutines.delay
 
 
-@RequiresApi(Build.VERSION_CODES.Q)
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlayerScreen(
-    vm: MusicPlayerViewModel
+    viewModel: MainViewModel
 ) {
-    val controller = vm.controller
-    var state = vm.playerState
+    val controller = viewModel.controller
+    var state by viewModel.playerState
     var sliderPosition by remember { mutableLongStateOf(state.currentPosition) }
     LaunchedEffect(state.isPlaying) {
         while (state.isPlaying) {
@@ -70,8 +66,10 @@ fun PlayerScreen(
                     .height(200.dp)
                     .clip(RoundedCornerShape(50.dp)),
                 contentDescription = "thumbnail",
-                painter = vm.getThumbnail(state.currentTrack!!.uri)?.let {
-                    BitmapPainter(it.asImageBitmap())
+                painter = state.currentTrack?.albumId?.let { i ->
+                    viewModel.getThumbnails(i)?.let {
+                        BitmapPainter(it.asImageBitmap())
+                    }
                 } ?: painterResource(R.drawable.music_icon)
             )
             Spacer(Modifier.height(10.dp))

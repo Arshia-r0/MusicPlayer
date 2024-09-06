@@ -11,32 +11,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.arshia.musicplayer.data.dataSource.AppDataSource
 import com.arshia.musicplayer.presentation.mainScreen.MainViewModel
 import com.arshia.musicplayer.presentation.mainScreen.tabs.components.TopBar
 import com.arshia.musicplayer.presentation.mainScreen.tabs.components.TrackItemRow
-import com.arshia.musicplayer.presentation.playerScreen.BottomBar
-import com.arshia.musicplayer.presentation.playerScreen.MusicPlayerViewModel
+import com.arshia.musicplayer.presentation.mainScreen.playerScreen.BottomBar
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlbumScreen(
     navController: NavController,
-    mainViewModel: MainViewModel,
-    musicPlayerViewModel: MusicPlayerViewModel,
+    viewModel: MainViewModel,
     listId: String
 ) {
     val id = listId.toInt()
-    val album = AppDataSource.albumsState.value.albumsMap[id] ?: return
-    val list = mainViewModel.getAlbumTracks(album)
+    val album = viewModel.albumsState.value.albumsMap[id] ?: return
+    val list = viewModel.getAlbumTracks(album)
     Scaffold(
         topBar = { TopBar(
             title = album.name,
             canNavigateBack = true,
             navController = navController
         ) },
-        bottomBar = { BottomBar(navController, musicPlayerViewModel) },
+        bottomBar = { BottomBar(navController, viewModel) },
         modifier = Modifier.fillMaxSize()
     ) { ip ->
         LazyColumn(
@@ -47,7 +44,7 @@ fun AlbumScreen(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(list) { track ->
-                TrackItemRow(mainViewModel, musicPlayerViewModel, track, album)
+                TrackItemRow(viewModel, track, album)
             }
         }
     }

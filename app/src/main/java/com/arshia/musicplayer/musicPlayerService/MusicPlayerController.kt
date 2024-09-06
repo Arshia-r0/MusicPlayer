@@ -12,10 +12,10 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.arshia.musicplayer.common.arrangeAround
-import com.arshia.musicplayer.data.dataSource.AppDataSource
+import com.arshia.musicplayer.data.dataSource.AppdataSource
 import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.repository.serializers.PlayerStateSerializer
-import com.arshia.musicplayer.presentation.playerScreen.PlayerState
+import com.arshia.musicplayer.presentation.mainScreen.playerScreen.PlayerState
 import com.google.common.util.concurrent.MoreExecutors
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
@@ -31,11 +31,12 @@ private val Context.dataStore by dataStore(
 
 @Singleton
 class MusicPlayerController @Inject constructor(
-    @ApplicationContext private val context: Context,
+    @ApplicationContext context: Context,
+    private val data: AppdataSource
 ) {
 
     private val dataStore = context.dataStore
-    private val playerState = AppDataSource.playerState
+    private val playerState = data.playerState
     val mediaController: MediaController?
         get() = if(controllerFuture.isDone) controllerFuture.get()
         else {
@@ -51,8 +52,8 @@ class MusicPlayerController @Inject constructor(
             playerState.value = dataStore.data.first()
             if(playerState.value.currentTrack == null) {
                 playerState.value = PlayerState(
-                    currentTrack = AppDataSource.tracksState.value.tracksMap[0],
-                    queue = AppDataSource.tracksState.value.tracksMap.values.toList().drop(0)
+                    currentTrack = data.tracksState.value.tracksMap[0],
+                    queue = data.tracksState.value.tracksMap.values.toList().drop(0)
                 )
             }
         }
@@ -68,7 +69,8 @@ class MusicPlayerController @Inject constructor(
                     super.onMediaItemTransition(mediaItem, reason)
                     mediaItem?.apply {
                         playerState.value = playerState.value.copy(
-                            currentTrack = AppDataSource.tracksState.value.tracksMap[this.mediaId.toInt()]
+                            currentTrack = data.tracksState.value.tracksMap[this.mediaId.toInt()],
+                            currentPosition = 0
                         )
                     }
                     playerState.value = playerState.value.copy(currentPosition = 0)

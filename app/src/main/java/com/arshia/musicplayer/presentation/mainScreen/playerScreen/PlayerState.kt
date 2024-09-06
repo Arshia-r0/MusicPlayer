@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.playerScreen
+package com.arshia.musicplayer.presentation.mainScreen.playerScreen
 
 import com.arshia.musicplayer.data.model.music.TrackItem
 import kotlinx.serialization.Serializable
@@ -13,3 +13,4 @@ data class PlayerState(
     val isPlaying: Boolean = false,
     val currentPosition: Long = 0,
 )
+

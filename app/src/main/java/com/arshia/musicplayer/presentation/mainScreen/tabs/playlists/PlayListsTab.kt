@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
-import com.arshia.musicplayer.data.dataSource.AppDataSource
 import com.arshia.musicplayer.presentation.mainScreen.MainViewModel
 
 
@@ -37,7 +36,7 @@ fun PlayListsTab(
     viewModel: MainViewModel,
     navController: NavController
 ) {
-    val state = AppDataSource.playlistsState.value
+    val state by viewModel.playlistsState
     var showDialog by remember { mutableStateOf(false) }
     if (state.isLoading) {
         Column(

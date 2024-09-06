@@ -9,11 +9,11 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.arshia.musicplayer.data.dataSource.AppDataSource
 import com.arshia.musicplayer.presentation.mainScreen.MainViewModel
 import com.arshia.musicplayer.presentation.mainScreen.tabs.albums.components.AlbumItemGrid
 
@@ -23,7 +23,7 @@ fun AlbumsTab(
     viewModel: MainViewModel,
     navController: NavController
 ) {
-    val state = AppDataSource.albumsState.value
+    val state by viewModel.albumsState
     if (state.isLoading) {
         Column(
             modifier = Modifier.fillMaxSize(),

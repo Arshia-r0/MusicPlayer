@@ -22,7 +22,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.arshia.musicplayer.R
-import com.arshia.musicplayer.data.dataSource.AppDataSource
 import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.presentation.mainScreen.MainViewModel
 import com.arshia.musicplayer.presentation.navigation.Routes
@@ -50,10 +49,8 @@ fun AlbumItemGrid(
                         )
                     }.padding(10.dp)
                     .clip(RoundedCornerShape(25.dp)),
-                painter = AppDataSource.thumbnailsMap[album.id]?.let {
-                    BitmapPainter(
-                        image = it.asImageBitmap()
-                    )
+                painter = viewModel.getThumbnails(album.id)?.let {
+                    BitmapPainter(it.asImageBitmap())
                 } ?: painterResource(R.drawable.music_icon),
                 contentDescription = "AlbumArt",
             )

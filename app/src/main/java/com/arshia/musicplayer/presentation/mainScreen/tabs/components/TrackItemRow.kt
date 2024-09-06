@@ -1,6 +1,5 @@
 package com.arshia.musicplayer.presentation.mainScreen.tabs.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
@@ -23,41 +22,36 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arshia.musicplayer.R
-import com.arshia.musicplayer.data.dataSource.AppDataSource
 import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.data.model.music.PlayListItem
 import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.presentation.mainScreen.MainViewModel
-import com.arshia.musicplayer.presentation.playerScreen.MusicPlayerViewModel
 
 
 // tracks tab
 @Composable
 fun TrackItemRow(
-    mainViewModel: MainViewModel,
-    musicPlayerViewModel: MusicPlayerViewModel,
+    viewModel: MainViewModel,
     track: TrackItem,
 ) {
     Content(
         track = track,
-        list = AppDataSource.tracksState.value.tracksMap.values.toList(),
-        mainViewModel = mainViewModel,
-        musicPlayerViewModel = musicPlayerViewModel
+        list = viewModel.tracksState.value.tracksMap.values.toList(),
+        viewModel = viewModel,
     )
 }
 
 // albums tab
 @Composable
 fun TrackItemRow(
-    mainViewModel: MainViewModel,
-    musicPlayerViewModel: MusicPlayerViewModel,
+    viewModel: MainViewModel,
     track: TrackItem,
     album: AlbumItem
 ) {
     Content(
         track = track,
-        list = AppDataSource.albumsMap[album.id]?.items ?: emptyList(),
-        mainViewModel = mainViewModel, musicPlayerViewModel = musicPlayerViewModel
+        list = viewModel.data.albumsMap[album.id]?.items ?: emptyList(),
+        viewModel = viewModel,
     )
 }
 
@@ -65,7 +59,6 @@ fun TrackItemRow(
 @Composable
 fun TrackItemRow(
     mainViewModel: MainViewModel,
-    musicPlayerViewModel: MusicPlayerViewModel,
     track: TrackItem,
     playlist: PlayListItem
 ) {
@@ -73,13 +66,11 @@ fun TrackItemRow(
 }
 
 @Stable
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Content(
     track: TrackItem,
     list: List<TrackItem>,
-    mainViewModel: MainViewModel,
-    musicPlayerViewModel: MusicPlayerViewModel
+    viewModel: MainViewModel,
 ) {
     Row(
         modifier = Modifier
@@ -87,7 +78,7 @@ fun Content(
             .height(65.dp)
             .clip(RoundedCornerShape(8.dp))
             .clickable {
-                musicPlayerViewModel.controller.startMusic(track, list)
+                viewModel.controller.startMusic(track, list)
             },
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -97,7 +88,7 @@ fun Content(
                 .fillMaxSize()
                 .clip(RoundedCornerShape(5.dp)),
             contentDescription = "thumbnail",
-            painter = AppDataSource.thumbnailsMap[track.albumId]?.let {
+            painter = viewModel.getThumbnails(track.albumId)?.let {
                 BitmapPainter(it.asImageBitmap())
             } ?: painterResource(R.drawable.music_icon)
         )

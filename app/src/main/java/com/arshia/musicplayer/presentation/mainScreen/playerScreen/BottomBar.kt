@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.playerScreen
+package com.arshia.musicplayer.presentation.mainScreen.playerScreen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
@@ -13,6 +13,7 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.arshia.musicplayer.R
+import com.arshia.musicplayer.presentation.mainScreen.MainViewModel
 import com.arshia.musicplayer.presentation.navigation.Routes
 
 
@@ -27,9 +29,9 @@ import com.arshia.musicplayer.presentation.navigation.Routes
 @Composable
 fun BottomBar(
     navController: NavController,
-    viewModel: MusicPlayerViewModel
+    viewModel: MainViewModel
 ) {
-    val state = viewModel.playerState
+    val state by viewModel.playerState
     val controller = viewModel.controller
     BottomAppBar(
         modifier = Modifier

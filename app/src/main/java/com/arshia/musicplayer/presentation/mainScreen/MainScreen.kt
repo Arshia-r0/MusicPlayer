@@ -1,6 +1,5 @@
 package com.arshia.musicplayer.presentation.mainScreen
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -27,24 +26,22 @@ import com.arshia.musicplayer.presentation.mainScreen.tabs.components.TopBar
 import com.arshia.musicplayer.presentation.mainScreen.tabs.playlists.PlayListsTab
 import com.arshia.musicplayer.presentation.mainScreen.tabs.tracks.TracksTab
 import com.arshia.musicplayer.presentation.navigation.Routes
-import com.arshia.musicplayer.presentation.playerScreen.BottomBar
-import com.arshia.musicplayer.presentation.playerScreen.MusicPlayerViewModel
+import com.arshia.musicplayer.presentation.mainScreen.playerScreen.BottomBar
 
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     navController: NavController,
-    mainViewModel: MainViewModel,
-    musicPlayerViewModel: MusicPlayerViewModel
+    viewModel: MainViewModel,
     ) {
     val tabs = listOf("Albums", "Playlists", "Tracks")
     val pagerState = rememberPagerState { tabs.size }
-    val selectedTabIndex by mainViewModel.selectedTabIndex
+    val selectedTabIndex by viewModel.selectedTabIndex
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        bottomBar = { BottomBar(navController, musicPlayerViewModel) },
+        bottomBar = { BottomBar(navController, viewModel) },
         topBar = { TopBar(
             title = "Rumbar",
             actions = {
@@ -59,7 +56,7 @@ fun MainScreen(
         }
         LaunchedEffect(selectedTabIndex, pagerState.isScrollInProgress) {
             if(!pagerState.isScrollInProgress) {
-                mainViewModel.changeTab(pagerState.currentPage)
+                viewModel.changeTab(pagerState.currentPage)
             }
         }
         Column(
@@ -73,7 +70,7 @@ fun MainScreen(
                 tabs.forEachIndexed { index, tab ->
                     Tab(
                         selected = true,
-                        onClick = { mainViewModel.changeTab(index)},
+                        onClick = { viewModel.changeTab(index)},
                         selectedContentColor = MaterialTheme.colorScheme.primary,
                         text = { Text(
                             text = tab,
@@ -89,9 +86,9 @@ fun MainScreen(
                     .weight(1f),
             ) { i ->
                 when (i) {
-                    0 -> AlbumsTab(mainViewModel, navController)
-                    1 -> PlayListsTab(mainViewModel, navController)
-                    2 -> TracksTab(mainViewModel, musicPlayerViewModel)
+                    0 -> AlbumsTab(viewModel, navController)
+                    1 -> PlayListsTab(viewModel, navController)
+                    2 -> TracksTab(viewModel)
                 }
             }
         }
