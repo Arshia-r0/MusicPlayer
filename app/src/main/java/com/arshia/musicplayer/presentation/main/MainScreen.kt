@@ -21,12 +21,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.arshia.musicplayer.presentation.main.player.BottomBar
 import com.arshia.musicplayer.presentation.main.tabs.albums.AlbumsTab
 import com.arshia.musicplayer.presentation.main.tabs.components.TopBar
 import com.arshia.musicplayer.presentation.main.tabs.playlists.PlayListsTab
 import com.arshia.musicplayer.presentation.main.tabs.tracks.TracksTab
 import com.arshia.musicplayer.presentation.navigation.Routes
-import com.arshia.musicplayer.presentation.main.player.BottomBar
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,7 +45,7 @@ fun MainScreen(
         topBar = { TopBar(
             title = "Rumbar",
             actions = {
-                IconButton(onClick = { navController.navigate(Routes.SettingRoute.route) }) {
+                IconButton(onClick = { navController.navigate(Routes.SettingRoute) }) {
                     Icon(imageVector = Icons.Filled.Settings, contentDescription = "settings")
                 }
             }

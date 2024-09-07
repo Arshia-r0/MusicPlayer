@@ -79,7 +79,7 @@ fun PlayListsTab(
                         modifier = Modifier.basicMarquee(Int.MAX_VALUE)
                     )
                     Text(
-                        text = playlist.list.list.size.toString(),
+                        text = playlist.list.size.toString(),
                         fontSize = 15.sp
                     )
                 }
