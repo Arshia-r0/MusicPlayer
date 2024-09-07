@@ -7,7 +7,6 @@ import com.arshia.musicplayer.MusicPlayerApplication
 import com.arshia.musicplayer.common.Resource
 import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.data.model.music.TrackItem
-import com.arshia.musicplayer.data.model.music.TracksList
 import com.arshia.musicplayer.data.repository.music.AlbumsRepository
 import com.arshia.musicplayer.data.repository.music.TracksRepository
 import com.arshia.musicplayer.data.repository.thumbnail.ThumbnailsRepository
@@ -31,6 +30,8 @@ class AppdataSource @Inject constructor(
     private val thumbnailsRepository: ThumbnailsRepository,
 ) {
 
+    val playlistDao = MusicPlayerApplication.database.getPlaylistDao()
+
     val playerState = mutableStateOf(PlayerState())
 
     val tracksState = mutableStateOf(TracksState())
@@ -38,12 +39,14 @@ class AppdataSource @Inject constructor(
     val playlistsState = mutableStateOf(PlayListsState())
 
     var thumbnailsMap = mutableMapOf<Id, Bitmap>()
-    var albumsMap = mutableMapOf<Id, TracksList>()
 
     var tracksNotYetInAlbums = mutableListOf<TrackItem>()
-    val playlistDao = MusicPlayerApplication.database.getPlaylistDao()
 
     init {
+        getData()
+    }
+
+    fun getData() {
         runBlocking {
             getAudios()
             getPlaylists()

@@ -6,5 +6,6 @@ import android.net.Uri
 data class AlbumItem(
     val uri: Uri,
     val id: Int,
-    val name: String
+    val name: String,
+    val tracks: List<TrackItem>? = null
 )

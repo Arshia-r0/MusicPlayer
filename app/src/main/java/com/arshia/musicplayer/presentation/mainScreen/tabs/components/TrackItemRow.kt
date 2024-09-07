@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arshia.musicplayer.R
 import com.arshia.musicplayer.data.model.music.AlbumItem
-import com.arshia.musicplayer.data.model.music.PlayListItem
 import com.arshia.musicplayer.data.model.music.TrackItem
+import com.arshia.musicplayer.data.model.playlist.PlaylistObject
 import com.arshia.musicplayer.presentation.mainScreen.MainViewModel
 
 
@@ -50,7 +50,7 @@ fun TrackItemRow(
 ) {
     Content(
         track = track,
-        list = viewModel.data.albumsMap[album.id]?.items ?: emptyList(),
+        list = viewModel.getAlbumTracks(album),
         viewModel = viewModel,
     )
 }
@@ -60,7 +60,7 @@ fun TrackItemRow(
 fun TrackItemRow(
     mainViewModel: MainViewModel,
     track: TrackItem,
-    playlist: PlayListItem
+    playlist: PlaylistObject
 ) {
 
 }

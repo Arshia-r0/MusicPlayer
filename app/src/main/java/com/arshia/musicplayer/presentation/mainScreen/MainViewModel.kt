@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.arshia.musicplayer.data.dataSource.AppdataSource
 import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.data.model.music.TrackItem
-import com.arshia.musicplayer.data.model.music.TracksList
 import com.arshia.musicplayer.data.model.playlist.PlaylistObject
 import com.arshia.musicplayer.data.model.playlist.RoomList
 import com.arshia.musicplayer.musicPlayerService.MusicPlayerController
@@ -37,19 +36,16 @@ class MainViewModel @Inject constructor(
     }
 
     fun getAlbumTracks(album: AlbumItem): List<TrackItem> {
-        data.albumsMap[album.id]?.items?.let {
-            return it
-        }
-        val result = mutableListOf<TrackItem>()
+        if(album.tracks != null) return album.tracks
         val iterator = data.tracksNotYetInAlbums.listIterator()
-        for (i in iterator) {
-            if (i.albumId == album.id) {
-                result.add(i)
+        val list = mutableListOf<TrackItem>()
+        for(i in iterator) {
+            if(i.albumId == album.id) {
+                list.add(i)
                 iterator.remove()
             }
         }
-        data.albumsMap[album.id] = TracksList(id = album.id, name = album.name, items = result)
-        return result.toList()
+        return list.toList()
     }
 
     fun createPlaylist(name: String) {
@@ -92,5 +88,7 @@ class MainViewModel @Inject constructor(
             data.getPlaylists()
         }
     }
+
+    fun refresh() = data.getData()
 
 }
