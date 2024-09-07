@@ -5,11 +5,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.arshia.musicplayer.presentation.mainScreen.MainScreen
-import com.arshia.musicplayer.presentation.mainScreen.MainViewModel
-import com.arshia.musicplayer.presentation.mainScreen.tabs.albums.components.AlbumScreen
-import com.arshia.musicplayer.presentation.mainScreen.playerScreen.PlayerScreen
-import com.arshia.musicplayer.presentation.settingsScreen.SettingsScreen
+import androidx.navigation.toRoute
+import com.arshia.musicplayer.presentation.main.MainScreen
+import com.arshia.musicplayer.presentation.main.MainViewModel
+import com.arshia.musicplayer.presentation.main.player.PlayerScreen
+import com.arshia.musicplayer.presentation.main.tabs.albums.components.AlbumsScreen
+import com.arshia.musicplayer.presentation.settings.SettingsScreen
 
 
 @Composable
@@ -18,19 +19,23 @@ fun MainNavigation() {
     val viewModel = hiltViewModel<MainViewModel>()
     NavHost(
         navController = navController,
-        startDestination = Routes.MainRoute.route
+        startDestination = Routes.MainRoute
     ) {
-        composable(Routes.MainRoute.route) {
+        composable<Routes.MainRoute> {
             MainScreen(navController, viewModel)
         }
-        composable(Routes.PlayerRoute.route) {
+        composable<Routes.PlayerRoute> {
             PlayerScreen(viewModel)
         }
-        composable(Routes.ListRoute.route + "/{listId}") {
-            val listId = it.arguments?.getString("listId") ?: "0"
-            AlbumScreen(navController, viewModel, listId)
+        composable<Routes.AlbumRoute> {
+            val args = it.toRoute<Routes.AlbumRoute>()
+            AlbumsScreen(
+                navController,
+                viewModel,
+                args.albumItem
+            )
         }
-        composable(Routes.SettingRoute.route) {
+        composable<Routes.SettingRoute> {
             SettingsScreen(navController)
         }
     }

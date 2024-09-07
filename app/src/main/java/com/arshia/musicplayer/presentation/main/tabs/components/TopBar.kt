@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.mainScreen.tabs.components
+package com.arshia.musicplayer.presentation.main.tabs.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

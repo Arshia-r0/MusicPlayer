@@ -15,7 +15,7 @@ import com.arshia.musicplayer.common.arrangeAround
 import com.arshia.musicplayer.data.dataSource.AppdataSource
 import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.repository.serializers.PlayerStateSerializer
-import com.arshia.musicplayer.presentation.mainScreen.playerScreen.PlayerState
+import com.arshia.musicplayer.presentation.main.player.PlayerState
 import com.google.common.util.concurrent.MoreExecutors
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first

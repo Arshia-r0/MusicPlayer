@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.mainScreen.playerScreen
+package com.arshia.musicplayer.presentation.main.player
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.basicMarquee
@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arshia.musicplayer.R
 import com.arshia.musicplayer.common.convertToTime
-import com.arshia.musicplayer.presentation.mainScreen.MainViewModel
+import com.arshia.musicplayer.presentation.main.MainViewModel
 import kotlinx.coroutines.delay
 
 

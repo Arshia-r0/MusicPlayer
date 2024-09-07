@@ -1,6 +1,5 @@
-package com.arshia.musicplayer.presentation.mainScreen.tabs.albums.components
+package com.arshia.musicplayer.presentation.main.tabs.albums.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
@@ -23,12 +22,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.arshia.musicplayer.R
 import com.arshia.musicplayer.data.model.music.AlbumItem
-import com.arshia.musicplayer.presentation.mainScreen.MainViewModel
+import com.arshia.musicplayer.presentation.main.MainViewModel
 import com.arshia.musicplayer.presentation.navigation.Routes
 
 
 @Stable
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AlbumItemGrid(
     viewModel: MainViewModel,
@@ -45,7 +43,7 @@ fun AlbumItemGrid(
                     .fillMaxSize()
                     .clickable {
                         navController.navigate(
-                            Routes.ListRoute.route + "/${album.id}"
+                            Routes.AlbumRoute(album)
                         )
                     }.padding(10.dp)
                     .clip(RoundedCornerShape(25.dp)),

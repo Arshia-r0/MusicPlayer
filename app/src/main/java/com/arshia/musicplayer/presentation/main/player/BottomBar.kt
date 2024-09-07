@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.mainScreen.playerScreen
+package com.arshia.musicplayer.presentation.main.player
 
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.arshia.musicplayer.R
-import com.arshia.musicplayer.presentation.mainScreen.MainViewModel
+import com.arshia.musicplayer.presentation.main.MainViewModel
 import com.arshia.musicplayer.presentation.navigation.Routes
 
 
@@ -33,7 +33,7 @@ fun BottomBar(
     val controller = viewModel.controller.Commands()
     BottomAppBar(
         modifier = Modifier
-            .clickable { navController.navigate(Routes.PlayerRoute.route) }
+            .clickable { navController.navigate(Routes.PlayerRoute) }
             .height(80.dp),
     ) {
         Row(

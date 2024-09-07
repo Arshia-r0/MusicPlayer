@@ -10,10 +10,10 @@ import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.repository.music.AlbumsRepository
 import com.arshia.musicplayer.data.repository.music.TracksRepository
 import com.arshia.musicplayer.data.repository.thumbnail.ThumbnailsRepository
-import com.arshia.musicplayer.presentation.mainScreen.playerScreen.PlayerState
-import com.arshia.musicplayer.presentation.mainScreen.states.AlbumsState
-import com.arshia.musicplayer.presentation.mainScreen.states.PlayListsState
-import com.arshia.musicplayer.presentation.mainScreen.states.TracksState
+import com.arshia.musicplayer.presentation.main.player.PlayerState
+import com.arshia.musicplayer.presentation.main.states.AlbumsState
+import com.arshia.musicplayer.presentation.main.states.PlayListsState
+import com.arshia.musicplayer.presentation.main.states.TracksState
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking

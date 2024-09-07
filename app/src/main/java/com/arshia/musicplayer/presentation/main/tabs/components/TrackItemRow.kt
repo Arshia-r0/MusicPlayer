@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.mainScreen.tabs.components
+package com.arshia.musicplayer.presentation.main.tabs.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.basicMarquee
@@ -22,63 +22,25 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arshia.musicplayer.R
-import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.data.model.music.TrackItem
-import com.arshia.musicplayer.data.model.playlist.PlaylistObject
-import com.arshia.musicplayer.presentation.mainScreen.MainViewModel
+import com.arshia.musicplayer.presentation.main.MainViewModel
 
-
-// tracks tab
-@Composable
-fun TrackItemRow(
-    viewModel: MainViewModel,
-    track: TrackItem,
-) {
-    Content(
-        track = track,
-        list = viewModel.tracksState.value.tracksMap.values.toList(),
-        viewModel = viewModel,
-    )
-}
-
-// albums tab
-@Composable
-fun TrackItemRow(
-    viewModel: MainViewModel,
-    track: TrackItem,
-    album: AlbumItem
-) {
-    Content(
-        track = track,
-        list = viewModel.getAlbumTracks(album),
-        viewModel = viewModel,
-    )
-}
-
-// playlists tab
-@Composable
-fun TrackItemRow(
-    mainViewModel: MainViewModel,
-    track: TrackItem,
-    playlist: PlaylistObject
-) {
-
-}
 
 @Stable
 @Composable
-fun Content(
+fun TrackItemRow(
     track: TrackItem,
     list: List<TrackItem>,
     viewModel: MainViewModel,
 ) {
+    val controller = viewModel.controller.Commands()
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(65.dp)
             .clip(RoundedCornerShape(8.dp))
             .clickable {
-                viewModel.controller.Commands().startMusic(track, list)
+                controller.startMusic(track, list)
             },
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {

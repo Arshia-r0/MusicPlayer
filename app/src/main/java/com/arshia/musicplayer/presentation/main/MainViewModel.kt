@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.mainScreen
+package com.arshia.musicplayer.presentation.main
 
 import android.graphics.Bitmap
 import androidx.compose.runtime.mutableIntStateOf
@@ -8,7 +8,6 @@ import com.arshia.musicplayer.data.dataSource.AppdataSource
 import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.model.playlist.PlaylistObject
-import com.arshia.musicplayer.data.model.playlist.RoomList
 import com.arshia.musicplayer.musicPlayerService.MusicPlayerController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -51,7 +50,7 @@ class MainViewModel @Inject constructor(
     fun createPlaylist(name: String) {
         viewModelScope.launch(Dispatchers.IO) {
             data.playlistDao.create(
-                PlaylistObject(name = name, tracks = RoomList())
+                PlaylistObject(name = name, list = emptyList())
             )
             data.getPlaylists()
         }
@@ -60,7 +59,7 @@ class MainViewModel @Inject constructor(
     fun addTracksToPlaylist(list: List<TrackItem>, playlistObject: PlaylistObject) {
         viewModelScope.launch(Dispatchers.IO) {
             data.playlistDao.update(playlistObject.copy(
-                tracks = RoomList(playlistObject.tracks.list + list.map { it.uri })
+                list = playlistObject.list + list
             ))
         }
     }
@@ -68,7 +67,7 @@ class MainViewModel @Inject constructor(
     fun deleteTracksFromPlaylist(list: List<TrackItem>, playlistObject: PlaylistObject) {
         viewModelScope.launch(Dispatchers.IO) {
             data.playlistDao.update(playlistObject.copy(
-                tracks = RoomList(playlistObject.tracks.list - list.map { it.uri }.toSet())
+                list = playlistObject.list - list.toSet()
             ))
         }
     }

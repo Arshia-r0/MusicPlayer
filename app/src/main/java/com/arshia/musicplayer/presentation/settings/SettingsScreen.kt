@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.settingsScreen
+package com.arshia.musicplayer.presentation.settings
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,7 +23,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.arshia.musicplayer.presentation.mainScreen.tabs.components.TopBar
+import com.arshia.musicplayer.presentation.main.tabs.components.TopBar
 
 
 @OptIn(ExperimentalMaterial3Api::class)

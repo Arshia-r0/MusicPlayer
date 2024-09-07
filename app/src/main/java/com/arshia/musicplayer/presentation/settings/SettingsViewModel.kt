@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.settingsScreen
+package com.arshia.musicplayer.presentation.settings
 
 import android.content.Context
 import androidx.compose.runtime.mutableStateOf
