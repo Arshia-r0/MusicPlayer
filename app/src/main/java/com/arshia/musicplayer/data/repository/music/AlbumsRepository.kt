@@ -52,7 +52,7 @@ class AlbumsRepository @Inject constructor(
                     val contentUri = ContentUris.withAppendedId(queryUri, cursor.getLong(id))
                     albumsList.add(
                         AlbumItem(
-                            uri = contentUri,
+                            uri = contentUri.toString(),
                             id = cursor.getInt(id),
                             name = cursor.getString(albumName),
                         )

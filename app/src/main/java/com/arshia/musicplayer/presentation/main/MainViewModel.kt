@@ -35,16 +35,8 @@ class MainViewModel @Inject constructor(
     }
 
     fun getAlbumTracks(album: AlbumItem): List<TrackItem> {
-        if(album.tracks != null) return album.tracks
-        val iterator = data.tracksNotYetInAlbums.listIterator()
-        val list = mutableListOf<TrackItem>()
-        for(i in iterator) {
-            if(i.albumId == album.id) {
-                list.add(i)
-                iterator.remove()
-            }
-        }
-        return list.toList()
+        return data.albumsMap[album.id] ?: loadTracksInAlbum(album)
+
     }
 
     fun createPlaylist(name: String) {
@@ -90,4 +82,16 @@ class MainViewModel @Inject constructor(
 
     fun refresh() = data.getData()
 
+    private fun loadTracksInAlbum(album: AlbumItem): List<TrackItem> {
+        val iterator = data.tracksNotYetInAlbums.listIterator()
+        val list = mutableListOf<TrackItem>()
+        for (i in iterator) {
+            if (i.albumId == album.id) {
+                list.add(i)
+                iterator.remove()
+            }
+        }
+        data.albumsMap[album.id] = list
+        return list.toList()
+    }
 }

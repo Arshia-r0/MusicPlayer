@@ -5,16 +5,17 @@ import android.os.Build
 import androidx.compose.runtime.mutableStateOf
 import com.arshia.musicplayer.MusicPlayerApplication
 import com.arshia.musicplayer.common.Resource
+import com.arshia.musicplayer.data.dataSource.states.AlbumsState
+import com.arshia.musicplayer.data.dataSource.states.PlayListsState
+import com.arshia.musicplayer.data.dataSource.states.TracksState
 import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.repository.music.AlbumsRepository
 import com.arshia.musicplayer.data.repository.music.TracksRepository
 import com.arshia.musicplayer.data.repository.thumbnail.ThumbnailsRepository
 import com.arshia.musicplayer.presentation.main.player.PlayerState
-import com.arshia.musicplayer.presentation.main.states.AlbumsState
-import com.arshia.musicplayer.presentation.main.states.PlayListsState
-import com.arshia.musicplayer.presentation.main.states.TracksState
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -38,7 +39,8 @@ class AppdataSource @Inject constructor(
     val albumsState = mutableStateOf(AlbumsState())
     val playlistsState = mutableStateOf(PlayListsState())
 
-    var thumbnailsMap = mutableMapOf<Id, Bitmap>()
+    var thumbnailsMap = emptyMap<Id, Bitmap>()
+    val albumsMap = mutableMapOf<Id, List<TrackItem>>()
 
     var tracksNotYetInAlbums = mutableListOf<TrackItem>()
 
@@ -92,7 +94,7 @@ class AppdataSource @Inject constructor(
                     AlbumsState(error = result.message ?: "Error")
                 }
             }
-        }.collect{}
+        }.onCompletion { println(albumsState.value) }.collect{}
     }
 
     suspend fun getPlaylists() {

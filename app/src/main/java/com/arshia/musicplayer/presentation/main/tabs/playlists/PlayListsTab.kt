@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.arshia.musicplayer.presentation.main.MainViewModel
+import com.arshia.musicplayer.presentation.navigation.Routes
 
 
 @Composable
@@ -69,7 +70,7 @@ fun PlayListsTab(
                         .fillMaxWidth()
                         .height(65.dp)
                         .clip(RoundedCornerShape(8.dp))
-                        .clickable { },
+                        .clickable { navController.navigate(Routes.PlaylistRoute(playlist)) },
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
                     Text(
@@ -100,7 +101,10 @@ fun PlayListsTab(
                             Text("cancel")
                         }
                         Button(
-                            onClick = { viewModel.createPlaylist(text) },
+                            onClick = {
+                                viewModel.createPlaylist(text)
+                                showDialog = false
+                            }
                         ) {
                             Text("create playlist")
                         }
