@@ -1,7 +1,7 @@
 package com.arshia.musicplayer.presentation.main
 
 import android.graphics.Bitmap
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arshia.musicplayer.data.dataSource.AppdataSource
@@ -21,7 +21,7 @@ class MainViewModel @Inject constructor(
     val controller: MusicPlayerController
 ): ViewModel() {
 
-    var selectedTabIndex = mutableIntStateOf(1)
+    val tab = mutableStateOf(Tabs.Playlists)
 
     val playerState = data.playerState
     val tracksState = data.tracksState
@@ -29,10 +29,6 @@ class MainViewModel @Inject constructor(
     val playlistsState = data.playlistsState
 
     fun getThumbnails(id: Int): Bitmap? = data.thumbnailsMap[id]
-
-    fun changeTab(index: Int) {
-        selectedTabIndex.intValue = index
-    }
 
     fun getAlbumTracks(album: AlbumItem): List<TrackItem> {
         return data.albumsMap[album.id] ?: loadTracksInAlbum(album)

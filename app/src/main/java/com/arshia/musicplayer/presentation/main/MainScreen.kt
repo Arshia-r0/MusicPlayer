@@ -1,10 +1,14 @@
 package com.arshia.musicplayer.presentation.main
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -12,16 +16,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.arshia.musicplayer.presentation.main.player.BottomBar
+import com.arshia.musicplayer.presentation.main.player.PlayerBar
 import com.arshia.musicplayer.presentation.main.tabs.albums.AlbumsTab
 import com.arshia.musicplayer.presentation.main.tabs.components.TopBar
 import com.arshia.musicplayer.presentation.main.tabs.playlists.PlayListsTab
@@ -35,13 +40,10 @@ fun MainScreen(
     navController: NavController,
     viewModel: MainViewModel,
     ) {
-    val tabs = listOf("Albums", "Playlists", "Tracks")
-    val pagerState = rememberPagerState { tabs.size }
-    val selectedTabIndex by viewModel.selectedTabIndex
-
+    val tab by viewModel.tab
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        bottomBar = { BottomBar(navController, viewModel) },
+        bottomBar = {  },
         topBar = { TopBar(
             title = "Rumbar",
             actions = {
@@ -51,46 +53,66 @@ fun MainScreen(
             }
         ) }
     ) { ip ->
-        LaunchedEffect(selectedTabIndex) {
-            pagerState.animateScrollToPage(selectedTabIndex)
-        }
-        LaunchedEffect(selectedTabIndex, pagerState.isScrollInProgress) {
-            if(!pagerState.isScrollInProgress) {
-                viewModel.changeTab(pagerState.currentPage)
-            }
-        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(ip)
         ) {
-            TabRow(
-                selectedTabIndex = selectedTabIndex,
-            ) {
-                tabs.forEachIndexed { index, tab ->
-                    Tab(
-                        selected = true,
-                        onClick = { viewModel.changeTab(index)},
-                        selectedContentColor = MaterialTheme.colorScheme.primary,
-                        text = { Text(
-                            text = tab,
-                            fontSize = 15.sp,
-                        ) }
-                    )
+            Surface(modifier = Modifier.weight(1f)) {
+                when (tab) {
+                    Tabs.Albums -> AlbumsTab(viewModel, navController)
+                    Tabs.Playlists -> PlayListsTab(viewModel, navController)
+                    Tabs.Tracks -> TracksTab(viewModel)
                 }
             }
-            HorizontalPager(
-                state = pagerState,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f),
-            ) { i ->
-                when (i) {
-                    0 -> AlbumsTab(viewModel, navController)
-                    1 -> PlayListsTab(viewModel, navController)
-                    2 -> TracksTab(viewModel)
-                }
-            }
+            PlayerBar(navController, viewModel)
+            BottomBar(viewModel)
         }
     }
+}
+
+@Composable
+fun BottomBar(viewModel: MainViewModel) {
+    val interactionSource = remember { MutableInteractionSource() }
+    var tab by viewModel.tab
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(40.dp)
+            .padding(10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Text(
+            text = "Albums",
+            modifier = Modifier.clickable(
+                interactionSource = interactionSource,
+                indication = null
+            ) { tab = Tabs.Albums },
+            color = if(tab == Tabs.Albums) MaterialTheme.colorScheme.primary
+            else MaterialTheme.colorScheme.secondary
+        )
+        Text(
+            text = "Playlists",
+            modifier = Modifier.clickable(
+                interactionSource = interactionSource,
+                indication = null
+            ) { tab = Tabs.Playlists },
+            color = if(tab == Tabs.Playlists) MaterialTheme.colorScheme.primary
+            else MaterialTheme.colorScheme.secondary
+        )
+        Text(
+            text = "Tracks",
+            modifier = Modifier.clickable(
+                interactionSource = interactionSource,
+                indication = null
+            ) { tab = Tabs.Tracks },
+            color = if(tab == Tabs.Tracks) MaterialTheme.colorScheme.primary
+            else MaterialTheme.colorScheme.secondary
+        )
+    }
+}
+
+enum class Tabs {
+    Albums, Playlists, Tracks
 }

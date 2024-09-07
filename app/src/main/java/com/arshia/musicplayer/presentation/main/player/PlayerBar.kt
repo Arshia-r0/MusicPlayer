@@ -25,7 +25,7 @@ import com.arshia.musicplayer.presentation.navigation.Routes
 
 
 @Composable
-fun BottomBar(
+fun PlayerBar(
     navController: NavController,
     viewModel: MainViewModel
 ) {

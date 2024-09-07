@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.presentation.main.MainViewModel
-import com.arshia.musicplayer.presentation.main.player.BottomBar
+import com.arshia.musicplayer.presentation.main.player.PlayerBar
 import com.arshia.musicplayer.presentation.main.tabs.components.TopBar
 import com.arshia.musicplayer.presentation.main.tabs.components.TrackItemRow
 
@@ -31,7 +31,7 @@ fun AlbumsScreen(
             canNavigateBack = true,
             navController = navController
         ) },
-        bottomBar = { BottomBar(navController, viewModel) },
+        bottomBar = { PlayerBar(navController, viewModel) },
         modifier = Modifier.fillMaxSize()
     ) { ip ->
         LazyColumn(

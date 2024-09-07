@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -24,25 +25,31 @@ fun AlbumsTab(
     navController: NavController
 ) {
     val state by viewModel.albumsState
-    if (state.isLoading) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            CircularProgressIndicator()
-        }
-    } else {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(5.dp),
-            verticalArrangement = Arrangement.spacedBy(5.dp),
-        ) {
-           items(state.albumsMap.values.toList()) { album ->
-               AlbumItemGrid(navController = navController, viewModel = viewModel, album = album)
-           }
+    Surface(
+    ) {
+        if (state.isLoading) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator()
+            }
+        } else {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(5.dp),
+                verticalArrangement = Arrangement.spacedBy(5.dp),
+            ) {
+                items(state.albumsMap.values.toList()) { album ->
+                    AlbumItemGrid(
+                        navController = navController,
+                        viewModel = viewModel,
+                        album = album
+                    )
+                }
+            }
         }
     }
 }
