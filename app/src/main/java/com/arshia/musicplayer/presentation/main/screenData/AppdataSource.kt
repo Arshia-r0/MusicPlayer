@@ -5,21 +5,22 @@ import android.os.Build
 import androidx.compose.runtime.mutableStateOf
 import com.arshia.musicplayer.MusicPlayerApplication
 import com.arshia.musicplayer.common.Resource
-import com.arshia.musicplayer.presentation.main.screenData.states.AlbumsState
-import com.arshia.musicplayer.presentation.main.screenData.states.PlayListsState
-import com.arshia.musicplayer.presentation.main.screenData.states.TracksState
 import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.repository.music.AlbumsRepository
 import com.arshia.musicplayer.data.repository.music.TracksRepository
 import com.arshia.musicplayer.data.repository.thumbnail.ThumbnailsRepository
 import com.arshia.musicplayer.presentation.main.player.PlayerState
+import com.arshia.musicplayer.presentation.main.screenData.states.AlbumsState
+import com.arshia.musicplayer.presentation.main.screenData.states.PlayListsState
+import com.arshia.musicplayer.presentation.main.screenData.states.TracksState
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Singleton
+
 
 typealias Id = Int
 
@@ -48,13 +49,11 @@ class AppdataSource @Inject constructor(
         getData()
     }
 
-    fun getData() {
-        runBlocking {
-            getAudios()
-            getPlaylists()
-            getAlbums()
-            getAlbumThumbnails()
-        }
+    fun getData() = runBlocking {
+        getAudios()
+        getPlaylists()
+        getAlbums()
+        getAlbumThumbnails()
     }
 
     private suspend fun getAudios() {

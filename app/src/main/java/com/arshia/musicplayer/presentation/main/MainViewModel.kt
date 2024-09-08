@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     val data: AppdataSource,
-    val controller: MusicPlayerController
+    val controller: MusicPlayerController,
 ): ViewModel() {
 
     val tab = mutableStateOf(TabsState.Playlists)
@@ -31,9 +31,21 @@ class MainViewModel @Inject constructor(
 
     fun getThumbnails(id: Int): Bitmap? = data.thumbnailsMap[id]
 
-    fun getAlbumTracks(album: AlbumItem): List<TrackItem> {
-        return data.albumsMap[album.id] ?: loadTracksInAlbum(album)
+    fun getAlbumTracks(album: AlbumItem): List<TrackItem> = data.albumsMap[album.id] ?: loadTracksInAlbum(album)
 
+    fun refresh() = data.getData()
+
+    private fun loadTracksInAlbum(album: AlbumItem): List<TrackItem> {
+        val iterator = data.tracksNotYetInAlbums.listIterator()
+        val list = mutableListOf<TrackItem>()
+        for (i in iterator) {
+            if (i.albumId == album.id) {
+                list.add(i)
+                iterator.remove()
+            }
+        }
+        data.albumsMap[album.id] = list
+        return list.toList()
     }
 
     fun createPlaylist(name: String) {
@@ -47,33 +59,45 @@ class MainViewModel @Inject constructor(
 
     fun addToPlaylist(list: List<TrackItem>, playlistObject: PlaylistObject) {
         viewModelScope.launch(Dispatchers.IO) {
-            data.playlistDao.update(playlistObject.copy(
-                list = playlistObject.list + list
-            ))
+            data.playlistDao.update(
+                playlistObject.copy(
+                    list = playlistObject.list + list
+                )
+            )
+            data.getPlaylists()
         }
     }
 
     fun addToPlaylist(track: TrackItem, playlistObject: PlaylistObject) {
         viewModelScope.launch(Dispatchers.IO) {
-            data.playlistDao.update(playlistObject.copy(
-                list = playlistObject.list + track
-            ))
+            data.playlistDao.update(
+                playlistObject.copy(
+                    list = playlistObject.list + track
+                )
+            )
+            data.getPlaylists()
         }
     }
 
     fun deleteFromPlaylist(list: List<TrackItem>, playlistObject: PlaylistObject) {
         viewModelScope.launch(Dispatchers.IO) {
-            data.playlistDao.update(playlistObject.copy(
-                list = playlistObject.list - list.toSet()
-            ))
+            data.playlistDao.update(
+                playlistObject.copy(
+                    list = playlistObject.list - list.toSet()
+                )
+            )
+            data.getPlaylists()
         }
     }
 
     fun deleteFromPlaylist(track: TrackItem, playlistObject: PlaylistObject) {
         viewModelScope.launch(Dispatchers.IO) {
-            data.playlistDao.update(playlistObject.copy(
-                list = playlistObject.list - track
-            ))
+            data.playlistDao.update(
+                playlistObject.copy(
+                    list = playlistObject.list - track
+                )
+            )
+            data.getPlaylists()
         }
     }
 
@@ -91,21 +115,6 @@ class MainViewModel @Inject constructor(
             }
             data.getPlaylists()
         }
-    }
-
-    fun refresh() = data.getData()
-
-    private fun loadTracksInAlbum(album: AlbumItem): List<TrackItem> {
-        val iterator = data.tracksNotYetInAlbums.listIterator()
-        val list = mutableListOf<TrackItem>()
-        for (i in iterator) {
-            if (i.albumId == album.id) {
-                list.add(i)
-                iterator.remove()
-            }
-        }
-        data.albumsMap[album.id] = list
-        return list.toList()
     }
 
 }
