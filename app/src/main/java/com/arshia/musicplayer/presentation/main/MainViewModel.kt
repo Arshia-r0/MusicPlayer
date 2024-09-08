@@ -45,7 +45,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun addTracksToPlaylist(list: List<TrackItem>, playlistObject: PlaylistObject) {
+    fun addToPlaylist(list: List<TrackItem>, playlistObject: PlaylistObject) {
         viewModelScope.launch(Dispatchers.IO) {
             data.playlistDao.update(playlistObject.copy(
                 list = playlistObject.list + list
@@ -53,10 +53,26 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun deleteTracksFromPlaylist(list: List<TrackItem>, playlistObject: PlaylistObject) {
+    fun addToPlaylist(track: TrackItem, playlistObject: PlaylistObject) {
+        viewModelScope.launch(Dispatchers.IO) {
+            data.playlistDao.update(playlistObject.copy(
+                list = playlistObject.list + track
+            ))
+        }
+    }
+
+    fun deleteFromPlaylist(list: List<TrackItem>, playlistObject: PlaylistObject) {
         viewModelScope.launch(Dispatchers.IO) {
             data.playlistDao.update(playlistObject.copy(
                 list = playlistObject.list - list.toSet()
+            ))
+        }
+    }
+
+    fun deleteFromPlaylist(track: TrackItem, playlistObject: PlaylistObject) {
+        viewModelScope.launch(Dispatchers.IO) {
+            data.playlistDao.update(playlistObject.copy(
+                list = playlistObject.list - track
             ))
         }
     }
@@ -91,4 +107,5 @@ class MainViewModel @Inject constructor(
         data.albumsMap[album.id] = list
         return list.toList()
     }
+
 }

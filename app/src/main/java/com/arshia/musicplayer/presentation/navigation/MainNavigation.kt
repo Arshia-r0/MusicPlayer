@@ -58,6 +58,7 @@ fun MainNavigation() {
         ) {
             val args = it.toRoute<Routes.PlaylistRoute>()
             PlaylistScreen(
+                navController,
                 viewModel,
                 args.playlistObject
             )

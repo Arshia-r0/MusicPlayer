@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.arshia.musicplayer.presentation.main.MainViewModel
 import com.arshia.musicplayer.presentation.main.tabs.components.TrackItemRow
 
@@ -19,6 +20,7 @@ import com.arshia.musicplayer.presentation.main.tabs.components.TrackItemRow
 @Composable
 fun TracksTab(
     viewModel: MainViewModel,
+    navController: NavController,
 ) {
     val state by viewModel.tracksState
     if (state.isLoading) {
@@ -34,10 +36,10 @@ fun TracksTab(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp),
         ) {
             items(state.tracksMap.values.toList()) { track ->
-                TrackItemRow(track, state.tracksMap.values.toList(), viewModel)
+                TrackItemRow(navController, track, state.tracksMap.values.toList(), viewModel)
             }
         }
     }

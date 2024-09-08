@@ -37,7 +37,7 @@ fun MainScreen(
                 when (tab) {
                     TabsState.Albums -> AlbumsTab(viewModel, navController)
                     TabsState.Playlists -> PlayListsTab(viewModel, navController)
-                    TabsState.Tracks -> TracksTab(viewModel)
+                    TabsState.Tracks -> TracksTab(viewModel, navController)
                 }
             }
             PlayerBar(navController, viewModel)
