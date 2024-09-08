@@ -90,6 +90,7 @@ fun PlayListsTab(
             Dialog(onDismissRequest = { showDialog = false }) {
                 var text by remember { mutableStateOf("") }
                 Column {
+                    Text("Create a new playlist")
                     TextField(value = text, onValueChange = { text = it })
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -104,6 +105,7 @@ fun PlayListsTab(
                             onClick = {
                                 viewModel.createPlaylist(text)
                                 showDialog = false
+                                TODO("navigate to selection screen")
                             }
                         ) {
                             Text("create playlist")

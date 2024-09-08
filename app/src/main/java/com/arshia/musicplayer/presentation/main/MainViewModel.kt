@@ -4,11 +4,12 @@ import android.graphics.Bitmap
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.arshia.musicplayer.data.dataSource.AppdataSource
 import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.model.playlist.PlaylistObject
 import com.arshia.musicplayer.musicPlayerService.MusicPlayerController
+import com.arshia.musicplayer.presentation.main.screenData.AppdataSource
+import com.arshia.musicplayer.presentation.main.screenData.states.TabsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ class MainViewModel @Inject constructor(
     val controller: MusicPlayerController
 ): ViewModel() {
 
-    val tab = mutableStateOf(Tabs.Playlists)
+    val tab = mutableStateOf(TabsState.Playlists)
 
     val playerState = data.playerState
     val tracksState = data.tracksState

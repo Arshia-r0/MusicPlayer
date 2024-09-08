@@ -1,46 +1,38 @@
 package com.arshia.musicplayer.presentation.main.tabs.components
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
+import com.arshia.musicplayer.presentation.main.MainViewModel
+import com.arshia.musicplayer.presentation.navigation.Routes
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
-    title: String,
-    navController: NavController? = null,
-    canNavigateBack: Boolean = false,
-    scrollBehavior: TopAppBarScrollBehavior? = null,
-    actions: @Composable () -> Unit = {}
+    navController: NavController,
+    viewModel: MainViewModel
 ) {
+    val tab by viewModel.tab
     TopAppBar(
-        title = { Text(title) },
-        modifier = Modifier.height(73.dp).fillMaxWidth(),
-        navigationIcon = {
-            if(canNavigateBack) {
-                IconButton(onClick = { navController?.navigateUp() }) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back button",
-                    )
+        title = { Text(tab.title) },
+        actions = {
+            IconButton(onClick = { navController.navigate(Routes.SettingRoute) }) {
+                Icon(imageVector = Icons.Filled.Settings, contentDescription = "settings")
+            }
+            if(tab.selectionMode) {
+                IconButton(onClick = {}) {
+                    Icon(imageVector = Icons.Filled.Add, contentDescription = "Create a new playlist")
                 }
             }
-        },
-        actions = {
-            actions()
-        },
-        scrollBehavior = scrollBehavior
+        }
     )
 }

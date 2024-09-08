@@ -12,7 +12,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.arshia.musicplayer.common.arrangeAround
-import com.arshia.musicplayer.data.dataSource.AppdataSource
+import com.arshia.musicplayer.presentation.main.screenData.AppdataSource
 import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.repository.serializers.PlayerStateSerializer
 import com.arshia.musicplayer.presentation.main.player.PlayerState

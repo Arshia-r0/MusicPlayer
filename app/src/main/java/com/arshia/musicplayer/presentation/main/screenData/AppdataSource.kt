@@ -1,13 +1,13 @@
-package com.arshia.musicplayer.data.dataSource
+package com.arshia.musicplayer.presentation.main.screenData
 
 import android.graphics.Bitmap
 import android.os.Build
 import androidx.compose.runtime.mutableStateOf
 import com.arshia.musicplayer.MusicPlayerApplication
 import com.arshia.musicplayer.common.Resource
-import com.arshia.musicplayer.data.dataSource.states.AlbumsState
-import com.arshia.musicplayer.data.dataSource.states.PlayListsState
-import com.arshia.musicplayer.data.dataSource.states.TracksState
+import com.arshia.musicplayer.presentation.main.screenData.states.AlbumsState
+import com.arshia.musicplayer.presentation.main.screenData.states.PlayListsState
+import com.arshia.musicplayer.presentation.main.screenData.states.TracksState
 import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.repository.music.AlbumsRepository

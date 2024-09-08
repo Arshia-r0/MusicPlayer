@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,14 +23,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import com.arshia.musicplayer.presentation.main.tabs.components.TopBar
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    navController: NavController,
     settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -40,10 +38,8 @@ fun SettingsScreen(
             .imePadding()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopBar(
-                title = "Settings",
-                navController = navController,
-                canNavigateBack = true,
+            TopAppBar(
+                title = { Text("Settings") },
                 scrollBehavior = scrollBehavior,
             )
         }

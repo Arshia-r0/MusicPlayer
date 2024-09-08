@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.data.dataSource.states
+package com.arshia.musicplayer.presentation.main.screenData.states
 
 import androidx.compose.runtime.Immutable
 import com.arshia.musicplayer.data.model.playlist.PlaylistObject

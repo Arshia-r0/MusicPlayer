@@ -31,7 +31,7 @@ fun MainNavigation() {
         }
 
         composable<Routes.SettingRoute> {
-            SettingsScreen(navController)
+            SettingsScreen()
         }
 
         composable<Routes.PlayerRoute> {
@@ -58,7 +58,6 @@ fun MainNavigation() {
         ) {
             val args = it.toRoute<Routes.PlaylistRoute>()
             PlaylistScreen(
-                navController,
                 viewModel,
                 args.playlistObject
             )
