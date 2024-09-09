@@ -7,11 +7,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.arshia.musicplayer.data.model.music.AlbumItem
+import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.model.playlist.PlaylistObject
 import com.arshia.musicplayer.presentation.mainUI.listScreen.ListScreen
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainScreen
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
 import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerScreen
+import com.arshia.musicplayer.presentation.mainUI.selectionScreen.SelectPlaylistScreen
 import com.arshia.musicplayer.presentation.settings.SettingsScreen
 import kotlin.reflect.typeOf
 
@@ -35,6 +37,15 @@ fun MainNavigation() {
 
         composable<Routes.PlayerRoute> {
             PlayerScreen(viewModel)
+        }
+
+        composable<Routes.TrackSelectionRoute>(
+            typeMap = mapOf(
+                typeOf<List<TrackItem>>() to CustomNavType.TrackItemType
+            )
+        ) {
+            val args = it.toRoute<Routes.TrackSelectionRoute>()
+            SelectPlaylistScreen(viewModel, navController, args.tracks)
         }
 
         composable<Routes.AlbumRoute>(

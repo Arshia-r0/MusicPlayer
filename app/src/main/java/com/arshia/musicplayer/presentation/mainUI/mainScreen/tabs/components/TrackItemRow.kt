@@ -37,8 +37,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.arshia.musicplayer.R
+import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.data.model.music.TrackItem
+import com.arshia.musicplayer.data.model.playlist.PlaylistObject
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
+import com.arshia.musicplayer.presentation.navigation.Routes
 
 
 @Stable
@@ -46,8 +49,40 @@ import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
 fun TrackItemRow(
     navController: NavController,
     track: TrackItem,
-    list: List<TrackItem>,
+    playlist: PlaylistObject,
     viewModel: MainViewModel,
+) {
+    Content(viewModel, track, navController, playlist.list)
+}
+
+@Stable
+@Composable
+fun TrackItemRow(
+    navController: NavController,
+    track: TrackItem,
+    album: AlbumItem,
+    viewModel: MainViewModel,
+) {
+    Content(viewModel, track, navController, viewModel.getAlbumTracks(album))
+}
+
+@Stable
+@Composable
+fun TrackItemRow(
+    navController: NavController,
+    track: TrackItem,
+    viewModel: MainViewModel,
+) {
+    Content(viewModel, track, navController, viewModel.tracksState.value.tracksMap.values.toList())
+}
+
+@Composable
+fun Content(
+    viewModel: MainViewModel,
+    track: TrackItem,
+    navController: NavController,
+    list: List<TrackItem>,
+    playlist: PlaylistObject? = null
 ) {
     val controller = viewModel.controller.Commands()
     var isExpanded by remember { mutableStateOf(false) }
@@ -108,10 +143,17 @@ fun TrackItemRow(
                 expanded = isExpanded,
                 onDismissRequest = { isExpanded = false }
             ) {
-                DropdownMenuItem(
-                    text = { Text("add to playlist") },
-                    onClick = {  }
-                )
+                if(playlist == null) {
+                    DropdownMenuItem(
+                        text = { Text("add to playlist") },
+                        onClick = { navController.navigate(Routes.TrackSelectionRoute(listOf(track))) }
+                    )
+                } else {
+                    DropdownMenuItem(
+                        text = { Text("remove from playlist") },
+                        onClick = { viewModel.deleteFromPlaylist(listOf(track), playlist) }
+                    )
+                }
             }
         }
     }

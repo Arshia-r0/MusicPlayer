@@ -1,6 +1,7 @@
 package com.arshia.musicplayer.presentation.navigation
 
 import com.arshia.musicplayer.data.model.music.AlbumItem
+import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.model.playlist.PlaylistObject
 import kotlinx.serialization.Serializable
 
@@ -18,7 +19,14 @@ sealed class Routes {
     data object PlayerRoute
 
     @Serializable
-    data object SelectionRoute
+    data class TrackSelectionRoute (
+        val tracks: List<TrackItem>,
+    )
+
+    @Serializable
+    data class PlaylistSelectionRoute (
+        val playlist: PlaylistObject,
+    )
 
     @Serializable
     data class AlbumRoute(

@@ -39,7 +39,7 @@ fun TracksTab(
             verticalArrangement = Arrangement.spacedBy(5.dp),
         ) {
             items(state.tracksMap.values.toList()) { track ->
-                TrackItemRow(navController, track, state.tracksMap.values.toList(), viewModel)
+                TrackItemRow(navController, track, viewModel)
             }
         }
     }

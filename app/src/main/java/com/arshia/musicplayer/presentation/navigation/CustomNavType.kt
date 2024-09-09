@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.navigation.NavType
 import com.arshia.musicplayer.data.model.music.AlbumItem
+import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.model.playlist.PlaylistObject
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -51,6 +52,28 @@ object CustomNavType {
         }
 
         override fun serializeAsValue(value: PlaylistObject): String {
+            return Uri.encode(Json.encodeToString(value))
+        }
+
+    }
+
+    val TrackItemType = object : NavType<List<TrackItem>>(
+        isNullableAllowed = false
+    ) {
+
+        override fun get(bundle: Bundle, key: String): List<TrackItem>? {
+            return Json.decodeFromString(bundle.getString(key) ?: return null)
+        }
+
+        override fun parseValue(value: String): List<TrackItem >{
+            return Json.decodeFromString(Uri.decode(value))
+        }
+
+        override fun put(bundle: Bundle, key: String, value: List<TrackItem>) {
+            bundle.putString(key, Json.encodeToString(value))
+        }
+
+        override fun serializeAsValue(value: List<TrackItem>): String {
             return Uri.encode(Json.encodeToString(value))
         }
 
