@@ -4,7 +4,7 @@ import com.arshia.musicplayer.common.Resource
 import kotlinx.coroutines.flow.Flow
 
 
-fun interface MusicRepository<T> {
+interface MusicRepository<T> {
 
     fun getAll(): Flow<Resource<List<T>>>
 

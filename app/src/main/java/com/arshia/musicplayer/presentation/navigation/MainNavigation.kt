@@ -5,11 +5,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.arshia.musicplayer.presentation.mainScreen.MainScreen
-import com.arshia.musicplayer.presentation.mainScreen.MainViewModel
-import com.arshia.musicplayer.presentation.mainScreen.tabs.albums.components.AlbumScreen
-import com.arshia.musicplayer.presentation.mainScreen.playerScreen.PlayerScreen
-import com.arshia.musicplayer.presentation.settingsScreen.SettingsScreen
+import androidx.navigation.toRoute
+import com.arshia.musicplayer.data.model.music.AlbumItem
+import com.arshia.musicplayer.data.model.music.TrackItem
+import com.arshia.musicplayer.data.model.playlist.PlaylistObject
+import com.arshia.musicplayer.presentation.mainUI.listScreen.ListScreen
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainScreen
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
+import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerScreen
+import com.arshia.musicplayer.presentation.mainUI.selectionScreen.SelectPlaylistScreen
+import com.arshia.musicplayer.presentation.settings.SettingsScreen
+import kotlin.reflect.typeOf
 
 
 @Composable
@@ -18,20 +24,55 @@ fun MainNavigation() {
     val viewModel = hiltViewModel<MainViewModel>()
     NavHost(
         navController = navController,
-        startDestination = Routes.MainRoute.route
+        startDestination = Routes.MainRoute
     ) {
-        composable(Routes.MainRoute.route) {
+
+        composable<Routes.MainRoute> {
             MainScreen(navController, viewModel)
         }
-        composable(Routes.PlayerRoute.route) {
+
+        composable<Routes.SettingRoute> {
+            SettingsScreen()
+        }
+
+        composable<Routes.PlayerRoute> {
             PlayerScreen(viewModel)
         }
-        composable(Routes.ListRoute.route + "/{listId}") {
-            val listId = it.arguments?.getString("listId") ?: "0"
-            AlbumScreen(navController, viewModel, listId)
+
+        composable<Routes.TrackSelectionRoute>(
+            typeMap = mapOf(
+                typeOf<List<TrackItem>>() to CustomNavType.TrackItemType
+            )
+        ) {
+            val args = it.toRoute<Routes.TrackSelectionRoute>()
+            SelectPlaylistScreen(viewModel, navController, args.tracks)
         }
-        composable(Routes.SettingRoute.route) {
-            SettingsScreen(navController)
+
+        composable<Routes.AlbumRoute>(
+            typeMap = mapOf(
+                typeOf<AlbumItem>() to CustomNavType.AlbumItemType
+            )
+        ) {
+            val args = it.toRoute<Routes.AlbumRoute>()
+            ListScreen(
+                navController,
+                viewModel,
+                args.albumItem
+            )
         }
+
+        composable<Routes.PlaylistRoute>(
+            typeMap = mapOf(
+                typeOf<PlaylistObject>() to CustomNavType.PlaylistObjectType
+            )
+        ) {
+            val args = it.toRoute<Routes.PlaylistRoute>()
+            ListScreen(
+                navController,
+                viewModel,
+                args.playlistObject
+            )
+        }
+
     }
 }

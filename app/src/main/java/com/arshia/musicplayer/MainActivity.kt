@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.arshia.musicplayer.presentation.permissions.Permissions
-import com.arshia.musicplayer.presentation.settingsScreen.SettingsViewModel
+import com.arshia.musicplayer.presentation.settings.SettingsViewModel
 import com.arshia.musicplayer.presentation.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
