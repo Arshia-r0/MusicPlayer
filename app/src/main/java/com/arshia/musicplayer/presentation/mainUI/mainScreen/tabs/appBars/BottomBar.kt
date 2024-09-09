@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.main.tabs.components
+package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.appBars
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -16,8 +16,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.arshia.musicplayer.presentation.main.MainViewModel
-import com.arshia.musicplayer.presentation.main.screenData.states.TabsState
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
+import com.arshia.musicplayer.presentation.mainUI.appData.states.TabsState
 
 
 @Composable

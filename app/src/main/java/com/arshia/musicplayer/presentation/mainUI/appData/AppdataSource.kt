@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.main.screenData
+package com.arshia.musicplayer.presentation.mainUI.appData
 
 import android.graphics.Bitmap
 import android.os.Build
@@ -10,10 +10,10 @@ import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.repository.music.AlbumsRepository
 import com.arshia.musicplayer.data.repository.music.TracksRepository
 import com.arshia.musicplayer.data.repository.thumbnail.ThumbnailsRepository
-import com.arshia.musicplayer.presentation.main.player.PlayerState
-import com.arshia.musicplayer.presentation.main.screenData.states.AlbumsState
-import com.arshia.musicplayer.presentation.main.screenData.states.PlayListsState
-import com.arshia.musicplayer.presentation.main.screenData.states.TracksState
+import com.arshia.musicplayer.presentation.mainUI.appData.states.AlbumsState
+import com.arshia.musicplayer.presentation.mainUI.appData.states.PlayListsState
+import com.arshia.musicplayer.presentation.mainUI.appData.states.TracksState
+import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerState
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -96,12 +96,6 @@ class AppdataSource @Inject constructor(
         }.onCompletion { println(albumsState.value) }.collect{}
     }
 
-    suspend fun getPlaylists() {
-        playlistsState.value = PlayListsState(
-            playListsMap = playlistDao.getAll().first().associateBy { it.id }
-        )
-    }
-
     private fun getAlbumThumbnails() {
         if(Build.VERSION.SDK_INT < 29) return
         val map = mutableMapOf<Int, Bitmap>()
@@ -111,6 +105,12 @@ class AppdataSource @Inject constructor(
             }
         }
         thumbnailsMap = map
+    }
+
+    suspend fun getPlaylists() {
+        playlistsState.value = PlayListsState(
+            playListsMap = playlistDao.getAll().first().associateBy { it.id }
+        )
     }
 
 }

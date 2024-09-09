@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.main
+package com.arshia.musicplayer.presentation.mainUI.mainScreen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,13 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.arshia.musicplayer.presentation.main.player.PlayerBar
-import com.arshia.musicplayer.presentation.main.screenData.states.TabsState
-import com.arshia.musicplayer.presentation.main.tabs.albums.AlbumsTab
-import com.arshia.musicplayer.presentation.main.tabs.components.BottomBar
-import com.arshia.musicplayer.presentation.main.tabs.components.TopBar
-import com.arshia.musicplayer.presentation.main.tabs.playlists.PlayListsTab
-import com.arshia.musicplayer.presentation.main.tabs.tracks.TracksTab
+import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerBar
+import com.arshia.musicplayer.presentation.mainUI.appData.states.TabsState
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.AlbumsTab
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.appBars.BottomBar
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.appBars.TopBar
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.PlayListsTab
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.TracksTab
 
 
 @Composable

@@ -12,10 +12,10 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.arshia.musicplayer.common.arrangeAround
-import com.arshia.musicplayer.presentation.main.screenData.AppdataSource
+import com.arshia.musicplayer.presentation.mainUI.appData.AppdataSource
 import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.repository.serializers.PlayerStateSerializer
-import com.arshia.musicplayer.presentation.main.player.PlayerState
+import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerState
 import com.google.common.util.concurrent.MoreExecutors
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first

@@ -18,6 +18,9 @@ sealed class Routes {
     data object PlayerRoute
 
     @Serializable
+    data object SelectionRoute
+
+    @Serializable
     data class AlbumRoute(
         val albumItem: AlbumItem
     )

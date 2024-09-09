@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.main.tabs.components
+package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.appBars
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -11,7 +11,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
-import com.arshia.musicplayer.presentation.main.MainViewModel
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
 import com.arshia.musicplayer.presentation.navigation.Routes
 
 

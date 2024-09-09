@@ -8,11 +8,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.data.model.playlist.PlaylistObject
-import com.arshia.musicplayer.presentation.main.MainScreen
-import com.arshia.musicplayer.presentation.main.MainViewModel
-import com.arshia.musicplayer.presentation.main.player.PlayerScreen
-import com.arshia.musicplayer.presentation.main.tabs.albums.components.AlbumsScreen
-import com.arshia.musicplayer.presentation.main.tabs.playlists.components.PlaylistScreen
+import com.arshia.musicplayer.presentation.mainUI.listScreen.ListScreen
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainScreen
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
+import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerScreen
 import com.arshia.musicplayer.presentation.settings.SettingsScreen
 import kotlin.reflect.typeOf
 
@@ -44,7 +43,7 @@ fun MainNavigation() {
             )
         ) {
             val args = it.toRoute<Routes.AlbumRoute>()
-            AlbumsScreen(
+            ListScreen(
                 navController,
                 viewModel,
                 args.albumItem
@@ -57,7 +56,7 @@ fun MainNavigation() {
             )
         ) {
             val args = it.toRoute<Routes.PlaylistRoute>()
-            PlaylistScreen(
+            ListScreen(
                 navController,
                 viewModel,
                 args.playlistObject

@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.main.player
+package com.arshia.musicplayer.presentation.mainUI.playerScreen
 
 import com.arshia.musicplayer.data.model.music.TrackItem
 import kotlinx.serialization.Serializable

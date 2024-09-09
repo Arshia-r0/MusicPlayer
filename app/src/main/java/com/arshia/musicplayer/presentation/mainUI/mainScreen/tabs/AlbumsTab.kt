@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.main.tabs.albums
+package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,8 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.arshia.musicplayer.presentation.main.MainViewModel
-import com.arshia.musicplayer.presentation.main.tabs.albums.components.AlbumItemGrid
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.components.AlbumItem
 
 
 @Composable
@@ -40,7 +40,7 @@ fun AlbumsTab(
             verticalArrangement = Arrangement.spacedBy(5.dp),
         ) {
             items(state.albumsMap.values.toList()) { album ->
-                AlbumItemGrid(
+                AlbumItem(
                     navController = navController,
                     viewModel = viewModel,
                     album = album

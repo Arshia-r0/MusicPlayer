@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.main.tabs.components
+package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.basicMarquee
@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.arshia.musicplayer.R
 import com.arshia.musicplayer.data.model.music.TrackItem
-import com.arshia.musicplayer.presentation.main.MainViewModel
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
 
 
 @Stable
@@ -92,8 +92,8 @@ fun TrackItemRow(
         }
         Box(
             modifier = Modifier
-            .fillMaxHeight()
-            .wrapContentSize(Alignment.TopEnd)
+                .fillMaxHeight()
+                .wrapContentSize(Alignment.TopEnd)
         ) {
             IconButton(
                 modifier = Modifier.fillMaxHeight(),

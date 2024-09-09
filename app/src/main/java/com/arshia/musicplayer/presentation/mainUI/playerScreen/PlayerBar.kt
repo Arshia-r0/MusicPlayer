@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.main.player
+package com.arshia.musicplayer.presentation.mainUI.playerScreen
 
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.arshia.musicplayer.R
-import com.arshia.musicplayer.presentation.main.MainViewModel
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
 import com.arshia.musicplayer.presentation.navigation.Routes
 
 

@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.main.screenData.states
+package com.arshia.musicplayer.presentation.mainUI.appData.states
 
 import androidx.compose.runtime.Immutable
 import com.arshia.musicplayer.data.model.music.TrackItem

@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.main.tabs.albums.components
+package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.basicMarquee
@@ -22,13 +22,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.arshia.musicplayer.R
 import com.arshia.musicplayer.data.model.music.AlbumItem
-import com.arshia.musicplayer.presentation.main.MainViewModel
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
 import com.arshia.musicplayer.presentation.navigation.Routes
 
 
 @Stable
 @Composable
-fun AlbumItemGrid(
+fun AlbumItem(
     viewModel: MainViewModel,
     navController: NavController,
     album: AlbumItem,

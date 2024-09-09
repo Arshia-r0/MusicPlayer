@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.main.tabs.tracks
+package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,8 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.arshia.musicplayer.presentation.main.MainViewModel
-import com.arshia.musicplayer.presentation.main.tabs.components.TrackItemRow
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.components.TrackItemRow
 
 
 @Composable

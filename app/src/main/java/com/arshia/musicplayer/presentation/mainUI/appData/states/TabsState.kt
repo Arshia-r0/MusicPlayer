@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.main.screenData.states
+package com.arshia.musicplayer.presentation.mainUI.appData.states
 
 
 enum class TabsState(val title: String) {
