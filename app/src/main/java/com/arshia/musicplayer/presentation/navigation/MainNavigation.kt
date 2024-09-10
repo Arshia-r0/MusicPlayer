@@ -1,7 +1,6 @@
 package com.arshia.musicplayer.presentation.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -9,11 +8,11 @@ import androidx.navigation.toRoute
 import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.model.playlist.PlaylistObject
-import com.arshia.musicplayer.presentation.mainUI.listScreen.ListScreen
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainScreen
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.list.AlbumListScreen
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.list.PlaylistListScreen
 import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerScreen
-import com.arshia.musicplayer.presentation.mainUI.selectionScreen.SelectPlaylistScreen
+import com.arshia.musicplayer.presentation.mainUI.selectPlaylistScreen.SelectPlaylistScreen
 import com.arshia.musicplayer.presentation.settings.SettingsScreen
 import kotlin.reflect.typeOf
 
@@ -21,14 +20,13 @@ import kotlin.reflect.typeOf
 @Composable
 fun MainNavigation() {
     val navController = rememberNavController()
-    val viewModel = hiltViewModel<MainViewModel>()
     NavHost(
         navController = navController,
         startDestination = Routes.MainRoute
     ) {
 
         composable<Routes.MainRoute> {
-            MainScreen(navController, viewModel)
+            MainScreen(navController)
         }
 
         composable<Routes.SettingRoute> {
@@ -36,7 +34,7 @@ fun MainNavigation() {
         }
 
         composable<Routes.PlayerRoute> {
-            PlayerScreen(viewModel)
+            PlayerScreen()
         }
 
         composable<Routes.PlaylistSelectionRoute>(
@@ -45,7 +43,7 @@ fun MainNavigation() {
             )
         ) {
             val args = it.toRoute<Routes.PlaylistSelectionRoute>()
-            SelectPlaylistScreen(viewModel, navController, args.tracks)
+            SelectPlaylistScreen(navController, args.tracks)
         }
 
         composable<Routes.AlbumRoute>(
@@ -54,9 +52,8 @@ fun MainNavigation() {
             )
         ) {
             val args = it.toRoute<Routes.AlbumRoute>()
-            ListScreen(
+            AlbumListScreen(
                 navController,
-                viewModel,
                 args.albumItem
             )
         }
@@ -67,9 +64,8 @@ fun MainNavigation() {
             )
         ) {
             val args = it.toRoute<Routes.PlaylistRoute>()
-            ListScreen(
+            PlaylistListScreen(
                 navController,
-                viewModel,
                 args.playlistObject
             )
         }

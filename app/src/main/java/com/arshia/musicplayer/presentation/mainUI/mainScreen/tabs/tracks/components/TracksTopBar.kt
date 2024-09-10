@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.appBars
+package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.tracks.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -9,29 +9,26 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
-import com.arshia.musicplayer.presentation.mainUI.appData.states.TabsState
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.tracks.TracksViewModel
 import com.arshia.musicplayer.presentation.navigation.Routes
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(
+fun TracksTopBar(
     navController: NavController,
-    viewModel: MainViewModel
+    viewModel: TracksViewModel
 ) {
-    val tab by viewModel.tab
     TopAppBar(
-        title = { Text(tab.title) },
+        title = { Text("Tracks") },
         actions = {
-            if(viewModel.selectionMode.value && tab == TabsState.Tracks) {
+            if(viewModel.selectionMode.value) {
                 IconButton(
                     enabled = true , // disable
                     onClick = {
                         navController.navigate(
-                            Routes.PlaylistSelectionRoute(viewModel.selectTracksMap)
+                            Routes.PlaylistSelectionRoute(viewModel.selectTracksMap.keys.toList())
                         )
                         viewModel.selectionMode.value = false
                     }

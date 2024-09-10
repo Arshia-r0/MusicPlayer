@@ -3,15 +3,20 @@ package com.arshia.musicplayer.presentation.mainUI.appData
 import android.graphics.Bitmap
 import android.os.Build
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.graphics.painter.Painter
 import com.arshia.musicplayer.MusicPlayerApplication
 import com.arshia.musicplayer.common.Resource
 import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.data.model.music.TrackItem
+import com.arshia.musicplayer.data.model.playlist.PlaylistObject
 import com.arshia.musicplayer.data.repository.music.AlbumsRepository
 import com.arshia.musicplayer.data.repository.music.TracksRepository
 import com.arshia.musicplayer.data.repository.thumbnail.ThumbnailsRepository
 import com.arshia.musicplayer.presentation.mainUI.appData.states.AlbumsState
 import com.arshia.musicplayer.presentation.mainUI.appData.states.PlayListsState
+import com.arshia.musicplayer.presentation.mainUI.appData.states.TabsState
 import com.arshia.musicplayer.presentation.mainUI.appData.states.TracksState
 import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerState
 import kotlinx.coroutines.flow.first
@@ -32,24 +37,26 @@ class AppdataSource @Inject constructor(
     private val thumbnailsRepository: ThumbnailsRepository,
 ) {
 
-    val playlistDao = MusicPlayerApplication.database.getPlaylistDao()
-
     val playerState = mutableStateOf(PlayerState())
 
     val tracksState = mutableStateOf(TracksState())
     val albumsState = mutableStateOf(AlbumsState())
     val playlistsState = mutableStateOf(PlayListsState())
 
-    var thumbnailsMap = emptyMap<Id, Bitmap>()
-    val albumsMap = mutableMapOf<Id, List<TrackItem>>()
+    val tab = mutableStateOf(TabsState.Playlists)
 
-    var tracksNotYetInAlbums = mutableListOf<TrackItem>()
+    private val playlistDao = MusicPlayerApplication.database.getPlaylistDao()
+
+    private var thumbnailsMap = emptyMap<Id, Bitmap>()
+    private val albumsMap = mutableMapOf<Id, List<TrackItem>>()
+
+    private var tracksNotYetInAlbums = mutableListOf<TrackItem>()
 
     init {
         getData()
     }
 
-    fun getData() = runBlocking {
+    private fun getData() = runBlocking {
         getAudios()
         getPlaylists()
         getAlbums()
@@ -107,10 +114,68 @@ class AppdataSource @Inject constructor(
         thumbnailsMap = map
     }
 
-    suspend fun getPlaylists() {
+    private suspend fun getPlaylists() {
         playlistsState.value = PlayListsState(
             playListsMap = playlistDao.getAll().first().associateBy { it.id }
         )
+    }
+
+    //
+
+    fun getThumbnails(id: Int): Painter? {
+        return thumbnailsMap[id]?.let { BitmapPainter(it.asImageBitmap()) }
+    }
+
+    fun getAlbumTracks(album: AlbumItem): List<TrackItem> = albumsMap[album.id] ?: loadTracksInAlbum(album)
+
+    private fun loadTracksInAlbum(album: AlbumItem): List<TrackItem> {
+        val iterator = tracksNotYetInAlbums.listIterator()
+        val list = mutableListOf<TrackItem>()
+        for (i in iterator) {
+            if (i.albumId == album.id) {
+                list.add(i)
+                iterator.remove()
+            }
+        }
+        albumsMap[album.id] = list
+        return list.toList()
+    }
+
+    suspend fun createPlaylist(name: String) {
+        playlistDao.create(
+            PlaylistObject(name = name, list = emptyList())
+        )
+        getPlaylists()
+    }
+
+    suspend fun addToPlaylist(list: List<TrackItem>, playlistObject: PlaylistObject) {
+        playlistDao.update(
+            playlistObject.copy(
+                list = playlistObject.list + list
+            )
+        )
+        getPlaylists()
+    }
+
+    suspend fun deleteFromPlaylist(list: List<TrackItem>, playlistObject: PlaylistObject) {
+        playlistDao.update(
+            playlistObject.copy(
+                list = playlistObject.list - list.toSet()
+            )
+        )
+        getPlaylists()
+    }
+
+    suspend fun changePlaylistName(name: String, playlistObject: PlaylistObject) {
+        playlistDao.update(playlistObject.copy(name = name))
+        getPlaylists()
+    }
+
+    suspend fun deletePlaylist(playlistObjects: List<PlaylistObject>) {
+        playlistObjects.forEach {
+            playlistDao.deletePlaylist(it.id)
+        }
+        getPlaylists()
     }
 
 }

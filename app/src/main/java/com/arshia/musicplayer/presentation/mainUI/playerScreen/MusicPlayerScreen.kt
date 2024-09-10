@@ -26,20 +26,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.arshia.musicplayer.R
 import com.arshia.musicplayer.common.convertToTime
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
 import kotlinx.coroutines.delay
 
 
 @Composable
 fun PlayerScreen(
-    viewModel: MainViewModel
+    viewModel: PlayerViewModel = hiltViewModel()
 ) {
     val controller = viewModel.controller.Commands()
     var state by viewModel.playerState
@@ -67,9 +65,7 @@ fun PlayerScreen(
                     .clip(RoundedCornerShape(50.dp)),
                 contentDescription = "thumbnail",
                 painter = state.currentTrack?.albumId?.let { i ->
-                    viewModel.getThumbnails(i)?.let {
-                        BitmapPainter(it.asImageBitmap())
-                    }
+                    viewModel.getThumbnail(i)
                 } ?: painterResource(R.drawable.music_icon)
             )
             Spacer(Modifier.height(10.dp))

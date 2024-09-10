@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.components
+package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.list
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -33,8 +33,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,56 +40,24 @@ import androidx.navigation.NavController
 import com.arshia.musicplayer.R
 import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.data.model.music.TrackItem
-import com.arshia.musicplayer.data.model.playlist.PlaylistObject
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.AlbumsViewModel
 import com.arshia.musicplayer.presentation.navigation.Routes
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Stable
 @Composable
-fun TrackItemRow(
-    navController: NavController,
-    track: TrackItem,
-    playlist: PlaylistObject,
-    viewModel: MainViewModel,
-) {
-    Content(viewModel, track, navController, playlist.list, playlist = playlist)
-}
-
-@Stable
-@Composable
-fun TrackItemRow(
+fun AlbumListTrackItem(
     navController: NavController,
     track: TrackItem,
     album: AlbumItem,
-    viewModel: MainViewModel,
-) {
-    Content(viewModel, track, navController, viewModel.getAlbumTracks(album))
-}
-
-@Stable
-@Composable
-fun TrackItemRow(
-    navController: NavController,
-    track: TrackItem,
-    viewModel: MainViewModel,
-) {
-    Content(viewModel, track, navController, viewModel.tracksState.value.tracksMap.values.toList())
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun Content(
-    viewModel: MainViewModel,
-    track: TrackItem,
-    navController: NavController,
-    list: List<TrackItem>,
-    playlist: PlaylistObject? = null,
+    viewModel: AlbumsViewModel,
 ) {
     val selectionMode by viewModel.selectionMode
     val controller = viewModel.controller.Commands()
+    val list = viewModel.getAlbumTracks(album)
+    val selectedTracksMap = viewModel.selectTracksMap
     var isExpanded by remember { mutableStateOf(false) }
-    var isSelected by remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -100,15 +66,12 @@ fun Content(
             .combinedClickable(
                 onClick = {
                     if (selectionMode) {
-                        if (isSelected) viewModel.selectTracksMap -= track
-                        else viewModel.selectTracksMap += track
-                        isSelected = !isSelected
+                        selectedTracksMap[track] = !selectedTracksMap[track]!!
                     } else controller.startMusic(track, list)
                 },
                 onLongClick = {
                     viewModel.selectTracks(list)
-                    isSelected = true
-                    viewModel.selectTracksMap += track
+                    viewModel.selectTracksMap[track] = true
                 }
             ),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -119,9 +82,7 @@ fun Content(
                 .fillMaxSize()
                 .clip(RoundedCornerShape(5.dp)),
             contentDescription = "thumbnail",
-            painter = viewModel.getThumbnails(track.albumId)?.let {
-                BitmapPainter(it.asImageBitmap())
-            } ?: painterResource(R.drawable.music_icon)
+            painter = viewModel.getThumbnail(track.albumId) ?: painterResource(R.drawable.music_icon)
         )
         Column(
             modifier = Modifier
@@ -161,27 +122,17 @@ fun Content(
                     expanded = isExpanded,
                     onDismissRequest = { isExpanded = false }
                 ) {
-                    if (playlist == null) {
-                        DropdownMenuItem(
-                            text = { Text("add to playlist") },
-                            onClick = {
-                                navController.navigate(Routes.PlaylistSelectionRoute(listOf(track)))
-                            }
-                        )
-                    } else {
-                        DropdownMenuItem(
-                            text = { Text("remove from playlist") },
-                            onClick = {
-                                viewModel.deleteFromPlaylist(listOf(track), playlist)
-                                TODO("recompose")
-                            }
-                        )
-                    }
+                    DropdownMenuItem(
+                        text = { Text("add to playlist") },
+                        onClick = {
+                            navController.navigate(Routes.PlaylistSelectionRoute(listOf(track)))
+                        }
+                    )
                 }
             }
         } else {
-            IconButton(onClick = { isSelected = !isSelected }) {
-                if(isSelected) {
+            IconButton(onClick = { selectedTracksMap[track] = !selectedTracksMap[track]!! }) {
+                if(selectedTracksMap[track] == true) {
                     Icon(imageVector = Icons.Filled.Done, contentDescription = "selected")
                 } else Icon(imageVector = Icons.Filled.Clear, contentDescription = "not selected")
             }
