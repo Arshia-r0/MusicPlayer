@@ -39,12 +39,12 @@ fun MainNavigation() {
             PlayerScreen(viewModel)
         }
 
-        composable<Routes.TrackSelectionRoute>(
+        composable<Routes.PlaylistSelectionRoute>(
             typeMap = mapOf(
                 typeOf<List<TrackItem>>() to CustomNavType.TrackItemType
             )
         ) {
-            val args = it.toRoute<Routes.TrackSelectionRoute>()
+            val args = it.toRoute<Routes.PlaylistSelectionRoute>()
             SelectPlaylistScreen(viewModel, navController, args.tracks)
         }
 

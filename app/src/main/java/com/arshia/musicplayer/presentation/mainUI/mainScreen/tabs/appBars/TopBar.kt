@@ -11,6 +11,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
+import com.arshia.musicplayer.presentation.mainUI.appData.states.TabsState
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
 import com.arshia.musicplayer.presentation.navigation.Routes
 
@@ -25,12 +26,24 @@ fun TopBar(
     TopAppBar(
         title = { Text(tab.title) },
         actions = {
-            IconButton(onClick = { navController.navigate(Routes.SettingRoute) }) {
-                Icon(imageVector = Icons.Filled.Settings, contentDescription = "settings")
-            }
-            if(tab.selectionMode) {
-                IconButton(onClick = {}) {
-                    Icon(imageVector = Icons.Filled.Add, contentDescription = "Create a new playlist")
+            if(viewModel.selectionMode.value && tab == TabsState.Tracks) {
+                IconButton(
+                    enabled = true , // disable
+                    onClick = {
+                        navController.navigate(
+                            Routes.PlaylistSelectionRoute(viewModel.selectTracksMap)
+                        )
+                        viewModel.selectionMode.value = false
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = "add to playlist"
+                    )
+                }
+            } else {
+                IconButton(onClick = { navController.navigate(Routes.SettingRoute) }) {
+                    Icon(imageVector = Icons.Filled.Settings, contentDescription = "settings")
                 }
             }
         }

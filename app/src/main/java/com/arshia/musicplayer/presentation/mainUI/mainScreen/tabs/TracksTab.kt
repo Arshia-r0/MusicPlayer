@@ -1,5 +1,6 @@
 package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,14 +33,22 @@ fun TracksTab(
             CircularProgressIndicator()
         }
     } else {
+        val list = state.tracksMap.values.toList()
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(10.dp),
             verticalArrangement = Arrangement.spacedBy(5.dp),
         ) {
-            items(state.tracksMap.values.toList()) { track ->
+            items(list) { track ->
                 TrackItemRow(navController, track, viewModel)
+            }
+        }
+        BackHandler {
+            if(viewModel.selectionMode.value) {
+                viewModel.selectionMode.value = false
+            } else {
+                navController.popBackStack()
             }
         }
     }

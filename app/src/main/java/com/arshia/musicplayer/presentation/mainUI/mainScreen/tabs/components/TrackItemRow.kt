@@ -1,8 +1,9 @@
 package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -52,7 +55,7 @@ fun TrackItemRow(
     playlist: PlaylistObject,
     viewModel: MainViewModel,
 ) {
-    Content(viewModel, track, navController, playlist.list)
+    Content(viewModel, track, navController, playlist.list, playlist = playlist)
 }
 
 @Stable
@@ -76,24 +79,38 @@ fun TrackItemRow(
     Content(viewModel, track, navController, viewModel.tracksState.value.tracksMap.values.toList())
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Content(
     viewModel: MainViewModel,
     track: TrackItem,
     navController: NavController,
     list: List<TrackItem>,
-    playlist: PlaylistObject? = null
+    playlist: PlaylistObject? = null,
 ) {
+    val selectionMode by viewModel.selectionMode
     val controller = viewModel.controller.Commands()
     var isExpanded by remember { mutableStateOf(false) }
+    var isSelected by remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(65.dp)
             .clip(RoundedCornerShape(8.dp))
-            .clickable {
-                controller.startMusic(track, list)
-            },
+            .combinedClickable(
+                onClick = {
+                    if (selectionMode) {
+                        if (isSelected) viewModel.selectTracksMap -= track
+                        else viewModel.selectTracksMap += track
+                        isSelected = !isSelected
+                    } else controller.startMusic(track, list)
+                },
+                onLongClick = {
+                    viewModel.selectTracks(list)
+                    isSelected = true
+                    viewModel.selectTracksMap += track
+                }
+            ),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Image(
@@ -125,35 +142,48 @@ fun Content(
                 modifier = Modifier.basicMarquee(Int.MAX_VALUE)
             )
         }
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-                .wrapContentSize(Alignment.TopEnd)
-        ) {
-            IconButton(
-                modifier = Modifier.fillMaxHeight(),
-                onClick = { isExpanded = true }
+        if(!viewModel.selectionMode.value) {
+            Box(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .wrapContentSize(Alignment.TopEnd)
             ) {
-                Icon(
-                    imageVector = Icons.Filled.MoreVert,
-                    contentDescription = "more actions"
-                )
-            }
-            DropdownMenu(
-                expanded = isExpanded,
-                onDismissRequest = { isExpanded = false }
-            ) {
-                if(playlist == null) {
-                    DropdownMenuItem(
-                        text = { Text("add to playlist") },
-                        onClick = { navController.navigate(Routes.TrackSelectionRoute(listOf(track))) }
-                    )
-                } else {
-                    DropdownMenuItem(
-                        text = { Text("remove from playlist") },
-                        onClick = { viewModel.deleteFromPlaylist(listOf(track), playlist) }
+                IconButton(
+                    modifier = Modifier.fillMaxHeight(),
+                    onClick = { isExpanded = true }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.MoreVert,
+                        contentDescription = "more actions"
                     )
                 }
+                DropdownMenu(
+                    expanded = isExpanded,
+                    onDismissRequest = { isExpanded = false }
+                ) {
+                    if (playlist == null) {
+                        DropdownMenuItem(
+                            text = { Text("add to playlist") },
+                            onClick = {
+                                navController.navigate(Routes.PlaylistSelectionRoute(listOf(track)))
+                            }
+                        )
+                    } else {
+                        DropdownMenuItem(
+                            text = { Text("remove from playlist") },
+                            onClick = {
+                                viewModel.deleteFromPlaylist(listOf(track), playlist)
+                                TODO("recompose")
+                            }
+                        )
+                    }
+                }
+            }
+        } else {
+            IconButton(onClick = { isSelected = !isSelected }) {
+                if(isSelected) {
+                    Icon(imageVector = Icons.Filled.Done, contentDescription = "selected")
+                } else Icon(imageVector = Icons.Filled.Clear, contentDescription = "not selected")
             }
         }
     }

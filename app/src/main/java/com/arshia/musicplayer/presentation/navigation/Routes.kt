@@ -19,12 +19,12 @@ sealed class Routes {
     data object PlayerRoute
 
     @Serializable
-    data class TrackSelectionRoute (
+    data class PlaylistSelectionRoute (
         val tracks: List<TrackItem>,
     )
 
     @Serializable
-    data class PlaylistSelectionRoute (
+    data class TrackSelectionRoute (
         val playlist: PlaylistObject,
     )
 

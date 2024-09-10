@@ -29,6 +29,14 @@ class MainViewModel @Inject constructor(
     val albumsState = data.albumsState
     val playlistsState = data.playlistsState
 
+    val selectionMode = mutableStateOf(false)
+    lateinit var selectTracksMap: MutableList<TrackItem>
+
+    fun selectTracks(list: List<TrackItem>) {
+        selectionMode.value = true
+        selectTracksMap = list.toMutableList()
+    }
+
     fun getThumbnails(id: Int): Bitmap? = data.thumbnailsMap[id]
 
     fun getAlbumTracks(album: AlbumItem): List<TrackItem> = data.albumsMap[album.id] ?: loadTracksInAlbum(album)

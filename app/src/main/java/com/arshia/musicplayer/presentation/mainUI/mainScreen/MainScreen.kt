@@ -9,13 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerBar
 import com.arshia.musicplayer.presentation.mainUI.appData.states.TabsState
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.AlbumsTab
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.appBars.BottomBar
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.appBars.TopBar
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.PlayListsTab
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.TracksTab
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.appBars.BottomBar
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.appBars.TopBar
+import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerBar
 
 
 @Composable
