@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 @Entity(tableName = "playlist_table")
 data class PlaylistObject(
     val name: String,
-    val list: List<TrackItem>,
+    val list: Set<TrackItem>,
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
 )

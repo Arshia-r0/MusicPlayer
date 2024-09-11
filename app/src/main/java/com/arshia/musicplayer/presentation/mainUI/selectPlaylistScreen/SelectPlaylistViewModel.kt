@@ -17,7 +17,7 @@ class SelectPlaylistViewModel @Inject constructor(
 
     val playListsState = data.playlistsState
 
-    fun addToPlaylist(list: List<TrackItem>, playlistObject: PlaylistObject) {
+    fun addToPlaylist(list: Set<TrackItem>, playlistObject: PlaylistObject) {
         viewModelScope.launch {
             data.addToPlaylist(list, playlistObject)
         }

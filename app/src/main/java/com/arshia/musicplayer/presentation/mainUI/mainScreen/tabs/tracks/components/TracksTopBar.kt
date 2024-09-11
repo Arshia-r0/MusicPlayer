@@ -28,7 +28,7 @@ fun TracksTopBar(
                     enabled = true , // disable
                     onClick = {
                         navController.navigate(
-                            Routes.PlaylistSelectionRoute(viewModel.selectTracksMap.keys.toList())
+                            Routes.PlaylistSelectionRoute(viewModel.selectTracksMap.filter { it.value }.keys)
                         )
                         viewModel.selectionMode.value = false
                     }

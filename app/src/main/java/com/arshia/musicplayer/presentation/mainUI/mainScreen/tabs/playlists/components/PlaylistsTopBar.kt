@@ -21,15 +21,13 @@ fun PlaylistsTopBar(
     viewModel: PlaylistsViewModel
 ) {
     TopAppBar(
-        title = { Text("Albums") },
+        title = { Text("Playlists") },
         actions = {
-            if(viewModel.selectionMode.value) {
-                IconButton(onClick = { viewModel.showDialog.value = true }) {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = "Create a new playlist"
-                    )
-                }
+            IconButton(onClick = { viewModel.showDialog.value = true }) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = "Create a new playlist"
+                )
             }
             IconButton(onClick = { navController.navigate(Routes.SettingRoute) }) {
                 Icon(imageVector = Icons.Filled.Settings, contentDescription = "settings")

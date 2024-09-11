@@ -123,7 +123,7 @@ fun TrackItem(
                     DropdownMenuItem(
                         text = { Text("add to playlist") },
                         onClick = {
-                            navController.navigate(Routes.PlaylistSelectionRoute(listOf(track)))
+                            navController.navigate(Routes.PlaylistSelectionRoute(setOf(track)))
                         }
                     )
                 }

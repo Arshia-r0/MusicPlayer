@@ -30,7 +30,7 @@ import com.arshia.musicplayer.data.model.music.TrackItem
 @Composable
 fun SelectPlaylistScreen(
     navController: NavController,
-    tracks: List<TrackItem>,
+    tracks: Set<TrackItem>,
     viewModel: SelectPlaylistViewModel = hiltViewModel()
 ) {
     val state by viewModel.playListsState

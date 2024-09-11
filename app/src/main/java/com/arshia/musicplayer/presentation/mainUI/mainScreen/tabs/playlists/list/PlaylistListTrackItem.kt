@@ -56,7 +56,7 @@ fun PlaylistListTrackItem(
 ) {
     val selectionMode by viewModel.selectionMode
     val controller = viewModel.controller.Commands()
-    val list = playlist.list
+    val list = playlist.list.toList()
     val selectedTracksMap = viewModel.selectTracksMap
     var isExpanded by remember { mutableStateOf(false) }
     Row(
@@ -126,7 +126,7 @@ fun PlaylistListTrackItem(
                     DropdownMenuItem(
                         text = { Text("add to playlist") },
                         onClick = {
-                            navController.navigate(Routes.PlaylistSelectionRoute(listOf(track)))
+                            navController.navigate(Routes.PlaylistSelectionRoute(setOf(track)))
                         }
                     )
                 }

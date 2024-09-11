@@ -32,7 +32,9 @@ fun AlbumsTab(
     ) { ip ->
         if (state.isLoading) {
             Column(
-                modifier = Modifier.padding(ip).fillMaxSize(),
+                modifier = Modifier
+                    .padding(ip)
+                    .fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {

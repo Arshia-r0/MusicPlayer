@@ -38,7 +38,7 @@ fun PlaylistListScreen(
                     .weight(1f),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                items(playlistObject.list) { track ->
+                items(playlistObject.list.toList()) { track ->
                     PlaylistListTrackItem(navController, track, playlistObject)
                 }
             }

@@ -9,12 +9,12 @@ import kotlinx.serialization.json.Json
 class Converter {
 
     @TypeConverter
-    fun convertListToJson(list: List<TrackItem>): String {
+    fun convertListToJson(list: Set<TrackItem>): String {
         return Json.encodeToString(list)
     }
 
     @TypeConverter
-    fun convertJsonToList(json: String): List<TrackItem> {
+    fun convertJsonToList(json: String): Set<TrackItem> {
         return Json.decodeFromString(json)
     }
 

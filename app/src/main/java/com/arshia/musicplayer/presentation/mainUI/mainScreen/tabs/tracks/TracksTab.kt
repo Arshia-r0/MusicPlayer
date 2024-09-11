@@ -56,6 +56,9 @@ fun TracksTab(
             BackHandler {
                 if (viewModel.selectionMode.value) {
                     viewModel.selectionMode.value = false
+                    for((i, j) in viewModel.selectTracksMap) {
+                        if(j) viewModel.selectTracksMap[i] = false
+                    }
                 } else {
                     navController.popBackStack()
                 }

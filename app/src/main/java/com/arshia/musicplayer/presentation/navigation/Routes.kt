@@ -20,7 +20,7 @@ sealed class Routes {
 
     @Serializable
     data class PlaylistSelectionRoute (
-        val tracks: List<TrackItem>,
+        val tracks: Set<TrackItem>,
     )
 
     @Serializable

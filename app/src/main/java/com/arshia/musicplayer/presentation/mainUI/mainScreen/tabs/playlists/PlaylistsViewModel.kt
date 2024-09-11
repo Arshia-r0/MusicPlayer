@@ -9,7 +9,6 @@ import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.musicPlayerService.MusicPlayerController
 import com.arshia.musicplayer.presentation.mainUI.appData.AppdataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,7 +34,7 @@ class PlaylistsViewModel @Inject constructor(
     }
 
     fun createPlaylist(name: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             data.createPlaylist(name)
         }
     }

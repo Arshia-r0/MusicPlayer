@@ -39,7 +39,7 @@ fun MainNavigation() {
 
         composable<Routes.PlaylistSelectionRoute>(
             typeMap = mapOf(
-                typeOf<List<TrackItem>>() to CustomNavType.TrackItemType
+                typeOf<Set<TrackItem>>() to CustomNavType.TrackItemType
             )
         ) {
             val args = it.toRoute<Routes.PlaylistSelectionRoute>()

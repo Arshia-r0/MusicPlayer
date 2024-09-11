@@ -102,7 +102,6 @@ fun PlayListsTab(
                                 onClick = {
                                     viewModel.createPlaylist(text)
                                     showDialog = false
-                                    TODO("navigate to selection screen")
                                 }
                             ) {
                                 Text("create playlist")

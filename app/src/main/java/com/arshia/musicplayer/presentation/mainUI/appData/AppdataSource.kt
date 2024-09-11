@@ -19,10 +19,12 @@ import com.arshia.musicplayer.presentation.mainUI.appData.states.PlayListsState
 import com.arshia.musicplayer.presentation.mainUI.appData.states.TabsState
 import com.arshia.musicplayer.presentation.mainUI.appData.states.TracksState
 import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -120,13 +122,11 @@ class AppdataSource @Inject constructor(
         )
     }
 
-    //
+    fun getThumbnails(id: Int): Painter? =
+        thumbnailsMap[id]?.let { BitmapPainter(it.asImageBitmap()) }
 
-    fun getThumbnails(id: Int): Painter? {
-        return thumbnailsMap[id]?.let { BitmapPainter(it.asImageBitmap()) }
-    }
-
-    fun getAlbumTracks(album: AlbumItem): List<TrackItem> = albumsMap[album.id] ?: loadTracksInAlbum(album)
+    fun getAlbumTracks(album: AlbumItem): List<TrackItem> =
+        albumsMap[album.id] ?: loadTracksInAlbum(album)
 
     private fun loadTracksInAlbum(album: AlbumItem): List<TrackItem> {
         val iterator = tracksNotYetInAlbums.listIterator()
@@ -141,41 +141,44 @@ class AppdataSource @Inject constructor(
         return list.toList()
     }
 
-    suspend fun createPlaylist(name: String) {
-        playlistDao.create(
-            PlaylistObject(name = name, list = emptyList())
-        )
-        getPlaylists()
-    }
-
-    suspend fun addToPlaylist(list: List<TrackItem>, playlistObject: PlaylistObject) {
-        playlistDao.update(
-            playlistObject.copy(
-                list = playlistObject.list + list
+    suspend fun createPlaylist(name: String) =
+        withContext(Dispatchers.IO) {
+            playlistDao.create(
+                PlaylistObject(name = name, list = emptySet())
             )
-        )
-        getPlaylists()
-    }
-
-    suspend fun deleteFromPlaylist(list: List<TrackItem>, playlistObject: PlaylistObject) {
-        playlistDao.update(
-            playlistObject.copy(
-                list = playlistObject.list - list.toSet()
-            )
-        )
-        getPlaylists()
-    }
-
-    suspend fun changePlaylistName(name: String, playlistObject: PlaylistObject) {
-        playlistDao.update(playlistObject.copy(name = name))
-        getPlaylists()
-    }
-
-    suspend fun deletePlaylist(playlistObjects: List<PlaylistObject>) {
-        playlistObjects.forEach {
-            playlistDao.deletePlaylist(it.id)
+            getPlaylists()
         }
-        getPlaylists()
-    }
+
+    suspend fun addToPlaylist(list: Set<TrackItem>, playlistObject: PlaylistObject) =
+        withContext(Dispatchers.IO) {
+            playlistDao.update(
+                playlistObject.copy(list = playlistObject.list + list)
+            )
+            getPlaylists()
+        }
+
+    suspend fun deleteFromPlaylist(list: List<TrackItem>, playlistObject: PlaylistObject) =
+        withContext(Dispatchers.IO) {
+            playlistDao.update(
+                playlistObject.copy(
+                    list = playlistObject.list - list.toSet()
+                )
+            )
+            getPlaylists()
+        }
+
+    suspend fun changePlaylistName(name: String, playlistObject: PlaylistObject) =
+        withContext(Dispatchers.IO) {
+            playlistDao.update(playlistObject.copy(name = name))
+            getPlaylists()
+        }
+
+    suspend fun deletePlaylist(playlistObjects: List<PlaylistObject>) =
+        withContext(Dispatchers.IO) {
+            playlistObjects.forEach {
+                playlistDao.deletePlaylist(it.id)
+            }
+            getPlaylists()
+        }
 
 }
