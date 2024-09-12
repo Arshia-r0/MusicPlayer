@@ -35,7 +35,7 @@ sealed class Routes {
 
     @Serializable
     data class PlaylistRoute(
-        val playlistObject: PlaylistObject
+        val playlist: PlaylistObject
     )
 
 }

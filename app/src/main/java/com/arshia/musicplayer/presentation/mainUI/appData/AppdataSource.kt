@@ -55,130 +55,134 @@ class AppdataSource @Inject constructor(
     private var tracksNotYetInAlbums = mutableListOf<TrackItem>()
 
     init {
-        getData()
+        RetrieveData().getAll()
     }
 
-    private fun getData() = runBlocking {
-        getAudios()
-        getPlaylists()
-        getAlbums()
-        getAlbumThumbnails()
-    }
 
-    private suspend fun getAudios() {
-        tracksRepository.getAll().onEach { result ->
-            tracksState.value = when (result) {
-                is Resource.Success<List<TrackItem>> -> {
-                    TracksState(
-                        tracksMap = result.data?.associate { it.id to it } ?: emptyMap()
-                    ).apply {
-                        tracksNotYetInAlbums = result.data?.toMutableList() ?: mutableListOf()
+    inner class RetrieveData {
+
+        fun getAll() = runBlocking {
+            getAudios()
+            getPlaylists()
+            getAlbums()
+            getAlbumThumbnails()
+        }
+
+        private suspend fun getAudios() {
+            tracksRepository.getAll().onEach { result ->
+                tracksState.value = when (result) {
+                    is Resource.Success<List<TrackItem>> -> {
+                        TracksState(
+                            tracksMap = result.data?.associate { it.id to it } ?: emptyMap()
+                        ).apply {
+                            tracksNotYetInAlbums = result.data?.toMutableList() ?: mutableListOf()
+                        }
+                    }
+                    is Resource.Loading<List<TrackItem>> -> {
+                        TracksState(isLoading = true)
+                    }
+                    is Resource.Error<List<TrackItem>> -> {
+                        TracksState(error = result.message ?: "Error")
                     }
                 }
-                is Resource.Loading<List<TrackItem>> -> {
-                    TracksState(isLoading = true)
-                }
-                is Resource.Error<List<TrackItem>> -> {
-                    TracksState(error = result.message ?: "Error")
-                }
-            }
-        }.collect{}
-    }
-
-    private suspend fun getAlbums() {
-        albumsRepository.getAll().onEach { result ->
-            albumsState.value = when (result) {
-                is Resource.Success<List<AlbumItem>> -> {
-                    AlbumsState(
-                        albumsMap = result.data?.associate { it.id to it } ?: emptyMap()
-                    )
-                }
-
-                is Resource.Loading<List<AlbumItem>> -> {
-                    AlbumsState(isLoading = true)
-                }
-
-                is Resource.Error<List<AlbumItem>> -> {
-                    AlbumsState(error = result.message ?: "Error")
-                }
-            }
-        }.onCompletion { println(albumsState.value) }.collect{}
-    }
-
-    private fun getAlbumThumbnails() {
-        if(Build.VERSION.SDK_INT < 29) return
-        val map = mutableMapOf<Int, Bitmap>()
-        for (album in albumsState.value.albumsMap.values) {
-            thumbnailsRepository.getThumbnail(album.uri)?.let {
-                map[album.id] = it
-            }
+            }.collect{}
         }
-        thumbnailsMap = map
-    }
 
-    private suspend fun getPlaylists() {
-        playlistsState.value = PlayListsState(
-            playListsMap = playlistDao.getAll().first().associateBy { it.id }
-        )
-    }
+        private suspend fun getAlbums() {
+            albumsRepository.getAll().onEach { result ->
+                albumsState.value = when (result) {
+                    is Resource.Success<List<AlbumItem>> -> {
+                        AlbumsState(
+                            albumsMap = result.data?.associate { it.id to it } ?: emptyMap()
+                        )
+                    }
 
-    fun getThumbnails(id: Int): Painter? =
-        thumbnailsMap[id]?.let { BitmapPainter(it.asImageBitmap()) }
+                    is Resource.Loading<List<AlbumItem>> -> {
+                        AlbumsState(isLoading = true)
+                    }
 
-    fun getAlbumTracks(album: AlbumItem): List<TrackItem> =
-        albumsMap[album.id] ?: loadTracksInAlbum(album)
-
-    private fun loadTracksInAlbum(album: AlbumItem): List<TrackItem> {
-        val iterator = tracksNotYetInAlbums.listIterator()
-        val list = mutableListOf<TrackItem>()
-        for (i in iterator) {
-            if (i.albumId == album.id) {
-                list.add(i)
-                iterator.remove()
-            }
+                    is Resource.Error<List<AlbumItem>> -> {
+                        AlbumsState(error = result.message ?: "Error")
+                    }
+                }
+            }.onCompletion { println(albumsState.value) }.collect{}
         }
-        albumsMap[album.id] = list
-        return list.toList()
-    }
 
-    suspend fun createPlaylist(name: String) =
-        withContext(Dispatchers.IO) {
-            playlistDao.create(
-                PlaylistObject(name = name, list = emptySet())
+        private fun getAlbumThumbnails() {
+            if(Build.VERSION.SDK_INT < 29) return
+            val map = mutableMapOf<Int, Bitmap>()
+            for (album in albumsState.value.albumsMap.values) {
+                thumbnailsRepository.getThumbnail(album.uri)?.let {
+                    map[album.id] = it
+                }
+            }
+            thumbnailsMap = map
+        }
+
+        suspend fun getPlaylists() {
+            playlistsState.value = PlayListsState(
+                playListsMap = playlistDao.getAll().first().associateBy { it.id }
             )
-            getPlaylists()
         }
 
-    suspend fun addToPlaylist(list: Set<TrackItem>, playlistObject: PlaylistObject) =
-        withContext(Dispatchers.IO) {
-            playlistDao.update(
-                playlistObject.copy(list = playlistObject.list + list)
-            )
-            getPlaylists()
+        fun getThumbnails(id: Int): Painter? =
+            thumbnailsMap[id]?.let { BitmapPainter(it.asImageBitmap()) }
+
+        fun getAlbumTracks(album: AlbumItem): List<TrackItem> =
+            albumsMap[album.id] ?: loadTracksInAlbum(album)
+
+        private fun loadTracksInAlbum(album: AlbumItem): List<TrackItem> {
+            val iterator = tracksNotYetInAlbums.listIterator()
+            val list = mutableListOf<TrackItem>()
+            for (i in iterator) {
+                if (i.albumId == album.id) {
+                    list.add(i)
+                    iterator.remove()
+                }
+            }
+            albumsMap[album.id] = list
+            return list.toList()
         }
 
-    suspend fun deleteFromPlaylist(list: List<TrackItem>, playlistObject: PlaylistObject) =
-        withContext(Dispatchers.IO) {
-            playlistDao.update(
-                playlistObject.copy(
-                    list = playlistObject.list - list.toSet()
+    }
+
+    inner class ModifyPlaylist {
+
+        suspend fun createPlaylist(name: String) =
+            withContext(Dispatchers.IO) {
+                playlistDao.create(
+                    PlaylistObject(name = name, list = emptySet())
                 )
-            )
-            getPlaylists()
-        }
-
-    suspend fun changePlaylistName(name: String, playlistObject: PlaylistObject) =
-        withContext(Dispatchers.IO) {
-            playlistDao.update(playlistObject.copy(name = name))
-            getPlaylists()
-        }
-
-    suspend fun deletePlaylist(playlistObjects: List<PlaylistObject>) =
-        withContext(Dispatchers.IO) {
-            playlistObjects.forEach {
-                playlistDao.deletePlaylist(it.id)
             }
-            getPlaylists()
-        }
+
+        suspend fun addToPlaylist(list: Set<TrackItem>, playlistObject: PlaylistObject) =
+            withContext(Dispatchers.IO) {
+                playlistDao.update(
+                    playlistObject.copy(list = playlistObject.list + list)
+                )
+            }
+
+        suspend fun deleteFromPlaylist(list: Set<TrackItem>, playlistObject: PlaylistObject) =
+            withContext(Dispatchers.IO) {
+                playlistDao.update(
+                    playlistObject.copy(
+                        list = playlistObject.list - list
+                    )
+                )
+            }
+
+        suspend fun changePlaylistName(name: String, playlistObject: PlaylistObject) =
+            withContext(Dispatchers.IO) {
+                playlistDao.update(playlistObject.copy(name = name))
+            }
+
+        suspend fun deletePlaylist(playlistObjects: Set<PlaylistObject>) =
+            withContext(Dispatchers.IO) {
+                playlistObjects.forEach {
+                    playlistDao.deletePlaylist(it.id)
+                }
+            }
+
+    }
 
 }

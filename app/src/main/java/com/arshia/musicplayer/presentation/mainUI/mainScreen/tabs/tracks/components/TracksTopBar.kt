@@ -1,6 +1,7 @@
 package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.tracks.components
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.CheckCircle
@@ -63,6 +64,16 @@ fun TracksTopBar(
             } else {
                 IconButton(onClick = { navController.navigate(Routes.SettingRoute) }) {
                     Icon(imageVector = Icons.Filled.Settings, contentDescription = "settings")
+                }
+            }
+        },
+        navigationIcon = {
+            if(selectionMode) {
+                IconButton(onClick = { viewModel.exitSelectMode()}) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "exit select mode"
+                    )
                 }
             }
         }

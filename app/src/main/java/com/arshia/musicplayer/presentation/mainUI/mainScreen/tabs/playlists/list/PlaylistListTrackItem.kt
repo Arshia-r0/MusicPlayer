@@ -42,7 +42,6 @@ import com.arshia.musicplayer.R
 import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.model.playlist.PlaylistObject
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.PlaylistsViewModel
-import com.arshia.musicplayer.presentation.navigation.Routes
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -71,7 +70,7 @@ fun PlaylistListTrackItem(
                     } else controller.startMusic(track, list)
                 },
                 onLongClick = {
-                    viewModel.selectTracks(list)
+                    viewModel.selectTracks()
                     viewModel.selectTracksMap[track] = true
                 }
             ),
@@ -124,9 +123,10 @@ fun PlaylistListTrackItem(
                     onDismissRequest = { isExpanded = false }
                 ) {
                     DropdownMenuItem(
-                        text = { Text("add to playlist") },
+                        text = { Text("remove from playlist") },
                         onClick = {
-                            navController.navigate(Routes.PlaylistSelectionRoute(setOf(track)))
+                            viewModel.deleteFromPlaylist(setOf(track), playlist)
+                            isExpanded = false
                         }
                     )
                 }

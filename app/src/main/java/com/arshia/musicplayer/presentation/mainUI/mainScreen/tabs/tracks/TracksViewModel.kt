@@ -29,6 +29,13 @@ class TracksViewModel @Inject constructor(
         }
     }
 
-    fun getThumbnail(id: Int): Painter? = data.getThumbnails(id)
+    fun exitSelectMode() {
+        selectionMode.value = false
+        for((i, j) in selectTracksMap) {
+            if(j) selectTracksMap[i] = false
+        }
+    }
+
+    fun getThumbnail(id: Int): Painter? = data.RetrieveData().getThumbnails(id)
 
 }

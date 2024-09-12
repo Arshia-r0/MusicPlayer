@@ -16,6 +16,6 @@ class PlayerViewModel @Inject constructor(
 
     val playerState = data.playerState
 
-    fun getThumbnail(id: Int): Painter? = data.getThumbnails(id)
+    fun getThumbnail(id: Int): Painter? = data.RetrieveData().getThumbnails(id)
 
 }

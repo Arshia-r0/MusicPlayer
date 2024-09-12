@@ -1,5 +1,6 @@
 package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.list
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -46,5 +47,9 @@ fun AlbumListScreen(
             }
             PlayerBar(navController)
         }
+    }
+    BackHandler {
+        if (viewModel.selectionMode.value) viewModel.exitSelectMode()
+        else navController.popBackStack()
     }
 }

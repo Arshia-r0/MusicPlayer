@@ -14,7 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.arshia.musicplayer.data.model.playlist.PlaylistObject
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.PlaylistsViewModel
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.components.PlaylistsTopBar
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.list.components.PlaylistListScreenTopBar
 import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerBar
 
 @Composable
@@ -23,9 +23,12 @@ fun PlaylistListScreen(
     playlistObject: PlaylistObject,
     viewModel: PlaylistsViewModel = hiltViewModel(),
 ) {
+    val list = viewModel.currentPlaylistList
+    list.clear()
+    list += playlistObject.list.toList()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { PlaylistsTopBar(navController, viewModel) }
+        topBar = { PlaylistListScreenTopBar(navController, viewModel, playlistObject) }
     ) { ip ->
         Column(
             modifier = Modifier
@@ -36,9 +39,9 @@ fun PlaylistListScreen(
                 modifier = Modifier
                     .padding(10.dp)
                     .weight(1f),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                items(playlistObject.list.toList()) { track ->
+                items(items = list, key = { it.id }) { track ->
                     PlaylistListTrackItem(navController, track, playlistObject)
                 }
             }

@@ -1,11 +1,13 @@
 package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arshia.musicplayer.data.model.music.TrackItem
+import com.arshia.musicplayer.data.model.playlist.PlaylistObject
 import com.arshia.musicplayer.musicPlayerService.MusicPlayerController
 import com.arshia.musicplayer.presentation.mainUI.appData.AppdataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,25 +22,41 @@ class PlaylistsViewModel @Inject constructor(
 ): ViewModel() {
 
     val playListsState = data.playlistsState
+    val currentPlaylistList = mutableStateListOf<TrackItem>()
 
     val showDialog = mutableStateOf(false)
     val selectionMode = mutableStateOf(false)
     val selectTracksMap = mutableStateMapOf<TrackItem, Boolean>()
 
-
-    fun selectTracks(list: List<TrackItem>) {
+    fun selectTracks() {
         selectionMode.value = true
-        list.onEach {
+        currentPlaylistList.onEach {
             selectTracksMap += Pair(it, false)
+        }
+    }
+
+    fun exitSelectMode() {
+        selectionMode.value = false
+        for((i, j) in selectTracksMap) {
+            if(j) selectTracksMap[i] = false
         }
     }
 
     fun createPlaylist(name: String) {
         viewModelScope.launch {
-            data.createPlaylist(name)
+            data.ModifyPlaylist().createPlaylist(name)
+            data.RetrieveData().getPlaylists()
         }
     }
 
-    fun getThumbnail(id: Int): Painter? = data.getThumbnails(id)
+    fun deleteFromPlaylist(list: Set<TrackItem>, playlistObject: PlaylistObject) {
+        viewModelScope.launch {
+            data.ModifyPlaylist().deleteFromPlaylist(list, playlistObject)
+            data.RetrieveData().getPlaylists()
+            currentPlaylistList -= list
+        }
+    }
+
+    fun getThumbnail(id: Int): Painter? = data.RetrieveData().getThumbnails(id)
 
 }

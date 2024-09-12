@@ -67,7 +67,9 @@ fun PlayListsTab(
                             .fillMaxWidth()
                             .height(65.dp)
                             .clip(RoundedCornerShape(8.dp))
-                            .clickable { navController.navigate(Routes.PlaylistRoute(playlist)) },
+                            .clickable {
+                                navController.navigate(Routes.PlaylistRoute(playlist))
+                            },
                         horizontalArrangement = Arrangement.SpaceAround
                     ) {
                         Text(

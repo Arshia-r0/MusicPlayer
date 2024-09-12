@@ -31,8 +31,15 @@ class AlbumsViewModel @Inject constructor(
         }
     }
 
-    fun getThumbnail(id: Int): Painter? = data.getThumbnails(id)
+    fun exitSelectMode() {
+        selectionMode.value = false
+        for((i, j) in selectTracksMap) {
+            if(j) selectTracksMap[i] = false
+        }
+    }
 
-    fun getAlbumTracks(album: AlbumItem): List<TrackItem> = data.getAlbumTracks(album)
+    fun getThumbnail(id: Int): Painter? = data.RetrieveData().getThumbnails(id)
+
+    fun getAlbumTracks(album: AlbumItem): List<TrackItem> = data.RetrieveData().getAlbumTracks(album)
 
 }
