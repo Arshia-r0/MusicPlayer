@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.tracks.components
+package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.list.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -14,15 +14,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.tracks.TracksViewModel
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.AlbumsViewModel
 import com.arshia.musicplayer.presentation.navigation.Routes
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TracksTopBar(
+fun AlbumsScreenTopBar(
     navController: NavController,
-    viewModel: TracksViewModel
+    viewModel: AlbumsViewModel
 ) {
     var selectionMode by viewModel.selectionMode
     TopAppBar(

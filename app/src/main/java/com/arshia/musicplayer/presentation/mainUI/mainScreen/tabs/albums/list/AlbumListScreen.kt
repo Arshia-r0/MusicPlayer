@@ -14,7 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.AlbumsViewModel
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.components.AlbumsTopBar
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.list.components.AlbumsScreenTopBar
 import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerBar
 
 
@@ -26,7 +26,7 @@ fun AlbumListScreen(
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { AlbumsTopBar(navController) }
+        topBar = { AlbumsScreenTopBar(navController, viewModel) }
     ) { ip ->
         Column(
             modifier = Modifier

@@ -22,7 +22,6 @@ class TracksViewModel @Inject constructor(
     val selectionMode = mutableStateOf(false)
     val selectTracksMap = mutableStateMapOf<TrackItem, Boolean>()
 
-
     fun selectTracks(list: List<TrackItem>) {
         selectionMode.value = true
         list.onEach {
