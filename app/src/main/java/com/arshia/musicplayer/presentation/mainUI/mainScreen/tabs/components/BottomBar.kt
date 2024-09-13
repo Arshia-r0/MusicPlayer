@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.appBars
+package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource

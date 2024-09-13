@@ -1,8 +1,8 @@
-package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.list.components
+package com.arshia.musicplayer.presentation.mainUI.listScreen.playlist.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.rounded.CheckCircle
@@ -15,15 +15,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.AlbumsViewModel
+import com.arshia.musicplayer.data.model.playlist.PlaylistObject
+import com.arshia.musicplayer.presentation.mainUI.listScreen.playlist.PlaylistListViewModel
 import com.arshia.musicplayer.presentation.navigation.Routes
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AlbumsScreenTopBar(
+fun PlaylistListScreenTopBar(
     navController: NavController,
-    viewModel: AlbumsViewModel
+    viewModel: PlaylistListViewModel,
+    playlistObject: PlaylistObject
 ) {
     var selectionMode by viewModel.selectionMode
     TopAppBar(
@@ -50,15 +52,16 @@ fun AlbumsScreenTopBar(
                 IconButton(
                     enabled = containsTrue(),
                     onClick = {
-                        navController.navigate(
-                            Routes.PlaylistSelectionRoute(viewModel.selectTracksMap.filter { it.value }.keys)
+                        viewModel.deleteFromPlaylist(
+                            viewModel.selectTracksMap.filter { it.value }.keys.toSet(),
+                            playlistObject
                         )
                         selectionMode = false
                     }
                 ) {
                     Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = "add to playlist"
+                        imageVector = Icons.Filled.Delete,
+                        contentDescription = "delete from playlist"
                     )
                 }
             } else {

@@ -14,7 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.arshia.musicplayer.presentation.mainUI.appData.states.TabsState
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.AlbumsTab
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.appBars.BottomBar
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.components.BottomBar
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.PlayListsTab
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.tracks.TracksTab
 import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerBar

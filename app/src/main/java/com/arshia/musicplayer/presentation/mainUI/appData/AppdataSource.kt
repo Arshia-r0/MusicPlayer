@@ -146,42 +146,37 @@ class AppdataSource @Inject constructor(
 
     }
 
-    inner class ModifyPlaylist {
+    inner class PlaylistAccess {
 
-        suspend fun createPlaylist(name: String) =
-            withContext(Dispatchers.IO) {
-                playlistDao.create(
-                    PlaylistObject(name = name, list = emptySet())
+        suspend fun createPlaylist(name: String) = withContext(Dispatchers.IO) {
+            playlistDao.create(
+                PlaylistObject(name = name, list = emptySet())
+            )
+        }
+
+        suspend fun addToPlaylist(list: Set<TrackItem>, playlistObject: PlaylistObject) = withContext(Dispatchers.IO) {
+            playlistDao.update(
+                playlistObject.copy(list = playlistObject.list + list)
+            )
+        }
+
+        suspend fun deleteFromPlaylist(list: Set<TrackItem>, playlistObject: PlaylistObject) = withContext(Dispatchers.IO) {
+            playlistDao.update(
+                playlistObject.copy(
+                    list = playlistObject.list - list
                 )
-            }
+            )
+        }
 
-        suspend fun addToPlaylist(list: Set<TrackItem>, playlistObject: PlaylistObject) =
-            withContext(Dispatchers.IO) {
-                playlistDao.update(
-                    playlistObject.copy(list = playlistObject.list + list)
-                )
-            }
+        suspend fun changePlaylistName(name: String, playlistObject: PlaylistObject) = withContext(Dispatchers.IO) {
+            playlistDao.update(playlistObject.copy(name = name))
+        }
 
-        suspend fun deleteFromPlaylist(list: Set<TrackItem>, playlistObject: PlaylistObject) =
-            withContext(Dispatchers.IO) {
-                playlistDao.update(
-                    playlistObject.copy(
-                        list = playlistObject.list - list
-                    )
-                )
+        suspend fun deletePlaylist(playlistObjects: Set<PlaylistObject>) = withContext(Dispatchers.IO) {
+            playlistObjects.forEach {
+                playlistDao.deletePlaylist(it.id)
             }
-
-        suspend fun changePlaylistName(name: String, playlistObject: PlaylistObject) =
-            withContext(Dispatchers.IO) {
-                playlistDao.update(playlistObject.copy(name = name))
-            }
-
-        suspend fun deletePlaylist(playlistObjects: Set<PlaylistObject>) =
-            withContext(Dispatchers.IO) {
-                playlistObjects.forEach {
-                    playlistDao.deletePlaylist(it.id)
-                }
-            }
+        }
 
     }
 

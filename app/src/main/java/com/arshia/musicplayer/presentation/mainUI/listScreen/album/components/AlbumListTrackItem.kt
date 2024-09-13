@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.list
+package com.arshia.musicplayer.presentation.mainUI.listScreen.album.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -36,26 +36,26 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.arshia.musicplayer.R
+import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.data.model.music.TrackItem
-import com.arshia.musicplayer.data.model.playlist.PlaylistObject
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.PlaylistsViewModel
+import com.arshia.musicplayer.presentation.mainUI.listScreen.album.AlbumListViewModel
+import com.arshia.musicplayer.presentation.navigation.Routes
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Stable
 @Composable
-fun PlaylistListTrackItem(
+fun AlbumListTrackItem(
     navController: NavController,
     track: TrackItem,
-    playlist: PlaylistObject,
-    viewModel: PlaylistsViewModel = hiltViewModel(),
+    album: AlbumItem,
+    viewModel: AlbumListViewModel,
 ) {
     val selectionMode by viewModel.selectionMode
     val controller = viewModel.controller.Commands()
-    val list = playlist.list.toList()
+    val list = viewModel.getAlbumTracks(album)
     val selectedTracksMap = viewModel.selectTracksMap
     var isExpanded by remember { mutableStateOf(false) }
     Row(
@@ -70,7 +70,7 @@ fun PlaylistListTrackItem(
                     } else controller.startMusic(track, list)
                 },
                 onLongClick = {
-                    viewModel.selectTracks()
+                    viewModel.selectTracks(list)
                     viewModel.selectTracksMap[track] = true
                 }
             ),
@@ -123,10 +123,9 @@ fun PlaylistListTrackItem(
                     onDismissRequest = { isExpanded = false }
                 ) {
                     DropdownMenuItem(
-                        text = { Text("remove from playlist") },
+                        text = { Text("add to playlist") },
                         onClick = {
-                            viewModel.deleteFromPlaylist(setOf(track), playlist)
-                            isExpanded = false
+                            navController.navigate(Routes.PlaylistSelectionRoute(setOf(track)))
                         }
                     )
                 }

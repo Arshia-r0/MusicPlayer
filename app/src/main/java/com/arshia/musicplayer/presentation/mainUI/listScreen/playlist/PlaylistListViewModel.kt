@@ -1,5 +1,6 @@
-package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists
+package com.arshia.musicplayer.presentation.mainUI.listScreen.playlist
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.painter.Painter
@@ -15,30 +16,35 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class PlaylistsViewModel @Inject constructor(
+class PlaylistListViewModel @Inject constructor(
     val data: AppdataSource,
     val controller: MusicPlayerController
 ): ViewModel() {
 
-    val playListsState = data.playlistsState
+    val currentPlaylistList = mutableStateListOf<TrackItem>()
 
-    val showCreateDialog = mutableStateOf(false)
-    val showChangeDialog = mutableStateOf(false)
     val selectionMode = mutableStateOf(false)
     val selectTracksMap = mutableStateMapOf<TrackItem, Boolean>()
-    var action: (String) -> Unit = {}
 
-    fun createPlaylist(name: String) {
-        viewModelScope.launch {
-            data.PlaylistAccess().createPlaylist(name)
-            data.RetrieveData().getPlaylists()
+    fun selectTracks() {
+        selectionMode.value = true
+        currentPlaylistList.onEach {
+            selectTracksMap += Pair(it, false)
         }
     }
 
-    fun changePlaylistName(name: String, playlistObject: PlaylistObject) {
+    fun exitSelectMode() {
+        selectionMode.value = false
+        for((i, j) in selectTracksMap) {
+            if(j) selectTracksMap[i] = false
+        }
+    }
+
+    fun deleteFromPlaylist(list: Set<TrackItem>, playlistObject: PlaylistObject) {
         viewModelScope.launch {
-            data.PlaylistAccess().changePlaylistName(name, playlistObject)
+            data.PlaylistAccess().deleteFromPlaylist(list, playlistObject)
             data.RetrieveData().getPlaylists()
+            currentPlaylistList -= list
         }
     }
 

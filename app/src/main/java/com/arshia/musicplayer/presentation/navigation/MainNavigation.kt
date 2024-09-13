@@ -9,8 +9,8 @@ import com.arshia.musicplayer.data.model.music.AlbumItem
 import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.model.playlist.PlaylistObject
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainScreen
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.list.AlbumListScreen
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.list.PlaylistListScreen
+import com.arshia.musicplayer.presentation.mainUI.listScreen.album.AlbumListScreen
+import com.arshia.musicplayer.presentation.mainUI.listScreen.playlist.PlaylistListScreen
 import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerScreen
 import com.arshia.musicplayer.presentation.mainUI.selectPlaylistScreen.SelectPlaylistScreen
 import com.arshia.musicplayer.presentation.settings.SettingsScreen

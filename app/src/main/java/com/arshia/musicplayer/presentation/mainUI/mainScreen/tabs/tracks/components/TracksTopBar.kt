@@ -32,6 +32,8 @@ fun TracksTopBar(
             if(selectionMode) {
                 val containsTrue = { viewModel.selectTracksMap.values.contains(true) }
                 val containsFalse = { viewModel.selectTracksMap.values.contains(false) }
+                val totalTracksCount = viewModel.tracksState.value.tracksMap.size
+                Text("${viewModel.selectTracksMap.filter { it.value }.size} / $totalTracksCount")
                 IconButton(
                     onClick = {
                         val set = containsFalse()

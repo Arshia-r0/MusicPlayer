@@ -23,7 +23,10 @@ fun PlaylistsTopBar(
     TopAppBar(
         title = { Text("Playlists") },
         actions = {
-            IconButton(onClick = { viewModel.showDialog.value = true }) {
+            IconButton(onClick = {
+                viewModel.showCreateDialog.value = true
+                viewModel.action = { viewModel.createPlaylist(it) }
+            }) {
                 Icon(
                     imageVector = Icons.Filled.Add,
                     contentDescription = "Create a new playlist"

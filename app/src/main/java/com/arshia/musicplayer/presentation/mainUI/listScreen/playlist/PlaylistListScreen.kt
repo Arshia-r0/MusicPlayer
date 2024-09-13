@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.list
+package com.arshia.musicplayer.presentation.mainUI.listScreen.playlist
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,15 +13,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.arshia.musicplayer.data.model.playlist.PlaylistObject
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.PlaylistsViewModel
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.list.components.PlaylistListScreenTopBar
+import com.arshia.musicplayer.presentation.mainUI.listScreen.playlist.components.PlaylistListScreenTopBar
+import com.arshia.musicplayer.presentation.mainUI.listScreen.playlist.components.PlaylistListTrackItem
 import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerBar
 
 @Composable
 fun PlaylistListScreen(
     navController: NavController,
     playlistObject: PlaylistObject,
-    viewModel: PlaylistsViewModel = hiltViewModel(),
+    viewModel: PlaylistListViewModel = hiltViewModel(),
 ) {
     val list = viewModel.currentPlaylistList
     list.clear()
@@ -42,7 +42,7 @@ fun PlaylistListScreen(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 items(items = list, key = { it.id }) { track ->
-                    PlaylistListTrackItem(navController, track, playlistObject)
+                    PlaylistListTrackItem(track, playlistObject)
                 }
             }
             PlayerBar(navController)

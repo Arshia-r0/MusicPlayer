@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.list
+package com.arshia.musicplayer.presentation.mainUI.listScreen.album
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
@@ -14,8 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.arshia.musicplayer.data.model.music.AlbumItem
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.AlbumsViewModel
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.list.components.AlbumsScreenTopBar
+import com.arshia.musicplayer.presentation.mainUI.listScreen.album.components.AlbumListTrackItem
+import com.arshia.musicplayer.presentation.mainUI.listScreen.album.components.AlbumsScreenTopBar
 import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerBar
 
 
@@ -23,7 +23,7 @@ import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerBar
 fun AlbumListScreen(
     navController: NavController,
     album: AlbumItem,
-    viewModel: AlbumsViewModel = hiltViewModel()
+    viewModel: AlbumListViewModel = hiltViewModel()
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),

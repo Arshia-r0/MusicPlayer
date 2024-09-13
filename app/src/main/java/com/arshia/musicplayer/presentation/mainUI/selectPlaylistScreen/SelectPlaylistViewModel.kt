@@ -19,7 +19,7 @@ class SelectPlaylistViewModel @Inject constructor(
 
     fun addToPlaylist(list: Set<TrackItem>, playlistObject: PlaylistObject) {
         viewModelScope.launch {
-            data.ModifyPlaylist().addToPlaylist(list, playlistObject)
+            data.PlaylistAccess().addToPlaylist(list, playlistObject)
             data.RetrieveData().getPlaylists()
         }
     }
