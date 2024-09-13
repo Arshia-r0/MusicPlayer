@@ -46,7 +46,7 @@ fun PlayListsTab(
                     .padding(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                items(state.playListsMap.values.toList()) { playlist ->
+                items(state.playListsMap.values.toList(), key = { it.id }) { playlist ->
                    PlaylistItem(navController, viewModel, playlist)
                 }
             }
@@ -55,6 +55,14 @@ fun PlayListsTab(
                     viewModel,
                     "Create a new playlist"
                 ) { viewModel.action(it) }
+            }
+            if(viewModel.showChangeDialog.value) {
+                PlaylistNameDialog(
+                    viewModel,
+                    "Enter new name:"
+                ) {
+                    viewModel.action(it)
+                }
             }
         }
     }

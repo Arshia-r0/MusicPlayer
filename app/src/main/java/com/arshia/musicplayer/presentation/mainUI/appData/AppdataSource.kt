@@ -146,7 +146,7 @@ class AppdataSource @Inject constructor(
 
     }
 
-    inner class PlaylistAccess {
+    inner class PlaylistActions {
 
         suspend fun createPlaylist(name: String) = withContext(Dispatchers.IO) {
             playlistDao.create(

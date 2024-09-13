@@ -4,6 +4,7 @@ import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,11 +14,13 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,8 +29,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.arshia.musicplayer.data.model.playlist.PlaylistObject
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.PlaylistsViewModel
@@ -91,12 +96,46 @@ fun PlaylistItem(
                         viewModel.action = { viewModel.changePlaylistName(it, playlist)}
                     }
                 )
+                DropdownMenuItem(
+                    text = { Text("delete playlist") },
+                    onClick = {
+                        isExpanded = false
+                        viewModel.showDeleteDialog.value = true
+                    }
+                )
             }
         }
     }
-    if(viewModel.showChangeDialog.value) {
-        PlaylistNameDialog(viewModel, "Enter new name:") {
-            viewModel.action(it)
+    if(viewModel.showDeleteDialog.value) {
+        var showDeleteDialog by viewModel.showDeleteDialog
+        Dialog(
+            onDismissRequest = { showDeleteDialog = false },
+        ) {
+            Column {
+                Text("Delete playlist?")
+                VerticalDivider(
+                    modifier = Modifier.height(15.dp),
+                    color = Color.Transparent
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
+                    Button(
+                        onClick = { showDeleteDialog = false },
+                    ) {
+                        Text("cancel")
+                    }
+                    Button(
+                        onClick = {
+                            viewModel.deletePlaylist(playlist)
+                            showDeleteDialog = false
+                        }
+                    ) {
+                        Text("Delete")
+                    }
+                }
+            }
         }
     }
 }

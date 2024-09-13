@@ -42,12 +42,14 @@ class PlaylistListViewModel @Inject constructor(
 
     fun deleteFromPlaylist(list: Set<TrackItem>, playlistObject: PlaylistObject) {
         viewModelScope.launch {
-            data.PlaylistAccess().deleteFromPlaylist(list, playlistObject)
-            data.RetrieveData().getPlaylists()
+            data.PlaylistActions().deleteFromPlaylist(list, playlistObject)
+            refreshPlaylists()
             currentPlaylistList -= list
         }
     }
 
     fun getThumbnail(id: Int): Painter? = data.RetrieveData().getThumbnails(id)
+
+    private suspend fun refreshPlaylists() = data.RetrieveData().getPlaylists()
 
 }
