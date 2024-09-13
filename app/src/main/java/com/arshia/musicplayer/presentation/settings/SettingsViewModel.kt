@@ -1,6 +1,7 @@
 package com.arshia.musicplayer.presentation.settings
 
 import android.content.Context
+import android.os.Build
 import androidx.compose.runtime.mutableStateOf
 import androidx.datastore.dataStore
 import androidx.lifecycle.ViewModel
@@ -37,8 +38,11 @@ class SettingsViewModel @Inject constructor(
 
     fun changeTheme(currentTheme: Themes) {
         viewModelScope.launch(Dispatchers.IO) {
+            val newTheme = currentTheme.next()
+            if(Build.VERSION.SDK_INT < 31 && newTheme == Themes.DynamicColor)
+                newTheme.next()
             dataStore.updateData {
-                it.copy(appTheme = currentTheme.next<Themes>())
+                it.copy(appTheme = newTheme)
             }
         }
     }
