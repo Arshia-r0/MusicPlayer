@@ -25,7 +25,6 @@ fun PlaylistsTopBar(
         actions = {
             IconButton(onClick = {
                 viewModel.showCreateDialog.value = true
-                viewModel.action = { viewModel.createPlaylist(it) }
             }) {
                 Icon(
                     imageVector = Icons.Filled.Add,

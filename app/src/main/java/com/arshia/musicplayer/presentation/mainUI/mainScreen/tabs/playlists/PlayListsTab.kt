@@ -53,16 +53,9 @@ fun PlayListsTab(
             if(viewModel.showCreateDialog.value) {
                 PlaylistNameDialog(
                     viewModel,
-                    "Create a new playlist"
-                ) { viewModel.action(it) }
-            }
-            if(viewModel.showChangeDialog.value) {
-                PlaylistNameDialog(
-                    viewModel,
-                    "Enter new name:"
-                ) {
-                    viewModel.action(it)
-                }
+                    "Enter new playlist name: ",
+                    buttonText = "Create"
+                ) { viewModel.createPlaylist(it) }
             }
         }
     }

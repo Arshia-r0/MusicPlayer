@@ -4,51 +4,49 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.arshia.musicplayer.data.model.playlist.PlaylistObject
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.PlaylistsViewModel
 
 
 @Composable
-fun PlaylistNameDialog(
-    viewModel: PlaylistsViewModel,
-    title: String,
-    content: String? = null,
-    buttonText: String,
-    action: (String) -> Unit
-) {
-    var showDialog by viewModel.showCreateDialog
-    Dialog(onDismissRequest = { showDialog = false }) {
-        var text by remember { mutableStateOf("") }
-        content?.let { text = it }
+fun DeletePlaylistDialog(viewModel: PlaylistsViewModel, playlist: PlaylistObject) {
+    var showDeleteDialog by viewModel.showDeleteDialog
+    Dialog(
+        onDismissRequest = { showDeleteDialog = false },
+    ) {
         Column {
-            Text(title)
-            TextField(value = text, onValueChange = { text = it })
+            Text("Delete playlist?")
+            VerticalDivider(
+                modifier = Modifier.height(15.dp),
+                color = Color.Transparent
+            )
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 Button(
-                    onClick = { showDialog = false },
+                    onClick = { showDeleteDialog = false },
                 ) {
                     Text("cancel")
                 }
                 Button(
                     onClick = {
-                        action(text)
-                        viewModel.showChangeDialog.value = false
-                        viewModel.showCreateDialog.value = false
+                        viewModel.deletePlaylist(playlist)
+                        showDeleteDialog = false
                     }
                 ) {
-                    Text(buttonText)
+                    Text("Delete")
                 }
             }
         }
