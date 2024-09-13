@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.components
+package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.basicMarquee
@@ -15,21 +15,19 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.arshia.musicplayer.R
 import com.arshia.musicplayer.data.model.music.AlbumItem
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.AlbumsViewModel
 import com.arshia.musicplayer.presentation.navigation.Routes
 
 
 @Stable
 @Composable
 fun AlbumItem(
-    viewModel: MainViewModel,
+    viewModel: AlbumsViewModel,
     navController: NavController,
     album: AlbumItem,
 ) {
@@ -47,9 +45,7 @@ fun AlbumItem(
                         )
                     }.padding(10.dp)
                     .clip(RoundedCornerShape(25.dp)),
-                painter = viewModel.getThumbnails(album.id)?.let {
-                    BitmapPainter(it.asImageBitmap())
-                } ?: painterResource(R.drawable.music_icon),
+                painter = viewModel.getThumbnail(album.id) ?: painterResource(R.drawable.music_icon),
                 contentDescription = "AlbumArt",
             )
             Text(

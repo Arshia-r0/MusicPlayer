@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.mainUI.selectionScreen
+package com.arshia.musicplayer.presentation.mainUI.selectPlaylistScreen
 
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
@@ -21,19 +21,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.arshia.musicplayer.data.model.music.TrackItem
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectPlaylistScreen(
-    viewModel: MainViewModel,
     navController: NavController,
-    tracks: List<TrackItem>
+    tracks: Set<TrackItem>,
+    viewModel: SelectPlaylistViewModel = hiltViewModel()
 ) {
-    val state by viewModel.playlistsState
+    val state by viewModel.playListsState
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { TopAppBar(title = { Text("Select playlist") }) }
