@@ -15,7 +15,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.arshia.musicplayer.presentation.mainUI.appData.states.TabsState
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.MainViewModel
 
 
@@ -36,21 +35,21 @@ fun BottomBar(viewModel: MainViewModel) {
             modifier = Modifier.clickable(
                 interactionSource = interactionSource,
                 indication = null
-            ) { tab = TabsState.Albums },
+            ) { tab = MainTabs.Albums },
         )
         Text(
             text = "Playlists",
             modifier = Modifier.clickable(
                 interactionSource = interactionSource,
                 indication = null
-            ) { tab = TabsState.Playlists },
+            ) { tab = MainTabs.Playlists },
         )
         Text(
             text = "Tracks",
             modifier = Modifier.clickable(
                 interactionSource = interactionSource,
                 indication = null
-            ) { tab = TabsState.Tracks },
+            ) { tab = MainTabs.Tracks },
         )
     }
 }

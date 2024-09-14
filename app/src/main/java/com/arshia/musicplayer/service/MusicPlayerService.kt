@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.musicPlayerService
+package com.arshia.musicplayer.service
 
 import android.content.Intent
 import androidx.annotation.OptIn

@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.model.playlist.PlaylistObject
-import com.arshia.musicplayer.musicPlayerService.MusicPlayerController
-import com.arshia.musicplayer.presentation.mainUI.appData.AppdataSource
+import com.arshia.musicplayer.presentation.mainUI.mainData.MainData
+import com.arshia.musicplayer.service.MusicPlayerController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,14 +17,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PlaylistListViewModel @Inject constructor(
-    val data: AppdataSource,
+    val data: MainData,
     val controller: MusicPlayerController
 ): ViewModel() {
 
-    val currentPlaylistList = mutableStateListOf<TrackItem>()
+    var currentPlaylistList = mutableStateListOf<TrackItem>()
 
     val selectionMode = mutableStateOf(false)
-    val selectTracksMap = mutableStateMapOf<TrackItem, Boolean>()
+    var selectTracksMap = mutableStateMapOf<TrackItem, Boolean>()
 
     fun selectTracks() {
         selectionMode.value = true
@@ -35,9 +35,7 @@ class PlaylistListViewModel @Inject constructor(
 
     fun exitSelectMode() {
         selectionMode.value = false
-        for((i, j) in selectTracksMap) {
-            if(j) selectTracksMap[i] = false
-        }
+        selectTracksMap = mutableStateMapOf()
     }
 
     fun deleteFromPlaylist(list: Set<TrackItem>, playlistObject: PlaylistObject) {

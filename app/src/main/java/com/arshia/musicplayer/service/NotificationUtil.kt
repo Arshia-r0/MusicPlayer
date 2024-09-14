@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.musicPlayerService
+package com.arshia.musicplayer.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

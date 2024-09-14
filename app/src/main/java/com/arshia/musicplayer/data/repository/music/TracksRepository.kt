@@ -47,8 +47,10 @@ class TracksRepository @Inject constructor(
                 MediaStore.Audio.Media.ALBUM_ID
             )
 
+            val sortOrder = "_DISPLAY_NAME ASC"
+
             context.contentResolver.query(
-                queryUri, projection, null, null, null
+                queryUri, projection, null, null, sortOrder
             )?.use { cursor ->
                 val id = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
                 val name = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)

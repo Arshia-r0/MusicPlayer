@@ -1,9 +1,10 @@
-package com.arshia.musicplayer.musicPlayerService
+package com.arshia.musicplayer.service
 
 import android.content.ComponentName
 import android.content.Context
 import android.util.Log
 import androidx.annotation.OptIn
+import androidx.compose.runtime.mutableStateOf
 import androidx.datastore.dataStore
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
@@ -12,10 +13,9 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.arshia.musicplayer.common.arrangeAround
-import com.arshia.musicplayer.presentation.mainUI.appData.AppdataSource
 import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.repository.serializers.PlayerStateSerializer
-import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerState
+import com.arshia.musicplayer.presentation.mainUI.mainData.MainData
 import com.google.common.util.concurrent.MoreExecutors
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
@@ -32,11 +32,11 @@ private val Context.dataStore by dataStore(
 @Singleton
 class MusicPlayerController @Inject constructor(
     @ApplicationContext context: Context,
-    private val data: AppdataSource
+    private val data: MainData
 ) {
 
     private val dataStore = context.dataStore
-    private val playerState = data.playerState
+    val playerState = mutableStateOf(PlayerState())
     val mediaController: MediaController?
         get() = if(controllerFuture.isDone) controllerFuture.get()
         else {

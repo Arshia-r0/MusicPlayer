@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.arshia.musicplayer.presentation.mainUI.appData.states.TabsState
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.components.MainTabs
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.AlbumsTab
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.components.BottomBar
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.PlayListsTab
@@ -38,9 +38,9 @@ fun MainScreen(
         ) {
             Surface(modifier = Modifier.weight(1f)) {
                 when (tab) {
-                    TabsState.Albums -> AlbumsTab(navController)
-                    TabsState.Playlists -> PlayListsTab(navController)
-                    TabsState.Tracks -> TracksTab(navController)
+                    MainTabs.Albums -> AlbumsTab(navController)
+                    MainTabs.Playlists -> PlayListsTab(navController)
+                    MainTabs.Tracks -> TracksTab(navController)
                 }
             }
             PlayerBar(navController)

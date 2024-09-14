@@ -24,8 +24,7 @@ fun PlaylistListScreen(
     viewModel: PlaylistListViewModel = hiltViewModel(),
 ) {
     val list = viewModel.currentPlaylistList
-    list.clear()
-    list += playlistObject.list.toList()
+    list += playlistObject.list.toList().sortedBy { it.name }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { PlaylistListScreenTopBar(navController, viewModel, playlistObject) }
