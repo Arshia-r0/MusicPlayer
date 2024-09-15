@@ -2,5 +2,5 @@ package com.arshia.musicplayer.data.model.settings
 
 
 enum class Themes {
-    System, Light, Dark
+    System, Light, Dark, DynamicColor
 }

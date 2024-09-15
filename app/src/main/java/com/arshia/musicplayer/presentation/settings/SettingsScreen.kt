@@ -30,9 +30,9 @@ import androidx.navigation.NavController
 @Composable
 fun SettingsScreen(
     navController: NavController,
-    settingsViewModel: SettingsViewModel = hiltViewModel()
+    viewModel: SettingsViewModel = hiltViewModel()
 ) {
-    val settings by settingsViewModel.settings
+    val settings by viewModel.settings
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
@@ -61,7 +61,7 @@ fun SettingsScreen(
                         .fillMaxWidth()
                         .height(65.dp)
                         .clip(RoundedCornerShape(8.dp))
-                        .clickable { settingsViewModel.changeTheme(settings.appTheme) },
+                        .clickable { viewModel.changeTheme(settings.appTheme) },
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {

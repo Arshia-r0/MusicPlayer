@@ -1,11 +1,14 @@
 package com.arshia.musicplayer.presentation.theme
 
+import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import com.arshia.musicplayer.data.model.settings.Themes
 
 private val lightScheme = lightColorScheme(
@@ -90,19 +93,21 @@ fun AppTheme(
     theme: Themes,
     content: @Composable () -> Unit
 ) {
-  val colorScheme = when(theme) {
-      Themes.System -> when(isSystemInDarkTheme()) {
-          true -> darkScheme
-          false -> lightScheme
-      }
-      Themes.Light -> lightScheme
-      Themes.Dark -> darkScheme
-  }
+    val colorScheme = when {
+        theme == Themes.DynamicColor && Build.VERSION.SDK_INT > 30 -> {
+            val context = LocalContext.current
+            if(isSystemInDarkTheme()) dynamicDarkColorScheme(context)
+            else dynamicDarkColorScheme(context)
+        }
+        theme == Themes.Dark -> darkScheme
+        theme == Themes.Light -> lightScheme
+        else -> if(isSystemInDarkTheme()) darkScheme else lightScheme
+    }
 
-  MaterialTheme(
-    colorScheme = colorScheme,
-    typography = Typography(),
-    content = content
-  )
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = Typography(),
+      content = content
+    )
+
 }
-

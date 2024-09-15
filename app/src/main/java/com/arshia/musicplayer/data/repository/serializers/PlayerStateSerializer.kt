@@ -1,7 +1,7 @@
 package com.arshia.musicplayer.data.repository.serializers
 
 import androidx.datastore.core.Serializer
-import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerState
+import com.arshia.musicplayer.service.PlayerState
 import kotlinx.serialization.json.Json
 import java.io.InputStream
 import java.io.OutputStream

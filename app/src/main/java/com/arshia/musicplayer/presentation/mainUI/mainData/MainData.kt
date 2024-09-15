@@ -1,4 +1,4 @@
-package com.arshia.musicplayer.presentation.mainUI.appData
+package com.arshia.musicplayer.presentation.mainUI.mainData
 
 import android.graphics.Bitmap
 import android.os.Build
@@ -14,14 +14,12 @@ import com.arshia.musicplayer.data.model.playlist.PlaylistObject
 import com.arshia.musicplayer.data.repository.music.AlbumsRepository
 import com.arshia.musicplayer.data.repository.music.TracksRepository
 import com.arshia.musicplayer.data.repository.thumbnail.ThumbnailsRepository
-import com.arshia.musicplayer.presentation.mainUI.appData.states.AlbumsState
-import com.arshia.musicplayer.presentation.mainUI.appData.states.PlayListsState
-import com.arshia.musicplayer.presentation.mainUI.appData.states.TabsState
-import com.arshia.musicplayer.presentation.mainUI.appData.states.TracksState
-import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerState
+import com.arshia.musicplayer.presentation.mainUI.mainData.states.AlbumsState
+import com.arshia.musicplayer.presentation.mainUI.mainData.states.PlayListsState
+import com.arshia.musicplayer.presentation.mainUI.mainData.states.TracksState
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.components.MainTabs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -33,26 +31,22 @@ typealias Id = Int
 
 
 @Singleton
-class AppdataSource @Inject constructor(
+class MainData @Inject constructor(
     private val albumsRepository: AlbumsRepository,
     private val tracksRepository: TracksRepository,
     private val thumbnailsRepository: ThumbnailsRepository,
 ) {
 
-    val playerState = mutableStateOf(PlayerState())
-
     val tracksState = mutableStateOf(TracksState())
     val albumsState = mutableStateOf(AlbumsState())
     val playlistsState = mutableStateOf(PlayListsState())
 
-    val tab = mutableStateOf(TabsState.Playlists)
 
     private val playlistDao = MusicPlayerApplication.database.getPlaylistDao()
 
-    private var thumbnailsMap = emptyMap<Id, Bitmap>()
     private val albumsMap = mutableMapOf<Id, List<TrackItem>>()
-
-    private var tracksNotYetInAlbums = mutableListOf<TrackItem>()
+    private lateinit var thumbnailsMap: Map<Id, Bitmap>
+    private lateinit var tracksNotYetInAlbums: MutableList<TrackItem>
 
     init {
         RetrieveData().getAll()
@@ -105,7 +99,7 @@ class AppdataSource @Inject constructor(
                         AlbumsState(error = result.message ?: "Error")
                     }
                 }
-            }.onCompletion { println(albumsState.value) }.collect{}
+            }.collect{}
         }
 
         private fun getAlbumThumbnails() {
@@ -126,7 +120,9 @@ class AppdataSource @Inject constructor(
         }
 
         fun getThumbnails(id: Int): Painter? =
-            thumbnailsMap[id]?.let { BitmapPainter(it.asImageBitmap()) }
+            if(this@MainData::thumbnailsMap.isInitialized) {
+                thumbnailsMap[id]?.let { BitmapPainter(it.asImageBitmap()) }
+            } else null
 
         fun getAlbumTracks(album: AlbumItem): List<TrackItem> =
             albumsMap[album.id] ?: loadTracksInAlbum(album)

@@ -88,7 +88,7 @@ fun PlaylistItem(
                     onClick = {
                         isExpanded = false
                         viewModel.showChangeDialog.value = true
-                        viewModel.action = { viewModel.changePlaylistName(it, playlist)}
+                        viewModel.playlist = playlist
                     }
                 )
                 DropdownMenuItem(
@@ -96,22 +96,11 @@ fun PlaylistItem(
                     onClick = {
                         isExpanded = false
                         viewModel.showDeleteDialog.value = true
+                        viewModel.playlist = playlist
                     }
                 )
             }
         }
     }
-    if(viewModel.showDeleteDialog.value) {
-        DeletePlaylistDialog(viewModel, playlist)
-    }
-    if(viewModel.showChangeDialog.value) {
-        PlaylistNameDialog(
-            viewModel,
-            "Enter new name: ",
-            content = playlist.name,
-            "Change"
-        ) {
-            viewModel.deletePlaylist(playlist)
-        }
-    }
+
 }
