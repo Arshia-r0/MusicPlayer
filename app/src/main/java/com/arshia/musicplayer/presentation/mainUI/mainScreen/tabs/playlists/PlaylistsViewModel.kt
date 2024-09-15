@@ -26,9 +26,10 @@ class PlaylistsViewModel @Inject constructor(
     val showChangeDialog = mutableStateOf(false)
     val showDeleteDialog = mutableStateOf(false)
 
+
+    var playlist: PlaylistObject? = null
     val selectionMode = mutableStateOf(false)
     val selectTracksMap = mutableStateMapOf<TrackItem, Boolean>()
-    var action: (String) -> Unit = {}
 
     fun createPlaylist(name: String) {
         viewModelScope.launch {

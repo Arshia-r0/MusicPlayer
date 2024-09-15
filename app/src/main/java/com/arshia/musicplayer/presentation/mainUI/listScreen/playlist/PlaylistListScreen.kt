@@ -40,7 +40,7 @@ fun PlaylistListScreen(
                     .weight(1f),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                items(items = list, key = { it.id }) { track ->
+                items(items = list) { track ->
                     PlaylistListTrackItem(track, playlistObject)
                 }
             }

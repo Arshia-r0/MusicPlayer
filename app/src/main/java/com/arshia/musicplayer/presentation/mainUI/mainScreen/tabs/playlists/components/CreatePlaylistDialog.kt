@@ -1,6 +1,7 @@
 package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,37 +19,36 @@ import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.Play
 
 
 @Composable
-fun PlaylistNameDialog(
+fun CreatePlaylistDialog(
     viewModel: PlaylistsViewModel,
-    title: String,
-    content: String? = null,
-    buttonText: String,
-    action: (String) -> Unit
 ) {
     var showDialog by viewModel.showCreateDialog
     Dialog(onDismissRequest = { showDialog = false }) {
         var text by remember { mutableStateOf("") }
-        content?.let { text = it }
-        Column {
-            Text(title)
-            TextField(value = text, onValueChange = { text = it })
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                Button(
-                    onClick = { showDialog = false },
+        Box {
+            Column {
+                Text("Enter new playlist name: ")
+                TextField(
+                    value = text,
+                    onValueChange = { text = it }
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceAround
                 ) {
-                    Text("cancel")
-                }
-                Button(
-                    onClick = {
-                        action(text)
-                        viewModel.showChangeDialog.value = false
-                        viewModel.showCreateDialog.value = false
+                    Button(
+                        onClick = { showDialog = false },
+                    ) {
+                        Text("cancel")
                     }
-                ) {
-                    Text(buttonText)
+                    Button(
+                        onClick = {
+                            viewModel.createPlaylist(text)
+                            showDialog = false
+                        }
+                    ) {
+                        Text("Create")
+                    }
                 }
             }
         }

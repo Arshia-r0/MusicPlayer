@@ -15,8 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.components.ChangePlaylistNameDialog
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.components.CreatePlaylistDialog
+import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.components.DeletePlaylistDialog
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.components.PlaylistItem
-import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.components.PlaylistNameDialog
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.components.PlaylistsTopBar
 
 
@@ -46,16 +48,18 @@ fun PlayListsTab(
                     .padding(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                items(state.playListsMap.values.toList(), key = { it.id }) { playlist ->
-                   PlaylistItem(navController, viewModel, playlist)
+                items(state.playListsMap.values.toList()) { playlist ->
+                    PlaylistItem(navController, viewModel, playlist)
                 }
             }
-            if(viewModel.showCreateDialog.value) {
-                PlaylistNameDialog(
-                    viewModel,
-                    "Enter new playlist name: ",
-                    buttonText = "Create"
-                ) { viewModel.createPlaylist(it) }
+            if (viewModel.showCreateDialog.value) {
+                CreatePlaylistDialog(viewModel)
+            }
+            if (viewModel.showDeleteDialog.value) {
+                DeletePlaylistDialog(viewModel)
+            }
+            if (viewModel.showChangeDialog.value) {
+                ChangePlaylistNameDialog(viewModel)
             }
         }
     }
