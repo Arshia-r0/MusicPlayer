@@ -16,6 +16,8 @@ import com.arshia.musicplayer.common.arrangeAround
 import com.arshia.musicplayer.data.model.music.TrackItem
 import com.arshia.musicplayer.data.repository.serializers.PlayerStateSerializer
 import com.arshia.musicplayer.presentation.mainUI.mainData.MainData
+import com.google.common.util.concurrent.FutureCallback
+import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.MoreExecutors
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
@@ -31,7 +33,7 @@ private val Context.dataStore by dataStore(
 
 @Singleton
 class MusicPlayerController @Inject constructor(
-    @ApplicationContext context: Context,
+    @ApplicationContext private val context: Context,
     private val data: MainData
 ) {
 
@@ -45,17 +47,20 @@ class MusicPlayerController @Inject constructor(
         }
     private val sessionToken = SessionToken(context, ComponentName(context, MusicPlayerService::class.java))
     private var controllerFuture = MediaController.Builder(context, sessionToken).buildAsync()
-    private var s = true
+
+
     init {
         runBlocking {
-            playerState.value = dataStore.data.first()
+            try { playerState.value = dataStore.data.first() }
+            catch (_: NoSuchElementException) {}
             if(playerState.value.currentTrack == null) {
                 playerState.value = PlayerState(
-                    currentTrack = data.tracksState.value.tracksMap[0],
-                    queue = data.tracksState.value.tracksMap.values.toList().drop(0)
+                    currentTrack = data.tracksState.value.tracksMap.values.first(),
+                    queue = data.tracksState.value.tracksMap.values.toList()
                 )
             }
         }
+        addCallback()
         listener()
     }
 
@@ -63,6 +68,20 @@ class MusicPlayerController @Inject constructor(
         runBlocking {
             dataStore.updateData { playerState.value.copy(isPlaying = false) }
         }
+    }
+
+    private fun addCallback() {
+        Futures.addCallback(
+            controllerFuture,
+            object : FutureCallback<MediaController> {
+
+                override fun onSuccess(result: MediaController?) = setInitialPlayerState()
+
+                override fun onFailure(t: Throwable) {}
+
+            },
+            context.mainExecutor
+        )
     }
 
     private fun listener() {
@@ -109,10 +128,11 @@ class MusicPlayerController @Inject constructor(
             mediaController?.addMediaItem(getMediaItem(it))
         }
         mediaController?.prepare()
+        println("ready")
     }
 
-    private fun getMediaItem(track: TrackItem): MediaItem {
-        return MediaItem.Builder().setUri(track.uri)
+    private fun getMediaItem(track: TrackItem): MediaItem =
+        MediaItem.Builder().setUri(track.uri)
             .setMediaId(track.id.toString())
             .setMediaMetadata(
                 MediaMetadata.Builder()
@@ -121,15 +141,10 @@ class MusicPlayerController @Inject constructor(
                     .setAlbumTitle(track.album)
                     .build()
             ).build()
-    }
 
     inner class Commands {
 
         fun togglePauseMusic() {
-            if (s) {
-                setInitialPlayerState()
-                s = false
-            }
             if (mediaController?.isPlaying == true) mediaController?.pause()
             else mediaController?.play()
         }

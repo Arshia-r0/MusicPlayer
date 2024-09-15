@@ -12,7 +12,6 @@ import com.arshia.musicplayer.data.model.settings.Themes
 import com.arshia.musicplayer.data.repository.serializers.SettingsSerializer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
@@ -40,10 +39,10 @@ object Preferences {
         }
     }
 
-    fun getPreferences() {
+    suspend fun getPreferences() {
         dataStore.data.onEach {
             state.value = state.value.copy(appTheme = it.appTheme)
-        }.launchIn(scope)
+        }.collect {}
     }
 
 }
