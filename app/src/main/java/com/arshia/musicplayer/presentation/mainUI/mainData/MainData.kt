@@ -41,7 +41,6 @@ class MainData @Inject constructor(
     val albumsState = mutableStateOf(AlbumsState())
     val playlistsState = mutableStateOf(PlayListsState())
 
-    val tab = mutableStateOf(MainTabs.Playlists)
 
     private val playlistDao = MusicPlayerApplication.database.getPlaylistDao()
 
