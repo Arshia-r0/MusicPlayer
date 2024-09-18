@@ -15,12 +15,12 @@ import com.arshia.musicplayer.presentation.navigation.Routes
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlbumsTopBar(
-    navController: NavController,
+    navScreenController: NavController,
 ) {
     TopAppBar(
         title = { Text("Albums") },
         actions = {
-            IconButton(onClick = { navController.navigate(Routes.SettingRoute) }) {
+            IconButton(onClick = { navScreenController.navigate(Routes.SettingRoute) }) {
                 Icon(imageVector = Icons.Filled.Settings, contentDescription = "settings")
             }
         }

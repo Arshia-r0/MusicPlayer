@@ -26,14 +26,14 @@ import com.arshia.musicplayer.presentation.navigation.Routes
 
 @Composable
 fun PlayerBar(
-    navController: NavController,
+    navScreenController: NavController,
     viewModel: PlayerViewModel = hiltViewModel()
 ) {
     val state by viewModel.playerState
     val controller = viewModel.controller.Commands()
     BottomAppBar(
         modifier = Modifier
-            .clickable { navController.navigate(Routes.PlayerRoute) }
+            .clickable { navScreenController.navigate(Routes.PlayerRoute) }
             .height(80.dp),
     ) {
         Row(

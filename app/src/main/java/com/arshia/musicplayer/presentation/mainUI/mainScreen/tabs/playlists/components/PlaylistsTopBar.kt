@@ -17,7 +17,7 @@ import com.arshia.musicplayer.presentation.navigation.Routes
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlaylistsTopBar(
-    navController: NavController,
+    navScreenController: NavController,
     viewModel: PlaylistsViewModel
 ) {
     TopAppBar(
@@ -31,7 +31,7 @@ fun PlaylistsTopBar(
                     contentDescription = "Create a new playlist"
                 )
             }
-            IconButton(onClick = { navController.navigate(Routes.SettingRoute) }) {
+            IconButton(onClick = { navScreenController.navigate(Routes.SettingRoute) }) {
                 Icon(imageVector = Icons.Filled.Settings, contentDescription = "settings")
             }
         }

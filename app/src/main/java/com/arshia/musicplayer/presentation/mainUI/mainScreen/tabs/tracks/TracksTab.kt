@@ -23,12 +23,13 @@ import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.tracks.compone
 @Composable
 fun TracksTab(
     navController: NavController,
+    navScreenController: NavController,
     viewModel: TracksViewModel = hiltViewModel(),
 ) {
     val state by viewModel.tracksState
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TracksTopBar(navController, viewModel) }
+        topBar = { TracksTopBar(navScreenController, viewModel) },
     ) { ip ->
         if (state.isLoading) {
             Column(

@@ -46,7 +46,7 @@ fun SettingsScreen(
                 ) },
                 actions = {}
             )
-        }
+        },
     ) { ip ->
         LazyColumn(
             modifier = Modifier

@@ -29,14 +29,14 @@ import com.arshia.musicplayer.data.model.music.TrackItem
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectPlaylistScreen(
-    navController: NavController,
+    navScreenController: NavController,
     tracks: Set<TrackItem>,
     viewModel: SelectPlaylistViewModel = hiltViewModel()
 ) {
     val state by viewModel.playListsState
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TopAppBar(title = { Text("Select playlist") }) }
+        topBar = { TopAppBar(title = { Text("Select playlist") }) },
     ) { ip ->
         LazyColumn(
             modifier = Modifier
@@ -53,7 +53,7 @@ fun SelectPlaylistScreen(
                         .clip(RoundedCornerShape(8.dp))
                         .clickable {
                             viewModel.addToPlaylist(tracks, playlist)
-                            navController.navigateUp()
+                            navScreenController.navigateUp()
                         },
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {

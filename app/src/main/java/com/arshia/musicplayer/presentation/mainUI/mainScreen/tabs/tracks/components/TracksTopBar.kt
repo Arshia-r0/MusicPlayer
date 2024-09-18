@@ -22,7 +22,7 @@ import com.arshia.musicplayer.presentation.navigation.Routes
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TracksTopBar(
-    navController: NavController,
+    navScreenController: NavController,
     viewModel: TracksViewModel
 ) {
     var selectionMode by viewModel.selectionMode
@@ -52,7 +52,7 @@ fun TracksTopBar(
                 IconButton(
                     enabled = containsTrue(),
                     onClick = {
-                        navController.navigate(
+                        navScreenController.navigate(
                             Routes.PlaylistSelectionRoute(viewModel.selectTracksMap.filter { it.value }.keys)
                         )
                         selectionMode = false
@@ -64,7 +64,7 @@ fun TracksTopBar(
                     )
                 }
             } else {
-                IconButton(onClick = { navController.navigate(Routes.SettingRoute) }) {
+                IconButton(onClick = { navScreenController.navigate(Routes.SettingRoute) }) {
                     Icon(imageVector = Icons.Filled.Settings, contentDescription = "settings")
                 }
             }
