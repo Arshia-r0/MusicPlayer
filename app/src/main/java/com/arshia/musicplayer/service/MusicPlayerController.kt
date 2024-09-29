@@ -37,8 +37,9 @@ class MusicPlayerController @Inject constructor(
     private val data: MainData
 ) {
 
-    private val dataStore = context.dataStore
     val playerState = mutableStateOf(PlayerState())
+
+    private val dataStore = context.dataStore
     val mediaController: MediaController?
         get() = if(controllerFuture.isDone) controllerFuture.get()
         else {
@@ -128,7 +129,6 @@ class MusicPlayerController @Inject constructor(
             mediaController?.addMediaItem(getMediaItem(it))
         }
         mediaController?.prepare()
-        println("ready")
     }
 
     private fun getMediaItem(track: TrackItem): MediaItem =

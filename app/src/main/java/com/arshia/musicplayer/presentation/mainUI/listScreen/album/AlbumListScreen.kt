@@ -27,7 +27,7 @@ fun AlbumListScreen(
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { AlbumsScreenTopBar(navController, viewModel) }
+        topBar = { AlbumsScreenTopBar(navController, viewModel) },
     ) { ip ->
         Column(
             modifier = Modifier

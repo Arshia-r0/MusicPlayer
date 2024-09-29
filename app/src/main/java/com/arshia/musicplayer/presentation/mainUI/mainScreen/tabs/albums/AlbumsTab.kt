@@ -22,13 +22,14 @@ import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.albums.compone
 
 @Composable
 fun AlbumsTab(
-    navController: NavController,
+    navBarController: NavController,
+    navScreenController: NavController,
     viewModel: AlbumsViewModel = hiltViewModel()
 ) {
     val state by viewModel.albumsState
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { AlbumsTopBar(navController) }
+        topBar = { AlbumsTopBar(navScreenController) },
     ) { ip ->
         if (state.isLoading) {
             Column(
@@ -51,7 +52,7 @@ fun AlbumsTab(
             ) {
                 items(state.albumsMap.values.toList()) { album ->
                     AlbumItem(
-                        navController = navController,
+                        navController = navBarController,
                         viewModel = viewModel,
                         album = album
                     )

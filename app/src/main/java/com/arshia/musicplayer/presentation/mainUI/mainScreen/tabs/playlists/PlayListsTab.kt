@@ -1,5 +1,6 @@
 package com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,15 +23,17 @@ import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.comp
 import com.arshia.musicplayer.presentation.mainUI.mainScreen.tabs.playlists.components.PlaylistsTopBar
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun PlayListsTab(
-    navController: NavController,
+    navBarController: NavController,
+    navScreenController: NavController,
     viewModel: PlaylistsViewModel = hiltViewModel()
 ) {
     val state by viewModel.playListsState
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { PlaylistsTopBar(navController, viewModel) }
+        topBar = { PlaylistsTopBar(navScreenController, viewModel) },
     ) { ip ->
         if (state.isLoading) {
             Column(
@@ -49,7 +52,7 @@ fun PlayListsTab(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 items(state.playListsMap.values.toList()) { playlist ->
-                    PlaylistItem(navController, viewModel, playlist)
+                    PlaylistItem(navBarController, viewModel, playlist)
                 }
             }
             if (viewModel.showCreateDialog.value) {

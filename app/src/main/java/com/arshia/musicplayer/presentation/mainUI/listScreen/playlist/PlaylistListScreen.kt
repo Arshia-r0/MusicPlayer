@@ -21,13 +21,13 @@ import com.arshia.musicplayer.presentation.mainUI.playerScreen.PlayerBar
 fun PlaylistListScreen(
     navController: NavController,
     playlistObject: PlaylistObject,
-    viewModel: PlaylistListViewModel = hiltViewModel(),
+    viewModel: PlaylistListViewModel = hiltViewModel()
 ) {
     val list = viewModel.currentPlaylistList
     list += playlistObject.list.toList().sortedBy { it.name }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { PlaylistListScreenTopBar(navController, viewModel, playlistObject) }
+        topBar = { PlaylistListScreenTopBar(navController, viewModel, playlistObject) },
     ) { ip ->
         Column(
             modifier = Modifier

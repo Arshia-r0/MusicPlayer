@@ -49,7 +49,9 @@ fun PlayerScreen(
             delay(1000)
         }
     }
-    Scaffold { ip ->
+    Scaffold(
+        modifier = Modifier.fillMaxSize()
+    ) { ip ->
         Column(
             modifier = Modifier
                 .fillMaxSize()

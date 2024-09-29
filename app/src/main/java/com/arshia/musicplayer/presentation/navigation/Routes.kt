@@ -13,6 +13,15 @@ sealed class Routes {
     data object MainRoute
 
     @Serializable
+    data object PlaylistsTabRoute
+
+    @Serializable
+    data object TracksTabRoute
+
+    @Serializable
+    data object AlbumsTabRoute
+
+    @Serializable
     data object SettingRoute
 
     @Serializable
